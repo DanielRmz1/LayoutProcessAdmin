@@ -136,13 +136,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account\Roles.cs" />
+    <Compile Include="Models\Account\Role.cs" />
     <Compile Include="Models\Account\User.cs" />
     <Compile Include="Models\Account\UserRoles.cs" />
-    <Compile Include="Models\Checklist\Answer.cs" />
-    <Compile Include="Models\Checklist\Checklist.cs" />
-    <Compile Include="Models\Checklist\Period.cs" />
-    <Compile Include="Models\Checklist\Question.cs" />
+    <Compile Include="Models\Calendar\Event.cs" />
+    <Compile Include="Models\Checking\Answer.cs" />
+    <Compile Include="Models\Checking\AnswerLog.cs" />
+    <Compile Include="Models\Checking\Checklist.cs" />
+    <Compile Include="Models\Checking\ChecklistLog.cs" />
+    <Compile Include="Models\Checking\Period.cs" />
+    <Compile Include="Models\Checking\Question.cs" />
+    <Compile Include="Models\Checking\QuestionLog.cs" />
+    <Compile Include="Models\Checking\UsersChecklist.cs" />
+    <Compile Include="Models\LayoutProcessContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
