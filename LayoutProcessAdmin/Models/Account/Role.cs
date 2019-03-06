@@ -1,25 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LayoutProcessAdmin.Models.Account
 {
     public class Role
     {
-        public int Id { get; set; }
+        [Key]
+        public int int_IdRole { get; set; }
 
         [Required]
-        [StringLength(15)]
-        public string Name { get; set; }
+        [StringLength(30)]
+        public string chr_Name { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Description { get; set; }
+        [StringLength(100)]
+        public string chr_Description { get; set; }
 
-        public bool ManageUsers { get; set; }
-        public bool ManageChecklist { get; set; }
-        public bool FillChecklists { get; set; }
+        public bool bit_ManageUsers { get; set; }
+
+        public bool bit_ManageGlobalUsers { get; set; }
+
+        public bool bit_ManageChecklist { get; set; }
+
+        public bool bit_FillChecklists { get; set; }
+
     }
 }

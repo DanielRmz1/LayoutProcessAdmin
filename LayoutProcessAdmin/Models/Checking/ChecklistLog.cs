@@ -1,6 +1,7 @@
 ﻿using LayoutProcessAdmin.Models.Account;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,10 +9,11 @@ namespace LayoutProcessAdmin.Models.Checking
 {
     public class ChecklistLog
     {
-        public int Id { get; set; }
-        public Checklist Checklist_Id { get; set; }
-        public User User_Id { get; set; }  //Usuario que contestó el Checklist
-        public DateTime CheckDate { get; set; } //Fecha que se contesto el checklist
-        public bool Checked { get; set; }   // Para saber si un checklist fue o no contestado
+        [Key]
+        public int int_IdListLog { get; set; }
+        public Checklist int_Checklist { get; set; }
+        public User int_User { get; set; }  //Usuario que contestó el Checklist
+        public DateTime dte_CheckDate { get; set; } //Fecha que se contesto el checklist
+        public bool bit_Checked { get; set; }   // Para saber si un checklist fue o no contestado
     }
 }

@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
     public class AnswerLog
     {
-        public int Id { get; set; }
-        public int Description { get; set; }
-        public string Entry { get; set; }
+        [Key]
+        public int int_IdAnswerLog { get; set; }
+
+        [StringLength(100)]
+        public string chr_Description { get; set; }
+
+        [Required]
+        public string Entry { get; set; } //Entrada que se dio a la respuesta
+
         public bool Selected { get; set; }
     }
 }

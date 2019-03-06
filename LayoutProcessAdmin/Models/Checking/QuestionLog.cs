@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
     public class QuestionLog
     {
-        public int Id { get; set; }
+        [Key]
+        public int int_IdQuestionLog { get; set; }
+
+        [StringLength(100)]
         public string Description { get; set; }
-        public List<AnswerLog> Answers { get; set; }
+
+        public AnswerLog Answers { get; set; }
     }
 }

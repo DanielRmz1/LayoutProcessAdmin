@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
     public class Question       
     {
-        public int Id { get; set; }
+        [Key]
+        public int int_IdQuestion { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string Description { get; set; }
+        public string chr_Description { get; set; }
+
+        /// <summary>
+        /// El tipo de la pregunta podra ser:
+        /// M -> Multiple -> Respuesta A) B) C) D) (El plan es que sean n respuestas)
+        /// A -> Abierta ->  Respuesta: ____________________________________
+        /// B -> Si / No ->  Respuesta: Yes) No) o Si) No)
+        /// </summary>
         [Required]
-        public int Type { get; set; }               
-        public List<Answer> Answers { get; set; }
+        public char int_Type { get; set; } 
     }
 }

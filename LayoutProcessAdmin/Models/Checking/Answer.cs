@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
     public class Answer
     {
-        public int Id { get; set; }
+        [Key]
+        public int int_IdAnswer { get; set; }
 
         [Required]
         [StringLength(50)]
-        public int Description { get; set; }
+        public string chr_Description { get; set; }
 
-        public string Entry { get; set; }
-        public bool Selected { get; set; }
+        public string chr_Entry { get; set; }
+        public bool bit_Selected { get; set; }
+
+        public Question int_Question { get; set; }
     }
 }

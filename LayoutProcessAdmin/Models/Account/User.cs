@@ -1,35 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LayoutProcessAdmin.Models.Account
 {
     public class User
     {
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(20)]
-        public string UserName { get; set; }
-
-        [Required]
-        [StringLength(20)]
-        public string Name { get; set; }
-
-        [Required]
-        [StringLength(20)]
-        public string LastName { get; set; }
+        [Key]
+        public int int_IdUser { get; set; }
 
         [Required]
         [StringLength(30)]
-        public string Email { get; set; }
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
+        public string chr_Clave { get; set; }
+
+        [Required]
+        [StringLength(30)]
+        public string chr_Name { get; set; }
+
+        [Required]
+        [StringLength(30)]
+        public string chr_LastName { get; set; }
+
+        [Required]
+        [StringLength(30)]
+        public string chr_Email { get; set; }
 
         [Required]
         [StringLength(10)]
-        public string Phone { get; set; }
-
-        public DateTime CreateDate { get; set; }
+        public string chr_Phone { get; set; }
     }
 }

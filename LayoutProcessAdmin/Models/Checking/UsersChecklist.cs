@@ -1,15 +1,14 @@
 ﻿using LayoutProcessAdmin.Models.Account;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
     //Modelo que ayudará a relacionar un checklist con los usuarios que pueden atenderlo
     public class UsersChecklist
     {
+        [Key]
+        public int int_IdUsersChecklist { get; set; }
         public Checklist Checklist_Id { get; set; }
-        public List<User> Users { get; set; }
+        public User Users { get; set; }
     }
 }

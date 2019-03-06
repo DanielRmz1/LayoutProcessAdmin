@@ -8,16 +8,22 @@ namespace LayoutProcessAdmin.Models.Checking
 {
     public class Checklist
     {
-        public int Id { get; set; }
+        [Key]
+        public int int_IdList { get; set; }
 
         [Required]
         [StringLength(30)]
-        public string Name { get; set; }
+        public string chr_Clave { get; set; }
+
+        [Required]
+        [StringLength(30)]
+        public string chr_Name { get; set; }
 
         [StringLength(100)]
-        public string Description { get; set; }
+        public string chr_Description { get; set; }
         
-        [Required]
-        public Period Period_Id { get; set; }
+        public Period int_Period { get; set; }
+
+        public bool bit_Activo { get; set; }
     }
 }
