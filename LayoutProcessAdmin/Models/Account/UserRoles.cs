@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LayoutProcessAdmin.Models.Account
 {
+    [Table("Tbl_UserRoles")]
     public class UserRoles
     {
         [Key]

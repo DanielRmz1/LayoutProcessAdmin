@@ -10,6 +10,7 @@ namespace LayoutProcessAdmin.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            
         }
 
         protected override void Seed(LayoutProcessAdmin.Models.LayoutProcessContext context)

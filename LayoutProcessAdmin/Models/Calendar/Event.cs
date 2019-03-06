@@ -1,9 +1,11 @@
 ﻿using LayoutProcessAdmin.Models.Checking;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LayoutProcessAdmin.Models.Calendar
 {
+    [Table("Tbl_Event")]
     public class Event
     {
         [Key]

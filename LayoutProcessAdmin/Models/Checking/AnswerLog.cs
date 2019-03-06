@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
+    [Table("Tbl_AnswersLog")]
     public class AnswerLog
     {
         [Key]
