@@ -1,0 +1,67 @@
+﻿@model LayoutProcessAdmin.Models.Account.User
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.chr_Clave)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.chr_Clave)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.chr_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.chr_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.chr_LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.chr_LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.chr_Password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.chr_Password)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.chr_Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.chr_Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.chr_Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.chr_Phone)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.int_IdUser }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

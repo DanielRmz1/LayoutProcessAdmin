@@ -13,18 +13,18 @@ namespace LayoutProcessAdmin.Models
             
         }
 
-        DbSet<Role> LpaRoles { get; set; }
-        DbSet<User> Users { get; set; }
-        DbSet<UserRoles> UserRoles { get; set; }
-        DbSet<Answer> Answers { get; set; }
-        DbSet<AnswerLog> AnswerLogs { get; set; }
-        DbSet<Checklist> Checklists { get; set; }
-        DbSet<ChecklistLog> ChecklistLogs { get; set; }
-        DbSet<Period> Periods { get; set; }
-        DbSet<Question> Questions { get; set; }
-        DbSet<QuestionLog> QuestionsLog { get; set; }
-        DbSet<UsersChecklist> UsersChecklists { get; set; }
-        DbSet<Event> Events { get; set; }
-
+        public DbSet<Role> LpaRoles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserRoles> UserRoles { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<AnswerLog> AnswerLogs { get; set; }
+        public DbSet<Checklist> Checklists { get; set; }
+        public DbSet<ChecklistLog> ChecklistLogs { get; set; }
+        public DbSet<Period> Periods { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<QuestionLog> QuestionsLog { get; set; }
+        public DbSet<UsersChecklist> UsersChecklists { get; set; }
+        public DbSet<Event> Events { get; set; }
+        
     }
 }
