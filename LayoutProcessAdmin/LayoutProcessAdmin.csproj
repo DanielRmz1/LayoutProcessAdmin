@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="Helpers\Security.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Account\Login.cs" />
     <Compile Include="Models\Account\Role.cs" />
     <Compile Include="Models\Account\User.cs" />
     <Compile Include="Models\Account\UserRoles.cs" />
@@ -2721,6 +2722,7 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Login.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

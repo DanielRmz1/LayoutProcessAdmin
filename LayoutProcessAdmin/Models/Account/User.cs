@@ -1,4 +1,6 @@
 ﻿
+using LayoutProcessAdmin.Models.Checking;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -45,5 +47,7 @@ namespace LayoutProcessAdmin.Models.Account
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone number")]
         public string chr_Phone { get; set; }
+
+        public List<Checklist> Checklists { get; set; }
     }
 }

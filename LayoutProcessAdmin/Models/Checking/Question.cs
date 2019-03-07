@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LayoutProcessAdmin.Models.Checking
@@ -20,6 +21,9 @@ namespace LayoutProcessAdmin.Models.Checking
         /// B -> Si / No ->  Respuesta: Yes) No) o Si) No)
         /// </summary>
         [Required]
-        public char int_Type { get; set; } 
+        [StringLength(2)]
+        public string chr_Type { get; set; }
+
+        public List<Answer> Answers { get; set; }
     }
 }

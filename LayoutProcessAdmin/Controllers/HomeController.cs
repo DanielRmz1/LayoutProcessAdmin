@@ -10,6 +10,11 @@ namespace LayoutProcessAdmin.Controllers
     {
         public ActionResult Index()
         {
+            if(Session["Logged"] == null)
+            {
+                return RedirectToAction("Login", "Users");
+            }
+
             return View();
         }
 

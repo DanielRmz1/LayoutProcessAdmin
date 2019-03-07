@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LayoutProcessAdmin.Models.Account;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LayoutProcessAdmin.Models.Checking
@@ -23,5 +24,7 @@ namespace LayoutProcessAdmin.Models.Checking
         public Period int_Period { get; set; }
 
         public bool bit_Activo { get; set; }
+
+        public User int_Owner { get; set; }
     }
 }
