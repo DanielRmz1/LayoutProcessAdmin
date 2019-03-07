@@ -5,63 +5,89 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="breadcrumb-holder">
+            <h1 class="main-title float-left">User Details</h1>
+            <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item">Users</li>
+                <li class="breadcrumb-item active">Details</li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
 
 <div>
-    <h4>User</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.chr_Clave)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.chr_Clave)
-        </dd>
+    <div class="card col-4" >
+        <div class="card-header">
+            <h3>Featured</h3>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <dt>
+                    @Html.DisplayNameFor(model => model.chr_Clave)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.chr_Clave)
+                </dd>
+            </li>
+            <li class="list-group-item">
+                <dt>
+                    @Html.DisplayNameFor(model => model.chr_Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.chr_Name)
+                </dd>
+            </li>
+            <li class="list-group-item">
+                <dt>
+                    @Html.DisplayNameFor(model => model.chr_LastName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.chr_LastName)
+                </dd>
+            </li>   
+            <li class="list-group-item">
+                <dt>
+                    @Html.DisplayNameFor(model => model.chr_Email)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.chr_Email)
+                </dd>
+            </li>
+            <li class="list-group-item">
+                <dt>
+                    @Html.DisplayNameFor(model => model.chr_Phone)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.chr_Phone)
+                </dd>
+            </li>
+        </ul>
+        <div class="card-footer">
+            @Html.ActionLink("Edit", "Edit", new { id = Model.int_IdUser }, new { role = "Button", @class = "btn btn-warning"})
+            @Html.ActionLink("Back to List", "Index", null, new { role = "Button", @class = "btn btn-success" })
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.chr_Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.chr_Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.chr_LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.chr_LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.chr_Password)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.chr_Password)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.chr_Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.chr_Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.chr_Phone)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.chr_Phone)
-        </dd>
-
-    </dl>
+    <p>
+        <h3> El plan es que aqui tambien se pueda ver información del usuario como:</h3>
+        <ul>
+            <li>
+                Checklist que posee
+            </li>
+            <li>
+                Actividad del usuario como checklist que ha respondido, creado, eliminado, etc.
+            </li>
+            <li>
+                checklists contestados, pendientes y tambien los que no contesto.
+            </li>
+            <li>
+                Posiblemente esta pantalla tambien pueda ser vista por otros roles para monitorear la actvidad de los usuarios
+            </li>
+        </ul>
+    </p>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.int_IdUser }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

@@ -5,7 +5,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="breadcrumb-holder">
+            <h1 class="main-title float-left">Users Managment - Register a User</h1>
+            <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item">Users</li>
+                <li class="breadcrumb-item active">Register</li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
 
 
 @using (Html.BeginForm()) 
@@ -13,12 +24,11 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>User</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.chr_Clave, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.chr_Clave, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.chr_Clave, "", new { @class = "text-danger" })
             </div>
@@ -26,7 +36,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.chr_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.chr_Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.chr_Name, "", new { @class = "text-danger" })
             </div>
@@ -34,7 +44,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.chr_LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.chr_LastName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.chr_LastName, "", new { @class = "text-danger" })
             </div>
@@ -42,7 +52,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.chr_Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.chr_Password, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.chr_Password, "", new { @class = "text-danger" })
             </div>
@@ -50,7 +60,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.chr_Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.chr_Email, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.chr_Email, "", new { @class = "text-danger" })
             </div>
@@ -58,22 +68,24 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.chr_Phone, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.chr_Phone, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.chr_Phone, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="col-md-offset-2 col-md-4 col-sm-12">
+                <input type="submit" value="Create" class="btn btn-success btn-lg" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Index", "Users")" role="button" class="btn btn-warning">
+        <i class="fa fa-long-arrow-alt-left"></i> Back to List
+    </a>
 </div>
 
 @section Scripts {
