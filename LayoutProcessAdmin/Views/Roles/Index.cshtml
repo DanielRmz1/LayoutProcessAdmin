@@ -1,0 +1,64 @@
+﻿@model IEnumerable<LayoutProcessAdmin.Models.Account.Role>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.chr_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.chr_Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.bit_ManageUsers)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.bit_ManageGlobalUsers)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.bit_ManageChecklist)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.bit_FillChecklists)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.chr_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.chr_Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.bit_ManageUsers)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.bit_ManageGlobalUsers)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.bit_ManageChecklist)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.bit_FillChecklists)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.int_IdRole }) |
+            @Html.ActionLink("Details", "Details", new { id=item.int_IdRole }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.int_IdRole })
+        </td>
+    </tr>
+}
+
+</table>

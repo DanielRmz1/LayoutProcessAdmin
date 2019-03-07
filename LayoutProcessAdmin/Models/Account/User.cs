@@ -3,6 +3,7 @@ using LayoutProcessAdmin.Models.Checking;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace LayoutProcessAdmin.Models.Account
 {
@@ -49,5 +50,11 @@ namespace LayoutProcessAdmin.Models.Account
         public string chr_Phone { get; set; }
 
         public List<Checklist> Checklists { get; set; }
+
+        [NotMapped]
+        [Required]
+        public int UserRole { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
     }
 }

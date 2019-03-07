@@ -22,9 +22,12 @@
     </div>
 </div>
 
-<p>
+<div style="margin-bottom: 10px;">
+    <a href="@Url.Action("Index", "Roles")" role="button" class="btn btn-primary">
+        Manage Roles
+    </a>
     @Html.ActionLink("Add User", "Create", null, new { role = "button", @class = "btn btn-success" })
-</p>
+</div>
 
 <div class="table-responsive bg-white" style="padding: 15px;">
     <table class="table table-bordered table-hover" id="UsersTable">

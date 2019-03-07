@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section css{
+
+    <link href="~/plugins/select2/css/select2.min.css" rel="stylesheet" />
+
+}
+
 <div class="row">
     <div class="col-xl-12">
         <div class="breadcrumb-holder">
@@ -19,10 +25,10 @@
 </div>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -75,6 +81,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.UserRole, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownListFor(model => model.UserRole, Model.Roles, "Select a Option", new { @class = "form-control select2" })
+                @Html.ValidationMessageFor(model => model.UserRole, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-4 col-sm-12">
                 <input type="submit" value="Create" class="btn btn-success btn-lg" />
             </div>
@@ -89,5 +103,11 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/plugins/select2/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>
 }
