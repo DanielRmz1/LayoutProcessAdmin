@@ -47,6 +47,7 @@ namespace LayoutProcessAdmin.Models.Account
         [StringLength(10)]
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone number")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "Only numbers are allowed.")]
         public string chr_Phone { get; set; }
 
         public List<Checklist> Checklists { get; set; }
