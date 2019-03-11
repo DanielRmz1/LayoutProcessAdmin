@@ -18,7 +18,9 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            var roles = db.LpaRoles.ToList();
+            var users = db.Users.Include(x => x.UserRoles).ToList();
+            return View(users);
         }
 
         // GET: Users/Details/5
@@ -136,8 +138,9 @@ namespace LayoutProcessAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
+            var user = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == id).ToList();
+            db.UserRoles.Remove(user[0].UserRoles[0]);
+            db.Users.Remove(user[0]);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

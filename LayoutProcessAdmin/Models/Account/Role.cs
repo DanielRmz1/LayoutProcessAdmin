@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LayoutProcessAdmin.Models.Account
@@ -24,6 +25,8 @@ namespace LayoutProcessAdmin.Models.Account
         public bool bit_ManageChecklist { get; set; }
 
         public bool bit_FillChecklists { get; set; }
+        
+        public List<UserRoles> UserRoles { get; set; }
 
     }
 }

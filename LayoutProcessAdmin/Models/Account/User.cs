@@ -54,7 +54,11 @@ namespace LayoutProcessAdmin.Models.Account
 
         [NotMapped]
         [Required]
+        [Display(Name = "Select a Role")]
         public int UserRole { get; set; }
+
+        [Display(Name = "Role")]
+        public List<UserRoles> UserRoles { get; set; }
 
         public IEnumerable<SelectListItem> Roles { get; set; }
     }
