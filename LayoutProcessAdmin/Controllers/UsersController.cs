@@ -58,7 +58,33 @@ namespace LayoutProcessAdmin.Controllers
                 listado.Add(new SelectListItem()
                 {
                     Text = item.chr_Name,
-                    Value = item.int_IdRole.ToString()
+                    Value = item.int_IdRole.ToString()                   
+                });
+            }
+
+            return listado;
+        }
+
+        List<SelectListItem> GetSelectedRoleDropDown(Role role)
+        {
+            var list = db.LpaRoles.ToList();
+            var listado = new List<SelectListItem>();
+
+            var group = new SelectListGroup()
+            {
+                Name = "Roles",
+                Disabled = false
+            };
+
+            foreach (var item in list)
+            {
+                listado.Add(new SelectListItem()
+                {
+                    Text = item.chr_Name,
+                    Value = item.int_IdRole.ToString(),
+                    Selected = (role.int_IdRole == item.int_IdRole) ? false : true,
+                    Group = group,
+                    Disabled = false
                 });
             }
 
@@ -107,14 +133,25 @@ namespace LayoutProcessAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
-            if (user == null)
+            var roles = db.LpaRoles.ToList();
+            var users = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == id).ToList();
+
+            if(users.Count > 0)
             {
-                return HttpNotFound();
+                users[0].Roles = GetSelectedRoleDropDown(users[0].UserRoles[0].int_LpaRole);
+                if (users == null)
+                {
+                    return HttpNotFound();
+                }
+
+                users[0].chr_Password = Security.Decrypt(users[0].chr_Password);
+
+                var s = users[0].Roles.Where(x => x.Selected == true).Select(x => x.Value).ToString();
+
+                return View(users[0]);
             }
 
-            user.chr_Password = Security.Decrypt(user.chr_Password);
-            return View(user);
+            return RedirectToAction("Index");
         }
 
         // POST: Users/Edit/5
@@ -122,15 +159,24 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "int_IdUser,chr_Clave,chr_Name,chr_LastName,chr_Password,chr_Email,chr_Phone")] User user)
+        public ActionResult Edit([Bind(Include = "int_IdUser,chr_Clave,chr_Name,chr_LastName,chr_Password,chr_Email,chr_Phone,UserRole,UserRoles")] User user)
         {
+            var editUser = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
+            var role = db.LpaRoles.Find(user.UserRole);
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
+                editUser[0].UserRoles[0].int_LpaRole = role;
+                db.Entry(editUser[0]).State = EntityState.Modified;
+                
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(user);
+
+            var roles = db.LpaRoles.ToList();
+            var users = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
+            users[0].Roles = GetSelectedRoleDropDown(users[0].UserRoles[0].int_LpaRole);
+            users[0].chr_Password = Security.Decrypt(users[0].chr_Password);
+            return View(users[0]);
         }
 
         // POST: Users/Delete/5
