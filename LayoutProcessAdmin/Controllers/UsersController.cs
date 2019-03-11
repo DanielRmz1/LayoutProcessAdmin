@@ -145,7 +145,7 @@ namespace LayoutProcessAdmin.Controllers
                 }
 
                 users[0].chr_Password = Security.Decrypt(users[0].chr_Password);
-                
+
                 return View(users[0]);
             }
 
