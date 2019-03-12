@@ -30,12 +30,13 @@ namespace LayoutProcessAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
-            if (user == null)
+            db.LpaRoles.ToList();
+            var users = db.Users.Include(x=>x.UserRoles).Where(x=>x.int_IdUser == id).ToList();
+            if (users == null || users.Count == 0)
             {
                 return HttpNotFound();
             }
-            return View(user);
+            return View(users[0]);
         }
 
         // GET: Users/Create

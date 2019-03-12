@@ -19,54 +19,34 @@
 </div>
 
 <div>
-    <hr />
-
-    <div class="card col-4" >
+    <div class="card" style="width: 24rem;font-size: 15px;">
         <div class="card-header">
-            <h3>Featured</h3>
+            <h3>User Information</h3>
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <dt>
-                    @Html.DisplayNameFor(model => model.chr_Clave)
-                </dt>
-                <dd>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <b>@Html.DisplayNameFor(model => model.chr_Clave)</b><br />
                     @Html.DisplayFor(model => model.chr_Clave)
-                </dd>
-            </li>
-            <li class="list-group-item">
-                <dt>
-                    @Html.DisplayNameFor(model => model.chr_Name)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.chr_Name)
-                </dd>
-            </li>
-            <li class="list-group-item">
-                <dt>
-                    @Html.DisplayNameFor(model => model.chr_LastName)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.chr_LastName)
-                </dd>
-            </li>   
-            <li class="list-group-item">
-                <dt>
-                    @Html.DisplayNameFor(model => model.chr_Email)
-                </dt>
-                <dd>
+                </li>
+                <li class="list-group-item">
+                    <b>Full Name</b><br />
+                    @Html.DisplayFor(model => model.chr_Name) @Html.DisplayFor(model => model.chr_LastName)
+                </li>
+                <li class="list-group-item">
+                    <b>@Html.DisplayNameFor(model => model.chr_Email)</b><br />
                     @Html.DisplayFor(model => model.chr_Email)
-                </dd>
-            </li>
-            <li class="list-group-item">
-                <dt>
-                    @Html.DisplayNameFor(model => model.chr_Phone)
-                </dt>
-                <dd>
+                </li>
+                <li class="list-group-item">
+                    <b>@Html.DisplayNameFor(model => model.chr_Phone)</b><br />
                     @Html.DisplayFor(model => model.chr_Phone)
-                </dd>
-            </li>
-        </ul>
+                </li>
+                <li class="list-group-item">
+                    <b>@Html.DisplayNameFor(model => model.UserRoles[0].int_LpaRole.chr_Name)</b> <br />
+                    @Html.DisplayFor(model => model.UserRoles[0].int_LpaRole.chr_Name)
+                </li>
+            </ul>
+        </div>
         <div class="card-footer">
             @Html.ActionLink("Edit", "Edit", new { id = Model.int_IdUser }, new { role = "Button", @class = "btn btn-warning"})
             @Html.ActionLink("Back to List", "Index", null, new { role = "Button", @class = "btn btn-success" })

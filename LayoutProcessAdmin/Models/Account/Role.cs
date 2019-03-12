@@ -12,6 +12,7 @@ namespace LayoutProcessAdmin.Models.Account
 
         [Required]
         [StringLength(30)]
+        [Display(Name = "Role Name")]
         public string chr_Name { get; set; }
 
         [Required]

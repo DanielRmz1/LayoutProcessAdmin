@@ -18,7 +18,7 @@ namespace LayoutProcessAdmin.Models.Account
         [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
         [Index(IsUnique = true)]
         [DataType(DataType.Text)]
-        [Display(Name = "User name")]
+        [Display(Name = "Username")]
         public string chr_Clave { get; set; }
 
         [Required]
