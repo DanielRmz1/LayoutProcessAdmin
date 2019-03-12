@@ -85,7 +85,7 @@
                                 <a href="@Url.Action("Details", "Roles", new { id = item.int_IdRole})" role="button" class="btn btn-primary btn-sm"><i class="fa fa-info-circle"></i></a>
                             </div>
                             <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-4">
-                                <a href="#" role="button" class="btn btn-danger btn-sm" onclick="ShowDeleteModal('@item.int_IdRole', '@item.chr_Name', '@item.chr_Description')"><i class="fa fa-minus-circle"></i></a>
+                                <a href="#" role="button" class="btn btn-danger btn-sm" onclick='ShowDeleteModal("@item.int_IdRole", "@item.chr_Name")'><i class="fa fa-minus-circle"></i></a>
                             </div>
                         </div>
                     </td>
@@ -106,7 +106,6 @@
             </div>
             <div class="modal-body">
                 <h5>Role Name:<span id="lblName"></span></h5>
-                <h5>Description:<span id="lblDescription"></span></h5>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
@@ -127,9 +126,8 @@
     <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
     <script>
 
-        function ShowDeleteModal(id,  name, description) {
+        function ShowDeleteModal(id,  name) {
             $('#deleteModal .modal-body #lblName').html(" " + name);
-            $('#deleteModal .modal-body #lblDescription').html(" " + description);
             $('#deleteModal .modal-footer #id').val(id);
             $('#deleteModal').modal('show');
         }

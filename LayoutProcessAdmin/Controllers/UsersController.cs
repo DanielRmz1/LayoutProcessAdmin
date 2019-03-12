@@ -139,7 +139,15 @@ namespace LayoutProcessAdmin.Controllers
             var role = db.LpaRoles.Find(user.UserRole);
             if (ModelState.IsValid)
             {
-                editUser[0].UserRoles[0].int_LpaRole = role;
+                if(editUser[0].UserRoles.Count > 0)
+                    editUser[0].UserRoles[0].int_LpaRole = role;
+                else
+                {
+                    var userRoles = new UserRoles();
+                    userRoles.int_LpaRole = role;
+                    userRoles.int_User = editUser[0];
+                    db.UserRoles.Add(userRoles);
+                }
                 db.Entry(editUser[0]).State = EntityState.Modified;
                 
                 db.SaveChanges();
