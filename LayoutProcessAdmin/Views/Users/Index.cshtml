@@ -80,18 +80,24 @@
                         @Html.DisplayFor(modelItem => item.chr_Phone)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.UserRoles[0].int_LpaRole.chr_Name)
+                        @{
+                            if (item.UserRoles.Count > 0)
+                            {
+                                @Html.DisplayFor(modelItem => item.UserRoles[0].int_LpaRole.chr_Name);
+                            }
+
+                        }
                     </td>
                     <td>
                         <div class="row">
-                            <div class="col-4">
-                                <a href="@Url.Action("Edit", "Users", new { id = item.int_IdUser })" role="button" class="btn btn-warning"><i class="fa fa-pen"></i></a>
+                            <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-4">
+                                <a href="@Url.Action("Edit", "Users", new { id = item.int_IdUser })" role="button" class="btn btn-warning btn-sm"><i class="fa fa-pen"></i></a>
                             </div>
-                            <div class="col-4">
-                                <a href="@Url.Action("Details", "Users", new { id = item.int_IdUser})" role="button" class="btn btn-primary"><i class="fa fa-info-circle"></i></a>
+                            <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-4">
+                                <a href="@Url.Action("Details", "Users", new { id = item.int_IdUser})" role="button" class="btn btn-primary btn-sm"><i class="fa fa-info-circle"></i></a>
                             </div>
-                            <div class="col-4">
-                                <a href="#" role="button" class="btn btn-danger" onclick="ShowDeleteModal('@item.int_IdUser', '@item.chr_Clave', '@item.chr_Email')"><i class="fa fa-minus-circle"></i></a>
+                            <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-4">
+                                <a href="#" role="button" class="btn btn-danger btn-sm" onclick="ShowDeleteModal('@item.int_IdUser', '@item.chr_Name', '@item.chr_Email')"><i class="fa fa-minus-circle"></i></a>
                             </div>
                         </div>
                     </td>

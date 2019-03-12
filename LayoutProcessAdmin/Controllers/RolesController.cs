@@ -90,28 +90,16 @@ namespace LayoutProcessAdmin.Controllers
             return View(role);
         }
 
-        // GET: Roles/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Role role = db.LpaRoles.Find(id);
-            if (role == null)
-            {
-                return HttpNotFound();
-            }
-            return View(role);
-        }
-
         // POST: Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Role role = db.LpaRoles.Find(id);
-            db.LpaRoles.Remove(role);
+            var roles = db.LpaRoles.Include(x => x.UserRoles).Where(x => x.int_IdRole == id).ToList();
+
+            if(roles[0].UserRoles.Count > 0)
+                db.UserRoles.Remove(roles[0].UserRoles[0]); 
+            db.LpaRoles.Remove(roles[0]);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -65,32 +65,7 @@ namespace LayoutProcessAdmin.Controllers
 
             return listado;
         }
-
-        List<SelectListItem> GetSelectedRoleDropDown(Role role)
-        {
-            var list = db.LpaRoles.ToList();
-            var listado = new List<SelectListItem>();
-
-            var group = new SelectListGroup()
-            {
-                Name = "Roles",
-                Disabled = false
-            };
-
-            foreach (var item in list)
-            {
-                listado.Add(new SelectListItem()
-                {
-                    Text = item.chr_Name,
-                    Value = item.int_IdRole.ToString(),
-                    Selected = (role.int_IdRole == item.int_IdRole) ? false : true,
-                    Group = group,
-                    Disabled = false
-                });
-            }
-
-            return listado;
-        }
+       
 
         // POST: Users/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
@@ -139,7 +114,8 @@ namespace LayoutProcessAdmin.Controllers
 
             if(users.Count > 0)
             {
-                users[0].Roles = GetSelectedRoleDropDown(users[0].UserRoles[0].int_LpaRole);
+                users[0].Roles = GetRolesDropDown();
+
                 if (users == null)
                 {
                     return HttpNotFound();
@@ -173,7 +149,7 @@ namespace LayoutProcessAdmin.Controllers
 
             var roles = db.LpaRoles.ToList();
             var users = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
-            users[0].Roles = GetSelectedRoleDropDown(users[0].UserRoles[0].int_LpaRole);
+            users[0].Roles = GetRolesDropDown();
             users[0].chr_Password = Security.Decrypt(users[0].chr_Password);
             return View(users[0]);
         }
@@ -184,7 +160,8 @@ namespace LayoutProcessAdmin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var user = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == id).ToList();
-            db.UserRoles.Remove(user[0].UserRoles[0]);
+            if (user[0].UserRoles.Count > 0)
+                db.UserRoles.Remove(user[0].UserRoles[0]);
             db.Users.Remove(user[0]);
             db.SaveChanges();
             return RedirectToAction("Index");

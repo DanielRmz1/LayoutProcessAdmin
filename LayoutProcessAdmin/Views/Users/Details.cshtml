@@ -43,13 +43,16 @@
                 </li>
                 <li class="list-group-item">
                     <b>@Html.DisplayNameFor(model => model.UserRoles[0].int_LpaRole.chr_Name)</b> <br />
-                    @Html.DisplayFor(model => model.UserRoles[0].int_LpaRole.chr_Name)
+                    @if (Model.UserRoles.Count > 0)
+                    {
+                        @Html.DisplayFor(model => model.UserRoles[0].int_LpaRole.chr_Name);
+                    }
                 </li>
             </ul>
         </div>
         <div class="card-footer">
             @Html.ActionLink("Edit", "Edit", new { id = Model.int_IdUser }, new { role = "Button", @class = "btn btn-warning"})
-            @Html.ActionLink("Back to List", "Index", null, new { role = "Button", @class = "btn btn-success" })
+            @Html.ActionLink("Back to List", "Index", null, new { role = "Button", @class = "btn btn-primary" })
         </div>
     </div>
 

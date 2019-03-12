@@ -17,14 +17,19 @@ namespace LayoutProcessAdmin.Models.Account
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Description")]
         public string chr_Description { get; set; }
 
+        [Display(Name = "Users")]
         public bool bit_ManageUsers { get; set; }
 
+        [Display(Name = "Global Users")]
         public bool bit_ManageGlobalUsers { get; set; }
 
+        [Display(Name = "Checklists")]
         public bool bit_ManageChecklist { get; set; }
 
+        [Display(Name = "Answer Checlists")]
         public bool bit_FillChecklists { get; set; }
         
         public List<UserRoles> UserRoles { get; set; }
