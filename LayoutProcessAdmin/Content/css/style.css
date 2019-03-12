@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700,300");
 
 html {
@@ -368,7 +368,6 @@ body.adminbody .main-sidebar.left {
     right: 20px;
     top: 15px;
     display: inline-block;
-    font-family: 'FontAwesome';
     text-rendering: auto;
     line-height: 18px;
     font-size: 16px;

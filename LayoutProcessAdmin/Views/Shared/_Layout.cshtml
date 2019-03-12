@@ -7,7 +7,7 @@
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" src="~/favicon.ico" />
+    <link rel="shortcut icon" src="@Url.Content("~/favicon.ico")" />
 
     <!-- Bootstrap CSS -->
     <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
@@ -32,7 +32,7 @@
             <!-- LOGO -->
             <div class="headerbar-left" style="background-color:#00264d;">
                 <a href="@Url.Action("Index", "Home")" class="logo">
-                    <img src="~/Images/layers.png" /> <span>ListLayer</span>
+                    <img src="@Url.Content("~/Images/layers.png")" alt="logo"/> <span>ListLayer</span>
                 </a>
             </div>
 
@@ -70,6 +70,7 @@
 
         </div>
         <!-- End Navigation -->
+
         <!-- Left Sidebar -->
         <div class="left main-sidebar">
 
@@ -87,7 +88,11 @@
                         </li>
 
                         <li class="submenu">
-                            <a href="@Url.Action("Index", "Users")"><i class="fas fa-address-book"></i><span> Users </span> </a>
+                            <a href="#"><i class="fas fa-address-book"></i><span>Accounts</span> <i class="fas fa-angle-right menu-arrow"></i></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="@Url.Action("Index", "Users")">Users</a></li>
+                                    <li><a href="@Url.Action("Index", "Roles")">Roles</a></li>
+                                </ul>
                         </li>
 
                         <li class="submenu">
@@ -145,6 +150,7 @@
     <script src="~/Scripts/Plugins/js/fastclick.js"></script>
     <script src="~/Scripts/Plugins/js/jquery.blockUI.js"></script>
     <script src="~/Scripts/Plugins/js/jquery.nicescroll.js"></script>
+
     <!-- App js -->
     <script src="~/Scripts/Plugins/js/pikeadmin.js"></script>
 
