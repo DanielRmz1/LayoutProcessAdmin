@@ -29,51 +29,59 @@
     <link href="~/Content/css/Login/main.css" rel="stylesheet" />
     <link href="~/Content/css/Login/util.css" rel="stylesheet" />
 
+    <!-- Particles CSS -->
+    <link href="~/plugins/Particles/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <div id="particles-js">
-        <div class="limiter">
-            <div class="container-login100">
-                <div class="wrap-login100">
-                    <div class="login100-form-title" style="background-image: url(/Images/checklist.jpeg);">
-                        <span class="login100-form-title-1">
-                            Sign In
-                        </span>
-                    </div>
-                    @using (Html.BeginForm("Login", "Users", FormMethod.Post, new { @class = "login100-form validate-form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
-                            @Html.LabelFor(model => model.Chr_Clave, htmlAttributes: new { @class = "label-input100" })
-                            @Html.EditorFor(model => model.Chr_Clave, new { htmlAttributes = new { @class = "input100", placeholder = "Your Username" } })
-                            @Html.ValidationMessageFor(model => model.Chr_Clave, "", new { @class = "focus-input100" })
-                        </div>
-
-                        <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
-                            @Html.LabelFor(model => model.Chr_Password, htmlAttributes: new { @class = "label-input100" })
-                            @Html.EditorFor(model => model.Chr_Password, new { htmlAttributes = new { @class = "input100", placeholder = "Your Password" } })
-                            @Html.ValidationMessageFor(model => model.Chr_Password, "", new { @class = "text-danger" })
-                            <span class="focus-input100"></span>
-                        </div>
-
-                        <div class="container-login100-form-btn">
-                            <button class="login100-form-btn" type="submit">
-                                Login
-                            </button>
-                        </div>
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    }
+    <div id="particles-js" style="background-color: #0d1450;">
+        <div class="container-login100" style="position: absolute;">
+            <div class="wrap-login100">
+                <div class="login100-form-title" style="background-image: url(/Images/checklist.jpeg);">
+                    <span class="login100-form-title-1">
+                        Sign In
+                    </span>
                 </div>
+                @using (Html.BeginForm("Login", "Users", FormMethod.Post, new { @class = "login100-form validate-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+                        @Html.LabelFor(model => model.Chr_Clave, htmlAttributes: new { @class = "label-input100" })
+                        @Html.EditorFor(model => model.Chr_Clave, new { htmlAttributes = new { @class = "input100", placeholder = "Your Username" } })
+                        @Html.ValidationMessageFor(model => model.Chr_Clave, "", new { @class = "focus-input100" })
+                    </div>
+
+                    <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                        @Html.LabelFor(model => model.Chr_Password, htmlAttributes: new { @class = "label-input100" })
+                        @Html.EditorFor(model => model.Chr_Password, new { htmlAttributes = new { @class = "input100", placeholder = "Your Password" } })
+                        @Html.ValidationMessageFor(model => model.Chr_Password, "", new { @class = "text-danger" })
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" type="submit">
+                            Login
+                        </button>
+                    </div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                }
             </div>
         </div>
     </div>
-   
+
 
     <script src="~/Scripts/Plugins/js/jquery.min.js"></script>
     <script src="~/Scripts/Plugins/js/moment.min.js"></script>
     <script src="~/plugins/animsition/js/animsition.min.js"></script>
-    <script src="~/Scripts/Plugins/js/popper.min.js"></script>
+    <script src="~/Scripts/Plugins/js/popper.min.js"></script>git
     <script src="~/Scripts/Plugins/js/bootstrap.min.js"></script>
+
+    <!--Login Script-->
     <script src="~/Scripts/Plugins/js/Login/main.js"></script>
+
+    <!-- Particles.js -->
+    <script src="~/plugins/Particles/particles.js"></script>
+    <script src="~/plugins/Particles/js/app.js"></script>
+    <script src="~/plugins/Particles/js/lib/stats.js"></script>
+
 </body>
 </html>

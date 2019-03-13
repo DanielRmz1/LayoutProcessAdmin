@@ -2507,6 +2507,11 @@
     <Content Include="plugins\parsleyjs\parsley.min.js" />
     <Content Include="plugins\parsleyjs\parsley.remote.js" />
     <Content Include="plugins\parsleyjs\parsley.remote.min.js" />
+    <Content Include="plugins\Particles\css\style.css" />
+    <Content Include="plugins\Particles\js\app.js" />
+    <Content Include="plugins\Particles\js\lib\stats.js" />
+    <Content Include="plugins\Particles\particles.js" />
+    <Content Include="plugins\Particles\particles.min.js" />
     <Content Include="plugins\select2\css\select2-bootstrap.css" />
     <Content Include="plugins\select2\css\select2-spinner.gif" />
     <Content Include="plugins\select2\css\select2.min.css" />
@@ -2762,6 +2767,7 @@
     <Content Include="Views\Roles\Details.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="plugins\Particles\particles.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
