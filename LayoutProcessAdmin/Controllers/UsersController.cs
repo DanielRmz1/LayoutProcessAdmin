@@ -174,9 +174,43 @@ namespace LayoutProcessAdmin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(Login login)
+        {
+            if (ModelState.IsValid)
+            {
+                db.LpaRoles.ToList();
+                var user = db.Users.Include(x => x.UserRoles).Where(x => x.chr_Clave == login.Chr_Clave).ToList();
+
+                if (user.Count > 0)
+                {
+                    if (Security.Decrypt(user[0].chr_Password) == login.Chr_Password)
+                    {
+                        Session["User"] = user[0];
+                        return RedirectToAction("Index", "Home");
+                    }else
+                        ModelState.AddModelError(string.Empty, "Contraseña incorrecta.");
+                }
+                else
+                    ModelState.AddModelError(string.Empty, "El usuario no existe.");
+            }
+
+            return View(login);
+        }
+
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            Session.Remove("User");
+
+            return RedirectToAction("Login");
         }
 
         protected override void Dispose(bool disposing)
@@ -187,7 +221,5 @@ namespace LayoutProcessAdmin.Controllers
             }
             base.Dispose(disposing);
         }
-
-
     }
 }
