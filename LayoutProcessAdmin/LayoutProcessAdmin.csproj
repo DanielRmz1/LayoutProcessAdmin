@@ -1709,6 +1709,7 @@
     <Content Include="Content\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.svg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\calisis.png" />
     <Content Include="Images\checklist.jpeg" />
     <Content Include="Images\layers.png" />
     <Content Include="plugins\animsition\css\animsition.css" />
@@ -2768,6 +2769,7 @@
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="plugins\Particles\particles.json" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
