@@ -166,6 +166,8 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\coming-soon.css" />
     <Content Include="Content\css\login.css" />
+    <Content Include="Content\css\Login\main.css" />
+    <Content Include="Content\css\Login\util.css" />
     <Content Include="Content\css\pricing-tables.css" />
     <Content Include="Content\css\style.css" />
     <Content Include="Content\font-awesome\css\all.css" />
@@ -1703,9 +1705,16 @@
     <Content Include="Content\font-awesome\webfonts\fa-brands-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-regular-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.svg" />
+    <Content Include="Content\Linearicons-Free-v1.0.0\icon-font.min.css" />
+    <Content Include="Content\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.svg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\checklist.jpeg" />
     <Content Include="Images\layers.png" />
+    <Content Include="plugins\animsition\css\animsition.css" />
+    <Content Include="plugins\animsition\css\animsition.min.css" />
+    <Content Include="plugins\animsition\js\animsition.js" />
+    <Content Include="plugins\animsition\js\animsition.min.js" />
     <Content Include="plugins\bootstrap-filestyle\bootstrap-filestyle.js" />
     <Content Include="plugins\bootstrap-filestyle\bootstrap-filestyle.min.js" />
     <Content Include="plugins\bootstrap-magnify\bootstrap-magnify.min.css" />
@@ -1760,6 +1769,8 @@
     <Content Include="plugins\colorpicker\bootstrap-colorpicker.min.css" />
     <Content Include="plugins\colorpicker\bootstrap-colorpicker.min.js" />
     <Content Include="plugins\counterup\jquery.counterup.min.js" />
+    <Content Include="plugins\css-hamburgers\hamburgers.css" />
+    <Content Include="plugins\css-hamburgers\hamburgers.min.css" />
     <Content Include="plugins\datatables\buttons.bootstrap4.min.css" />
     <Content Include="plugins\datatables\buttons.bootstrap4.min.js" />
     <Content Include="plugins\datatables\buttons.colVis.min.js" />
@@ -2692,6 +2703,7 @@
     <Content Include="Scripts\Plugins\js\jquery.scrollTo.min.js" />
     <Content Include="Scripts\Plugins\js\jquery.slimscroll.js" />
     <Content Include="Scripts\Plugins\js\jquery.validate.min.js" />
+    <Content Include="Scripts\Plugins\js\Login\main.js" />
     <Content Include="Scripts\Plugins\js\modernizr.min.js" />
     <Content Include="Scripts\Plugins\js\moment.min.js" />
     <Content Include="Scripts\Plugins\js\pikeadmin.js" />
@@ -2718,6 +2730,28 @@
     <Folder Include="plugins\jstree\themes\default\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.eot" />
+    <Content Include="Content\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.ttf" />
+    <Content Include="Content\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.woff" />
+    <Content Include="Content\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.woff2" />
+    <Content Include="Content\poppins\Poppins-Black.ttf" />
+    <Content Include="Content\poppins\Poppins-BlackItalic.ttf" />
+    <Content Include="Content\poppins\Poppins-Bold.ttf" />
+    <Content Include="Content\poppins\Poppins-BoldItalic.ttf" />
+    <Content Include="Content\poppins\Poppins-ExtraBold.ttf" />
+    <Content Include="Content\poppins\Poppins-ExtraBoldItalic.ttf" />
+    <Content Include="Content\poppins\Poppins-ExtraLight.ttf" />
+    <Content Include="Content\poppins\Poppins-ExtraLightItalic.ttf" />
+    <Content Include="Content\poppins\Poppins-Italic.ttf" />
+    <Content Include="Content\poppins\Poppins-Light.ttf" />
+    <Content Include="Content\poppins\Poppins-LightItalic.ttf" />
+    <Content Include="Content\poppins\Poppins-Medium.ttf" />
+    <Content Include="Content\poppins\Poppins-MediumItalic.ttf" />
+    <Content Include="Content\poppins\Poppins-Regular.ttf" />
+    <Content Include="Content\poppins\Poppins-SemiBold.ttf" />
+    <Content Include="Content\poppins\Poppins-SemiBoldItalic.ttf" />
+    <Content Include="Content\poppins\Poppins-Thin.ttf" />
+    <Content Include="Content\poppins\Poppins-ThinItalic.ttf" />
     <None Include="packages.config" />
     <Content Include="Views\Users\Details.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
