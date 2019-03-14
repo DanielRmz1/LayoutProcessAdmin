@@ -132,6 +132,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ChecklistsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -2771,6 +2772,11 @@
     <Content Include="plugins\Particles\particles.json" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Home\NoPermission.cshtml" />
+    <Content Include="Views\Checklists\Create.cshtml" />
+    <Content Include="Views\Checklists\Delete.cshtml" />
+    <Content Include="Views\Checklists\Details.cshtml" />
+    <Content Include="Views\Checklists\Edit.cshtml" />
+    <Content Include="Views\Checklists\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
