@@ -14,17 +14,42 @@ namespace LayoutProcessAdmin.Controllers
     {
         private LayoutProcessContext db = new LayoutProcessContext();
 
+        private ActionResult VerifyControllerPermission()
+        {
+            
+
+            return null;
+        }
+
         // GET: Users
         public ActionResult Index()
         {
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageUsers)
+                return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
+
             var roles = db.LpaRoles.ToList();
             var users = db.Users.Include(x => x.UserRoles).ToList();
             return View(users);
         }
 
+
+
         // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageUsers)
+                return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -41,6 +66,13 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Users/Create
         public ActionResult Create()
         {
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageUsers)
+                return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
 
             User principal = new User();
             principal.Roles = GetRolesDropDown();
@@ -73,6 +105,14 @@ namespace LayoutProcessAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "int_IdUser,chr_Clave,chr_Name,chr_LastName,chr_Password,chr_Email,chr_Phone,UserRole")] User user)
         {
+            User loggedUSer = (User)Session["User"];
+
+            if (loggedUSer == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!loggedUSer.UserRoles[0].int_LpaRole.bit_ManageUsers)
+                return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
+
             var findUser = db.Users.Where(x => x.chr_Clave == user.chr_Clave).ToList();
                
             if (findUser.Count > 0)
@@ -104,6 +144,14 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Users/Edit/5
         public ActionResult Edit(int? id)
         {
+            User loggedUSer = (User)Session["User"];
+
+            if (loggedUSer == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!loggedUSer.UserRoles[0].int_LpaRole.bit_ManageUsers)
+                return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -135,6 +183,14 @@ namespace LayoutProcessAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "int_IdUser,chr_Clave,chr_Name,chr_LastName,chr_Password,chr_Email,chr_Phone,UserRole,UserRoles")] User user)
         {
+            User loggedUSer = (User)Session["User"];
+
+            if (loggedUSer == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!loggedUSer.UserRoles[0].int_LpaRole.bit_ManageUsers)
+                return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
+
             if (ModelState.IsValid)
             {
                 var editUser = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
@@ -174,6 +230,14 @@ namespace LayoutProcessAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            User loggedUSer = (User)Session["User"];
+
+            if (loggedUSer == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!loggedUSer.UserRoles[0].int_LpaRole.bit_ManageUsers)
+                return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
+
             var user = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == id).ToList();
             if (user[0].UserRoles.Count > 0)
                 db.UserRoles.Remove(user[0].UserRoles[0]);

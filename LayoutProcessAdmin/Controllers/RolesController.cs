@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LayoutProcessAdmin.Models;
+using LayoutProcessAdmin.Models.Account;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using LayoutProcessAdmin.Models;
-using LayoutProcessAdmin.Models.Account;
 
 namespace LayoutProcessAdmin.Controllers
 {

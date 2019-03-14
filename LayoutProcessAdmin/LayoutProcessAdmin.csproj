@@ -2770,6 +2770,7 @@
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="plugins\Particles\particles.json" />
     <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Home\NoPermission.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

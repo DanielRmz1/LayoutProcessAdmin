@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "NoPermission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="breadcrumb-holder">
+            <h1 class="main-title float-left">No permissions</h1>
+            <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item active">No Permission</li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-10">
+        <h1 class="jumbotron text-danger">You do not have permission to access to the module of @ViewBag.Module</h1>
+    </div>
+    <div class="col-4">
+        <p class="text-justify" style="font-size: 20px;">
+            If you need the permission to managment the module, you sould ask to the administrator of the ListLayer application and get the privileges.
+        </p>
+    </div>
+</div>
+
