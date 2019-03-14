@@ -135,11 +135,12 @@ namespace LayoutProcessAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "int_IdUser,chr_Clave,chr_Name,chr_LastName,chr_Password,chr_Email,chr_Phone,UserRole,UserRoles")] User user)
         {
-            var editUser = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
-            var role = db.LpaRoles.Find(user.UserRole);
             if (ModelState.IsValid)
             {
-                if(editUser[0].UserRoles.Count > 0)
+                var editUser = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
+                var role = db.LpaRoles.Find(user.UserRole);
+            
+                if (editUser[0].UserRoles.Count > 0)
                     editUser[0].UserRoles[0].int_LpaRole = role;
                 else
                 {
@@ -148,8 +149,15 @@ namespace LayoutProcessAdmin.Controllers
                     userRoles.int_User = editUser[0];
                     db.UserRoles.Add(userRoles);
                 }
+
+                editUser[0].chr_Password = Security.Encrypt(user.chr_Password);
+                editUser[0].chr_Clave = user.chr_Clave;
+                editUser[0].chr_Email = user.chr_Email;
+                editUser[0].chr_LastName = user.chr_LastName;
+                editUser[0].chr_Name = user.chr_Name;
+                editUser[0].chr_Phone = user.chr_Phone;
+
                 db.Entry(editUser[0]).State = EntityState.Modified;
-                
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
