@@ -5,47 +5,95 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+@section css{
+    <link href="~/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .custom-textarea {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
 
-@using (Html.BeginForm()) 
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="breadcrumb-holder">
+            <h1 class="main-title float-left">Creating a Ckecklist</h1>
+            <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item">Checklist</li>
+                <li class="breadcrumb-item active">Create</li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Checklist</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.chr_Clave, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.chr_Clave, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.chr_Clave, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.chr_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.chr_Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.chr_Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.chr_Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.chr_Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.chr_Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.bit_Activo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.bit_Activo)
-                    @Html.ValidationMessageFor(model => model.bit_Activo, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-5">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.chr_Clave, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div>
+                                        @Html.EditorFor(model => model.chr_Clave, new { htmlAttributes = new { @class = "form-control", placeholder = "Text identifier" } })
+                                        @Html.ValidationMessageFor(model => model.chr_Clave, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.chr_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div>
+                                        @Html.EditorFor(model => model.chr_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Example -> Daily 5s Line Checklist" } })
+                                        @Html.ValidationMessageFor(model => model.chr_Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.chr_Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-12">
+                                @Html.TextAreaFor(model => model.chr_Description, htmlAttributes: new { @class = "form-control custom-textarea", placeholder = "An optional description about the checklist" })
+                                @Html.ValidationMessageFor(model => model.chr_Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-12">
+                        <label for="un" class="control-label">Select period</label>
+                        <select class="select2 form-control" id="un">
+                            <option>Select a option</option>
+                            <option value="1">Daily</option>
+                            <option value="1">Weekly</option>
+                            <option value="1">Monthly</option>
+                            <option value="1">15 days</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-1" style="background-color: white;">
+            <div class="custom-control custom-checkbox">
+                @Html.CheckBoxFor(model => model.bit_Activo, new { @class = "custom-control-input", type = "checkbox" })
+                @Html.LabelFor(model => model.bit_Activo, htmlAttributes: new { @class = "custom-control-label" })
             </div>
         </div>
 
@@ -60,3 +108,13 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    <script src="~/plugins/select2/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>
+}
