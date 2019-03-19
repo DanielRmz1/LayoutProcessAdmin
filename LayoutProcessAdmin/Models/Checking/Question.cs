@@ -25,5 +25,7 @@ namespace LayoutProcessAdmin.Models.Checking
         public string chr_Type { get; set; }
 
         public List<Answer> Answers { get; set; }
+
+        public Checklist int_Checklist { get; set; }
     }
 }

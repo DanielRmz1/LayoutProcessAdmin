@@ -12,7 +12,7 @@ namespace LayoutProcessAdmin.Models.Checking
         [StringLength(30)]
         public string chr_Name { get; set; }
         /// <summary>
-        /// Daily, weekly, monthly, 15 days
+        /// Daily = d, weekly = w, monthly = m, 15 days = q
         /// </summary>
         public string chr_RepeatPeriod { get; set; } 
 

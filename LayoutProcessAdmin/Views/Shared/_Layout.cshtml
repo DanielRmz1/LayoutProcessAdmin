@@ -45,7 +45,7 @@
                 <ul class="list-inline float-right mb-0">
                     <li class="list-inline-item dropdown notif">
                         <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            Welcome @user.chr_Name
+                            Welcome @user.chr_Name @user.chr_LastName
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                             <a href="@Url.Action("Logout", "Users")" class="dropdown-item notify-item" role="button">
@@ -79,7 +79,11 @@
                         </li>
 
                         <li class="submenu">
-                            <a href="@Url.Action("Index", "Checklists")"><i class="fas fa-clipboard-check"></i><span> Checklists </span> </a>
+                            <a href="#"><i class="fas fa-clipboard-check"></i><span> Checklists </span> <i class="fas fa-angle-right menu-arrow"></i></a>
+                            <ul class="list-unstyled">
+                                <li><a href="@Url.Action("Create", "Checklists")">Create</a></li>
+                                <li><a href="@Url.Action("Index", "Checklists")">My checklists</a></li>
+                            </ul>
                         </li>
 
                         @if (user.UserRoles[0].int_LpaRole.bit_ManageUsers)

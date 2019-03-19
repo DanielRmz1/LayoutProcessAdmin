@@ -1,4 +1,5 @@
 ﻿using LayoutProcessAdmin.Models.Account;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,7 +12,7 @@ namespace LayoutProcessAdmin.Models.Checking
         public int int_IdList { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(20)]
         [Display(Name = "Code")]
         public string chr_Clave { get; set; }
 
@@ -30,5 +31,7 @@ namespace LayoutProcessAdmin.Models.Checking
         public bool bit_Activo { get; set; }
 
         public User int_Owner { get; set; }
+
+        public List<Question> Questions { get; set; }
     }
 }
