@@ -12,6 +12,7 @@ namespace LayoutProcessAdmin.Models.Checking
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Description")]
         public string chr_Description { get; set; }
 
         /// <summary>
@@ -22,6 +23,7 @@ namespace LayoutProcessAdmin.Models.Checking
         /// </summary>
         [Required]
         [StringLength(2)]
+        [Display(Name = "Type")]
         public string chr_Type { get; set; }
 
         public List<Answer> Answers { get; set; }
