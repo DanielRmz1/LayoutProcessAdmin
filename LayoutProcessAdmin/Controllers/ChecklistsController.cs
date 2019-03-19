@@ -43,16 +43,30 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo")] Checklist checklist)
+        public JsonResult Create([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod")] Checklist checklist)
         {
             if (ModelState.IsValid)
             {
-                db.Checklists.Add(checklist);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var existChl = db.Checklists.Where(x => x.chr_Clave == checklist.chr_Clave).ToList();
+                
+                if(existChl.Count > 0)
+                {
+                    return Json(-10);
+                }
+                else
+                {
+                    db.Checklists.Add(checklist);
+                    db.SaveChanges();
+                }
+
+                return Json(checklist.int_IdList);
+            }
+            else
+            {
+                var errorMessagge = ModelState.Values.Where(x => x.Errors.Count > 0).Select(x => x.Errors[0].ErrorMessage).ToList();
+                return Json(errorMessagge);
             }
 
-            return View(checklist);
         }
 
         // GET: Checklists/Edit/5

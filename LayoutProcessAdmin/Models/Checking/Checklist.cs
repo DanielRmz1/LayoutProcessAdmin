@@ -14,6 +14,8 @@ namespace LayoutProcessAdmin.Models.Checking
         [Required]
         [StringLength(20)]
         [Display(Name = "Code")]
+        [Index(IsUnique = true)]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed in code field.")]
         public string chr_Clave { get; set; }
 
         [Required]
@@ -25,7 +27,20 @@ namespace LayoutProcessAdmin.Models.Checking
         [Display(Name = "Description")]
         public string chr_Description { get; set; }
         
+        /// <summary>
+        ///  d for Day
+        ///  m for Month
+        ///  w for Week
+        ///  q for quincena
+        /// </summary>
+        [Display(Name = "Period")]
         public Period int_Period { get; set; }
+
+        [NotMapped]
+        public string SelectedPeriod { get; set; }
+
+        [NotMapped]
+        public string[] Days { get; set; }
 
         [Display(Name = "Active")]
         public bool bit_Activo { get; set; }

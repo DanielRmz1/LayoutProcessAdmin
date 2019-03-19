@@ -5,6 +5,71 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    var periods = new List<SelectListItem>()
+    {
+        new SelectListItem()
+        {
+            Text = "Daily",
+            Value = "d"
+        },
+        new SelectListItem()
+        {
+            Text = "Weekly",
+            Value = "w"
+        },
+        new SelectListItem()
+        {
+            Text = "Monthly",
+            Value = "m"
+        },
+        new SelectListItem()
+        {
+            Text = "15 Days",
+            Value = "q"
+        }
+    };
+
+    var weekDays = new List<SelectListItem>()
+    {
+        new SelectListItem()
+        {
+            Text = "Sunday",
+            Value = "su"
+        },
+        new SelectListItem()
+        {
+            Text = "Monday",
+            Value = "mo"
+        },
+        new SelectListItem()
+        {
+            Text = "Tuesday",
+            Value = "tu"
+        },
+        new SelectListItem()
+        {
+            Text = "Wednesday",
+            Value = "we"
+        },
+        new SelectListItem()
+        {
+            Text = "Thursday",
+            Value = "th"
+        },
+        new SelectListItem()
+        {
+            Text = "Friday",
+            Value = "fr"
+        },
+        new SelectListItem()
+        {
+            Text = "Sunday",
+            Value = "su"
+        }
+    };
+}
+
 @section css{
     <link href="~/plugins/select2/css/select2.min.css" rel="stylesheet" />
     <style type="text/css">
@@ -37,88 +102,92 @@
                 <h3 class="text-success"><i class="fa fa-clipboard-list" style="font-size:20px;"></i> New Checklist</h3>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-8 col-sm-12">
-                        <div class="row">
-                            <div class="col-lg-4 col-sm-12">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.chr_Clave, htmlAttributes: new { @class = "control-label" })
-                                    <div>
-                                        @Html.EditorFor(model => model.chr_Clave, new { htmlAttributes = new { @class = "form-control", placeholder = "Text identifier" } })
-                                        @Html.ValidationMessageFor(model => model.chr_Clave, "", new { @class = "text-danger" })
+                @using (Html.BeginForm("Create", "Checklists", FormMethod.Post, new { id = "checklistForm"}))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.chr_Clave, htmlAttributes: new { @class = "control-label" })
+                                        <div>
+                                            @Html.EditorFor(model => model.chr_Clave, new { htmlAttributes = new { @class = "form-control", placeholder = "Text identifier", id = "txtClave" } })
+                                            @Html.ValidationMessageFor(model => model.chr_Clave, "", new { @class = "text-danger", id = "lblClave" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-sm-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.chr_Name, htmlAttributes: new { @class = "control-label" })
+                                        <div>
+                                            @Html.EditorFor(model => model.chr_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Example -> Daily 5s Line Checklist", id = "txtNombre" } })
+                                            @Html.ValidationMessageFor(model => model.chr_Name, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 col-sm-12">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.chr_Name, htmlAttributes: new { @class = "control-label" })
-                                    <div>
-                                        @Html.EditorFor(model => model.chr_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Example -> Daily 5s Line Checklist" } })
-                                        @Html.ValidationMessageFor(model => model.chr_Name, "", new { @class = "text-danger" })
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.chr_Description, htmlAttributes: new { @class = "control-label" })
+                                        <div class="col-12">
+                                            @Html.TextAreaFor(model => model.chr_Description, htmlAttributes: new { @class = "form-control custom-textarea", placeholder = "An optional description about the checklist", id = "txtDescription" })
+                                            @Html.ValidationMessageFor(model => model.chr_Description, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.chr_Description, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.LabelFor(model => model.SelectedPeriod, htmlAttributes: new { @class = "control-label" })
+                                    <div class="col-10">
+                                        @Html.DropDownListFor(model => model.SelectedPeriod, periods, "Select a Option", new { @class = "form-control select2 " })
+                                        @Html.ValidationMessageFor(model => model.SelectedPeriod, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div><br />
+                                <div class="row">
                                     <div class="col-12">
-                                        @Html.TextAreaFor(model => model.chr_Description, htmlAttributes: new { @class = "form-control custom-textarea", placeholder = "An optional description about the checklist" })
-                                        @Html.ValidationMessageFor(model => model.chr_Description, "", new { @class = "text-danger" })
+                                        @Html.LabelFor(model => model.Days, htmlAttributes: new { @class = "control-label" })
+                                        <div class="col-10">
+                                            @Html.DropDownListFor(model => model.Days, weekDays, "Select a Option", new { @class = "form-control select2", multiple = "multiple" })
+                                            @Html.ValidationMessageFor(model => model.Days, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div><br />
+                            <div class="row">
+                                <div class="form-group col-12" style="background-color: white;">
+                                    <div class="custom-control custom-checkbox">
+                                        @Html.CheckBoxFor(model => model.bit_Activo, new { @class = "custom-control-input", type = "checkbox", style = "width: 30px; height: 30px;" })
+                                        @Html.LabelFor(model => model.bit_Activo, htmlAttributes: new { @class = "custom-control-label" })
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-12">
-                        <div class="row">
-                            <div class="col-10">
-                                <label for="un" class="control-label">Select period</label>
-                                <select class="select2 form-control" id="un" style="width: 100%;">
-                                    <option>Select a option</option>
-                                    <option value="d">Daily</option>
-                                    <option value="w">Weekly</option>
-                                    <option value="m">Monthly</option>
-                                    <option value="q">15 days</option>
-                                </select>
-                            </div>
-                        </div><br />
-                        <div class="row">
-                            <div class="col-10">
-                                <label for="do" class="control-label">Select the day</label>
-                                <select class="select2 form-control" id="do" multiple="multiple" style="width: 100%;">
-                                    <option value="su">Sunday</option>
-                                    <option value="mo">Monday</option>
-                                    <option value="tu">Tuesday</option>
-                                    <option value="we">Wednesday</option>
-                                    <option value="th">Thursday</option>
-                                    <option value="fr">Friday</option>
-                                    <option value="sa">Saturday</option>
-                                </select>
-                            </div>
-                        </div><br />
-                        <div class="row">
-                            <div class="form-group col-12" style="background-color: white;">
-                                <div class="custom-control custom-checkbox">
-                                    @Html.CheckBoxFor(model => model.bit_Activo, new { @class = "custom-control-input", type = "checkbox", style = "width: 30px; height: 30px;" })
-                                    @Html.LabelFor(model => model.bit_Activo, htmlAttributes: new { @class = "custom-control-label" })
-                                </div>
-                            </div>
+
+                    <div class="row">
+                        <div style="margin-left: auto; margin-right: 20px;">
+                            <button class="btn btn-success" type="submit">Next <i class="fa fa-level-down-alt"></i> </button>
                         </div>
                     </div>
-                </div>
+                }
+
+                <hr />
 
                 <div class="row">
                     <div class="col-sm-4 col-xl-4 col-lg-4 col-8">
                         <h4 class="text-primary"><i class="fa fa-question-circle"></i> Questions</h4>
                     </div>
-                    <div style="margin-left: auto;margin-right: 20px;">
+                    <div style="margin-left: auto;margin-right: 20px;" class="question-container">
                         <button id="btnAddQuestion" type="button" class="btn btn-primary text-white" data-toggle="modal" data-target="#addQuestion">Add Question <i class="fa fa-plus"></i></button>
                     </div>
                 </div><br />
 
-                <div class="row">
+                <div class="row question-container">
                     <div class="col-12">
                         <table class="table table-hover">
                             <thead>
@@ -134,18 +203,6 @@
                                     <td>1</td>
                                     <td>akjdasdjla skldaskld akljsd akjsdaio qwodo dasojdo iasdjia sdao sdoa sodaosisisi adjo aosd</td>
                                     <td>Multiple</td>
-                                    <td><a class="btn btn-warning btn-sm"><i class="fa fa-pen"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>akjdasdjla skldaskld akljsd akjsdaio qwodo dasojdo iasdjia sdao sdoa sodaosisisi adjo aosd</td>
-                                    <td>Yes/No</td>
-                                    <td><a class="btn btn-warning btn-sm"><i class="fa fa-pen"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>akjdasdjla skldaskld akljsd akjsdaio qwodo dasojdo iasdjia sdao sdoa sodaosisisi adjo aosd</td>
-                                    <td>Open</td>
                                     <td><a class="btn btn-warning btn-sm"><i class="fa fa-pen"></i></a></td>
                                 </tr>
                             </tbody>
@@ -223,9 +280,56 @@
     <script src="~/plugins/select2/js/select2.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.select2').select2();
+            $('.question-container').hide();
+
+            var currentChecklistId;
+
+            $('#checklistForm').on('submit',function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '@Url.Action("Create", "Checklists")',
+                    type: "POST",
+                    data: $('#checklistForm').serialize(),
+                    success: function (data) {
+
+                        if (data.length > 0) {
+
+                        } else {
+                            if (data == -10)
+                                $('#lblClave').html('The checklist Key already exixts, set another one.');
+                            else {
+                                console.log(data);
+                                $('#lblClave').html('');
+                                currentChecklistId = data;
+                                $('.question-container').show();
+                            }
+                        }
+                    },
+                    error: function (jXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                        alert(textStatus);
+                    }
+                });
+            });
+
+            
+            $(window).bind('beforeunload', function () {
+                if(currentChecklistId != 0 && currentChecklistId != null)
+                    return 'Are you sure you want to leave?';
+            });
+            
+            window.onunload = function () {
+                var form = $('#checklistForm');
+                var token = $('input[name="__RequestVerificationToken"]', form).val();
+                 $.ajax({
+                    url: '@Url.Action("Delete", "Checklists")',
+                    type: "POST",
+                     data: { __RequestVerificationToken: token, id: currentChecklistId }
+                 });
+            }
         });
-        
+
     </script>
 }
