@@ -19,11 +19,11 @@ namespace LayoutProcessAdmin.Models.Checking
         public string chr_Clave { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(50)]
         [Display(Name = "Name")]
         public string chr_Name { get; set; }
 
-        [StringLength(100)]
+        [StringLength(200)]
         [Display(Name = "Description")]
         public string chr_Description { get; set; }
         
