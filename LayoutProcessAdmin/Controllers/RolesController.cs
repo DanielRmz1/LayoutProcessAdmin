@@ -15,6 +15,13 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Roles
         public ActionResult Index()
         {
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageUsers)
+                return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
             return View(db.LpaRoles.ToList());
         }
 
@@ -59,6 +66,14 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Roles/Edit/5
         public ActionResult Edit(int? id)
         {
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageUsers)
+                return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -80,9 +95,16 @@ namespace LayoutProcessAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(role).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.Entry(role).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (System.Exception e)
+                {
+                    return View(e);
+                }
             }
             return View(role);
         }

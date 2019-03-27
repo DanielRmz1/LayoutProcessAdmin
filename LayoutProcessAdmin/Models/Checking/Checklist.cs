@@ -34,6 +34,7 @@ namespace LayoutProcessAdmin.Models.Checking
         ///  q for quincena
         /// </summary>
         [Display(Name = "Period")]
+        [Column("int_idPeriod")]
         public Period int_Period { get; set; }
 
         [NotMapped]
@@ -45,6 +46,7 @@ namespace LayoutProcessAdmin.Models.Checking
         [Display(Name = "Active")]
         public bool bit_Activo { get; set; }
 
+        [Column("int_IdOwner")]
         public User int_Owner { get; set; }
 
         public List<Question> Questions { get; set; }

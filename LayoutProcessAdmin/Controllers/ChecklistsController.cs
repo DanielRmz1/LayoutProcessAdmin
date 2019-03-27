@@ -1,4 +1,5 @@
 ﻿using LayoutProcessAdmin.Models;
+using LayoutProcessAdmin.Models.Account;
 using LayoutProcessAdmin.Models.Checking;
 using System.Data.Entity;
 using System.Linq;
@@ -20,6 +21,14 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Checklists/Details/5
         public ActionResult Details(int? id)
         {
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
+                return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -35,6 +44,14 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Checklists/Create
         public ActionResult Create()
         {
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
+                return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
+
             return View();
         }
 
@@ -55,8 +72,15 @@ namespace LayoutProcessAdmin.Controllers
                 }
                 else
                 {
-                    db.Checklists.Add(checklist);
-                    db.SaveChanges();
+                    try
+                    {
+                        db.Checklists.Add(checklist);
+                        db.SaveChanges();
+                    }
+                    catch (System.Exception e)
+                    {
+                        return Json(e, JsonRequestBehavior.AllowGet);
+                    }
                 }
 
                 return Json(checklist.int_IdList);
@@ -72,6 +96,14 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Checklists/Edit/5
         public ActionResult Edit(int? id)
         {
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
+                return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -93,9 +125,17 @@ namespace LayoutProcessAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(checklist).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.Entry(checklist).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (System.Exception e)
+                {
+                    return View(e);
+                }
+                
             }
             return View(checklist);
         }
@@ -103,6 +143,14 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Checklists/Delete/5
         public ActionResult Delete(int? id)
         {
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
+                return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

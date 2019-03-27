@@ -78,13 +78,16 @@
                             <a href="@Url.Action("Index", "Home")"><i class="fas fa-home"></i><span> Inicio </span> </a>
                         </li>
 
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-clipboard-check"></i><span> Checklists </span> <i class="fas fa-angle-right menu-arrow"></i></a>
-                            <ul class="list-unstyled">
-                                <li><a href="@Url.Action("Create", "Checklists")">Create</a></li>
-                                <li><a href="@Url.Action("Index", "Checklists")">My checklists</a></li>
-                            </ul>
-                        </li>
+                        @if (user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
+                        {
+                            <li class="submenu">
+                                <a href="#"><i class="fas fa-clipboard-check"></i><span> Checklists </span> <i class="fas fa-angle-right menu-arrow"></i></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="@Url.Action("Create", "Checklists")">Create</a></li>
+                                    <li><a href="@Url.Action("Index", "Checklists")">My checklists</a></li>
+                                </ul>
+                            </li>
+                        }
 
                         @if (user.UserRoles[0].int_LpaRole.bit_ManageUsers)
                         {
