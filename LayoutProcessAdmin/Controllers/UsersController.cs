@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace LayoutProcessAdmin.Controllers
@@ -92,9 +93,9 @@ namespace LayoutProcessAdmin.Controllers
         // POST: Users/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "int_IdUser,chr_Clave,chr_Name,chr_LastName,chr_Password,chr_Email,chr_Phone,UserRole")] User user)
+        public async Task<ActionResult> CreateAsyn([Bind(Include = "int_IdUser,chr_Clave,chr_Name,chr_LastName,chr_Password,chr_Email,chr_Phone,UserRole, chr_ConfirmPassword")] User user)
         {
             User loggedUSer = (User)Session["User"];
 
@@ -107,9 +108,11 @@ namespace LayoutProcessAdmin.Controllers
             var findUser = db.Users.Where(x => x.chr_Clave == user.chr_Clave).ToList();
                
             if (findUser.Count > 0)
-            {
-                ModelState.AddModelError("Chr_Clave", "El nombre de usuario ya ha sido registrado anteriormente.");
-            }
+                ModelState.AddModelError("Chr_Clave", "This username already exists, try with another one.");
+            
+
+            if(user.chr_Password != user.chr_ConfirmPassword)
+                ModelState.AddModelError("Chr_ConfirmPassword", "The passwords you have written does not match.");
 
             if (ModelState.IsValid)
             {
@@ -122,7 +125,7 @@ namespace LayoutProcessAdmin.Controllers
                 userRoles.int_User = db.Users.Find(user.int_IdUser);
 
                 db.UserRoles.Add(userRoles);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 return RedirectToAction("Index");
             }

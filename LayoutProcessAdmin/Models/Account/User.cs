@@ -34,13 +34,13 @@ namespace LayoutProcessAdmin.Models.Account
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
-        [RegularExpression(@"^.*(?=.{6,18})(?=.*\d)(?=.*[A-Za-z])(?=.*[@_/!?#.,]{1,}).*$", ErrorMessage = "The password must contain between 6 and 18 characters, letters, numbers and a special character (, _ ! ? @ # /)")]
+        [RegularExpression(@"^.*(?=.{6,18})(?=.*\d)(?=.*[A-Za-z])(?=.*[@_/!?#.,-]{1,}).*$", ErrorMessage = "The password must contain between 6 and 18 characters, letters, numbers and a special character (, _ - ! ? @ # /)")]
         public string chr_Password { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [RegularExpression(@"^.*(?=.{6,18})(?=.*\d)(?=.*[A-Za-z])(?=.*[@_/!?#.,]{1,}).*$", ErrorMessage = "The password must contain between 6 and 18 characters, letters, numbers and a special character (, _ ! ? @ # /)")]
+        [RegularExpression(@"^.*(?=.{6,18})(?=.*\d)(?=.*[A-Za-z])(?=.*[@_/!?#.,-]{1,}).*$", ErrorMessage = "The password must contain between 6 and 18 characters, letters, numbers and a special character (, _ - ! ? @ # /)")]
         [NotMapped]
         public string chr_ConfirmPassword { get; set; }
 
