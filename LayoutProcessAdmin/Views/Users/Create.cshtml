@@ -52,7 +52,7 @@
                             <div class="col-xl-6 col-10 col-lg-6 col-md-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.UserRole, htmlAttributes: new { @class = "control-label" })
-                                    <div class="col-8 col-sm-11 col-10 col-lg-10 col-xl-12">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-12">
                                         @Html.DropDownListFor(model => model.UserRole, Model.Roles, "Select a Option", new { @class = "form-control select2" })
                                         @Html.ValidationMessageFor(model => model.UserRole, "", new { @class = "text-danger" })
                                     </div>
@@ -156,6 +156,10 @@
 
     <script>
         $(document).ready(function() {
+            $('.select2').select2();
+        });
+
+        $(window).resize(function () {
             $('.select2').select2();
         });
     </script>
