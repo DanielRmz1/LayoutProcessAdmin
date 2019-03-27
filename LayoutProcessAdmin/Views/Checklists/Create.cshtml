@@ -309,9 +309,12 @@
 
                         } else {
                             if (data == -10)
-                                $('#lblClave').html('The checklist Key already exixts, set another one.');
+                                $('#lblClave').html('The checklist key already exixts, set another one.');
                             else {
+                                var succesIcon = document.createElement('i');
+                                succesIcon.classList = "fa fa-check-circle";
                                 $('#successSumary').html('Checklist registered successfuly');
+                                $('#successSumary').append(succesIcon);
                                 $('#lblClave').html('');
                                 currentChecklistId = data;
                                 $('.question-container').show();
@@ -331,6 +334,7 @@
                     return 'Are you sure you want to leave?';
             });
             
+
             window.onunload = function () {
                 var form = $('#checklistForm');
                 var token = $('input[name="__RequestVerificationToken"]', form).val();

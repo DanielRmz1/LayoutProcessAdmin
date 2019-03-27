@@ -4,6 +4,7 @@ using LayoutProcessAdmin.Models.Checking;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace LayoutProcessAdmin.Controllers
@@ -58,9 +59,9 @@ namespace LayoutProcessAdmin.Controllers
         // POST: Checklists/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public JsonResult Create([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod")] Checklist checklist)
+        public async Task<JsonResult> CreateAsync([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod")] Checklist checklist)
         {
             if (ModelState.IsValid)
             {
@@ -72,15 +73,8 @@ namespace LayoutProcessAdmin.Controllers
                 }
                 else
                 {
-                    try
-                    {
-                        db.Checklists.Add(checklist);
-                        db.SaveChanges();
-                    }
-                    catch (System.Exception e)
-                    {
-                        return Json(e, JsonRequestBehavior.AllowGet);
-                    }
+                    db.Checklists.Add(checklist);
+                    var task = await Task.Run(() => db.SaveChanges());
                 }
 
                 return Json(checklist.int_IdList);
@@ -169,8 +163,11 @@ namespace LayoutProcessAdmin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Checklist checklist = db.Checklists.Find(id);
-            db.Checklists.Remove(checklist);
-            db.SaveChanges();
+            if(checklist != null)
+            {
+                db.Checklists.Remove(checklist);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
