@@ -49,6 +49,12 @@ namespace LayoutProcessAdmin.Models.Checking
         [Column("int_IdOwner")]
         public User int_Owner { get; set; }
 
+        [NotMapped]
+        [Display(Name = "Who can answer this?")]
+        public int[] SelectedUsers { get; set; }
+
         public List<Question> Questions { get; set; }
+        
+        public List<UsersChecklist> UsersChecklists { get; set; }
     }
 }

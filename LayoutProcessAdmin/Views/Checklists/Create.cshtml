@@ -6,6 +6,8 @@
 }
 
 @{
+    var users = (List<SelectListItem>) ViewBag.Users;
+
     var periods = new List<SelectListItem>()
     {
         new SelectListItem()
@@ -77,6 +79,10 @@
             width: 100%;
             height: 100px;
             resize: none;
+        }
+
+        .answers-control {
+            display: none;
         }
     </style>
 
@@ -165,6 +171,15 @@
                             </div>
                         </div><br />
                         <div class="row">
+                            <div class="col-12">
+                                @Html.LabelFor(model => model.SelectedUsers, htmlAttributes: new { @class = "control-label" })
+                                <div class="col-10">
+                                    @Html.DropDownListFor(model => model.SelectedUsers, users, "Select a Option", new { @class = "form-control select2", multiple = "multiple" })
+                                    @Html.ValidationMessageFor(model => model.SelectedUsers, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div><br />
+                        <div class="row">
                             <div class="form-group col-12" style="background-color: white;">
                                 <div class="custom-control custom-checkbox">
                                     @Html.CheckBoxFor(model => model.bit_Activo, new { @class = "custom-control-input", type = "checkbox", style = "width: 30px; height: 30px;" })
@@ -172,8 +187,9 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
-                </div>
+                </div><br />
 
                 <div class="row">
                     <ul id="errorSummary" class="text-danger"></ul>
@@ -206,12 +222,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                @*<tr>
                                     <td>1</td>
                                     <td>akjdasdjla skldaskld akljsd akjsdaio qwodo dasojdo iasdjia sdao sdoa sodaosisisi adjo aosd</td>
                                     <td>Multiple</td>
                                     <td><a class="btn btn-warning btn-sm"><i class="fa fa-pen"></i></a></td>
-                                </tr>
+                                </tr>*@
                             </tbody>
                         </table>
                     </div>
@@ -230,7 +246,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addQuestion" tabindex="-1" role="dialog" aria-labelledby="addQuestionLabel" aria-hidden="true">
+<div class="modal fade" id="addQuestion" tabindex="-1" role="dialog" aria-labelledby="addQuestionLabel" aria-hidden="true">  <!-- Modal for form questions  -->
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -244,9 +260,11 @@
                     <div class="col-6">
                         <label for="selectType">Question Type</label>
                         <select id="selectType" class="select2 form-control" style="width: 100%;">
-                            <option value="value">Multiple</option>
-                            <option value="value">Yes/No</option>
-                            <option value="value">Open</option>
+                            <option value="0">-- Select a Option --</option>
+                            <option value="mu">Multiple</option>
+                            <option value="yn">Yes/No</option>
+                            <option value="op">Open</option>
+                            <option value="ca">Calculated</option>
                         </select>
                     </div>
                 </div>
@@ -254,20 +272,20 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label for="idPregunta" class="col-form-label">Description</label>
-                            <input type="text" id="idPregunta" class="form-control" />
+                            <input type="text" id="idDescription" class="form-control" />
                         </div>
                     </div>
                 </div><br />
-                <div class="row">
+                <div class="row answers-control">
                     <div class="col-6">
                         <h4 class="text-primary">Answers</h4>
                     </div>
                     <div style="margin-left:auto;margin-right: 20px;">
-                        <button class="btn btn-sm btn-success">Add</button>
+                        <button class="btn btn-sm btn-success" id="btnAddQuestion">Add</button>
                     </div>
                 </div>
                 <hr />
-                <div class="row">
+                <div class="row answers-control">
                     <div class="col-12">
                         <div class="form-group">
                             <input type="text" class="form-control" />
@@ -328,12 +346,29 @@
                 });
             });
 
+            $('#btnAddQuestion').on('click', function () {
+                ShowQuestionModal();
+            });
+
+            $('#selectType').change(function () {
+                var selectedType = $('#selectType').val();
+                if (selectedType != 0)
+                    $('.answers-control').css({ "display": "normal" });
+                else
+                    $('.answers-control').css({ "display": "none" });
+            });
+
+            function ShowQuestionModal() {
+                //$('#deleteModal .modal-body #lblUsername').html(" " + userName);
+                //$('#deleteModal .modal-body #lblEmail').html(" " + email);
+                //$('#deleteModal .modal-footer #id').val(id);
+                $('#addQuestion').modal('show');
+            }
             
             $(window).bind('beforeunload', function () {
                 if(currentChecklistId != 0 && currentChecklistId != null)
                     return 'Are you sure you want to leave?';
             });
-            
 
             window.onunload = function () {
                 var form = $('#checklistForm');

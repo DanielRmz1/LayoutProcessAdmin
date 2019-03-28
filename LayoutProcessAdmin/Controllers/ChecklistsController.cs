@@ -1,6 +1,7 @@
 ﻿using LayoutProcessAdmin.Models;
 using LayoutProcessAdmin.Models.Account;
 using LayoutProcessAdmin.Models.Checking;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -53,7 +54,26 @@ namespace LayoutProcessAdmin.Controllers
             if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
                 return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
 
+            ViewBag.Users = GetUsersDropDown();
+
             return View();
+        }
+
+        List<SelectListItem> GetUsersDropDown()
+        {
+            var list = db.Users.ToList();
+            var listado = new List<SelectListItem>();
+
+            foreach (var item in list)
+            {
+                listado.Add(new SelectListItem()
+                {
+                    Text = item.chr_Name + " " + item.chr_LastName,
+                    Value = item.int_IdUser.ToString()
+                });
+            }
+
+            return listado;
         }
 
         // POST: Checklists/Create
@@ -61,18 +81,24 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> CreateAsync([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod")] Checklist checklist)
+        public async Task<JsonResult> CreateAsync([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod, SelectedUsers")] Checklist checklist)
         {
             if (ModelState.IsValid)
             {
                 var existChl = db.Checklists.Where(x => x.chr_Clave == checklist.chr_Clave).ToList();
                 
                 if(existChl.Count > 0)
-                {
                     return Json(-10);
-                }
                 else
                 {
+                    foreach(var item in checklist.SelectedUsers)
+                    {
+                        db.UsersChecklists.Add(new UsersChecklist()
+                        {
+                            Checklist = checklist,
+                            Users = db.Users.Find(item)
+                        });
+                    }
                     db.Checklists.Add(checklist);
                     var task = await Task.Run(() => db.SaveChanges());
                 }

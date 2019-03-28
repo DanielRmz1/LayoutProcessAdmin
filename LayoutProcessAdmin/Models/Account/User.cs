@@ -68,5 +68,7 @@ namespace LayoutProcessAdmin.Models.Account
         public List<UserRoles> UserRoles { get; set; }
 
         public IEnumerable<SelectListItem> Roles { get; set; }
+
+        public List<UsersChecklist> UsersChecklists { get; set; }
     }
 }
