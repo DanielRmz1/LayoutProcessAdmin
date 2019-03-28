@@ -1,4 +1,5 @@
 ﻿using LayoutProcessAdmin.Models.Account;
+using LayoutProcessAdmin.Models.Areas;
 using LayoutProcessAdmin.Models.Calendar;
 using LayoutProcessAdmin.Models.Checking;
 using System.Data.Entity;
@@ -25,6 +26,8 @@ namespace LayoutProcessAdmin.Models
         public DbSet<QuestionLog> QuestionsLog { get; set; }
         public DbSet<UsersChecklist> UsersChecklists { get; set; }
         public DbSet<Event> Events { get; set; }
-        
+        public DbSet<Machine> Machines { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Area> Areas { get; set; }
     }
 }
