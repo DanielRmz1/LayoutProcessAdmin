@@ -1,6 +1,7 @@
 ﻿using LayoutProcessAdmin.Models;
 using LayoutProcessAdmin.Models.Account;
 using LayoutProcessAdmin.Models.Checking;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -99,6 +100,24 @@ namespace LayoutProcessAdmin.Controllers
                             Users = db.Users.Find(item)
                         });
                     }
+
+                    checklist.int_Owner = (User)Session["User"];
+
+                    var period = new Period()
+                    {
+                        bit_Sun = FindSelectedDay(checklist.Days, "su"),
+                        bit_Mon = FindSelectedDay(checklist.Days, "mo"),
+                        bit_Tue = FindSelectedDay(checklist.Days, "tu"),
+                        bit_Wed = FindSelectedDay(checklist.Days, "we"),
+                        bit_Thu = FindSelectedDay(checklist.Days, "th"),
+                        bit_Fri = FindSelectedDay(checklist.Days, "fr"),
+                        bit_Sat = FindSelectedDay(checklist.Days, "sa"),
+                        chr_RepeatPeriod = checklist.SelectedPeriod
+                    };
+
+                   // checklist.int_Period = period;
+
+                    //db.Periods.Add(period);
                     db.Checklists.Add(checklist);
                     var task = await Task.Run(() => db.SaveChanges());
                 }
@@ -111,6 +130,15 @@ namespace LayoutProcessAdmin.Controllers
                 return Json(errorMessagge);
             }
 
+        }
+
+        bool FindSelectedDay(string[] days, string current)
+        {
+            foreach (var day in days)
+                if (day == current)
+                    return true;
+
+            return false;
         }
 
         // GET: Checklists/Edit/5
@@ -186,11 +214,15 @@ namespace LayoutProcessAdmin.Controllers
         // POST: Checklists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Checklist checklist = db.Checklists.Find(id);
+            var checklist = await db.Checklists.Include(x => x.UsersChecklists).SingleOrDefaultAsync(p => p.int_IdList == id);
+            
             if(checklist != null)
             {
+                foreach (var child in checklist.UsersChecklists.ToList())
+                    db.UsersChecklists.Remove(child);
+
                 db.Checklists.Remove(checklist);
                 db.SaveChanges();
             }

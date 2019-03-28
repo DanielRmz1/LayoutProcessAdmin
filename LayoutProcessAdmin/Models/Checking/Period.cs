@@ -8,9 +8,7 @@ namespace LayoutProcessAdmin.Models.Checking
     {
         [Key]
         public int int_IdPeriod { get; set; }
-
-        [StringLength(30)]
-        public string chr_Name { get; set; }
+        
         /// <summary>
         /// Daily = d, weekly = w, monthly = m, 15 days = q
         /// </summary>
