@@ -45,8 +45,7 @@ namespace LayoutProcessAdmin.Models.Checking
 
         [Display(Name = "Active")]
         public bool bit_Activo { get; set; }
-
-        [Column("int_IdOwner")]
+        
         public User int_Owner { get; set; }
 
         [NotMapped]

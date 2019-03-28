@@ -55,6 +55,7 @@ namespace LayoutProcessAdmin.Controllers
             if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
                 return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
 
+            ViewBag.CurrentUser = user;
             ViewBag.Users = GetUsersDropDown();
 
             return View();
@@ -87,12 +88,12 @@ namespace LayoutProcessAdmin.Controllers
             if (ModelState.IsValid)
             {
                 var existChl = db.Checklists.Where(x => x.chr_Clave == checklist.chr_Clave).ToList();
-                
-                if(existChl.Count > 0)
+
+                if (existChl.Count > 0)
                     return Json(-10);
                 else
                 {
-                    foreach(var item in checklist.SelectedUsers)
+                    foreach (var item in checklist.SelectedUsers)
                     {
                         db.UsersChecklists.Add(new UsersChecklist()
                         {
@@ -101,7 +102,8 @@ namespace LayoutProcessAdmin.Controllers
                         });
                     }
 
-                    checklist.int_Owner = (User)Session["User"];
+                    User user = (User)Session["User"];
+                    checklist.int_Owner = db.Users.Find(user.int_IdUser);
 
                     var period = new Period()
                     {
@@ -115,9 +117,9 @@ namespace LayoutProcessAdmin.Controllers
                         chr_RepeatPeriod = checklist.SelectedPeriod
                     };
 
-                   // checklist.int_Period = period;
+                    checklist.int_Period = period;
 
-                    //db.Periods.Add(period);
+                    db.Periods.Add(period);
                     db.Checklists.Add(checklist);
                     var task = await Task.Run(() => db.SaveChanges());
                 }
