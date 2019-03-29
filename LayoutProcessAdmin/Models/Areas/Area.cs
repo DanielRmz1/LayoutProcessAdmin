@@ -21,9 +21,13 @@ namespace LayoutProcessAdmin.Models.Areas
         [StringLength(50)]
         [Display(Name = "Name")]
         public string Name { get; set; }
-        
+
+        [StringLength(200)]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
         public Machine int_IdMach { get; set; }
-        
+
         public Group int_IdGroup { get; set; }
     }
 }

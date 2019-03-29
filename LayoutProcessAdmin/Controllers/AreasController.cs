@@ -1,9 +1,13 @@
-﻿using LayoutProcessAdmin.Models;
-using LayoutProcessAdmin.Models.Areas;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
+using LayoutProcessAdmin.Models;
+using LayoutProcessAdmin.Models.Areas;
 
 namespace LayoutProcessAdmin.Controllers
 {
@@ -43,7 +47,7 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "int_IdArea,chr_Clave,Name")] Area area)
+        public ActionResult Create([Bind(Include = "int_IdArea,chr_Clave,Name,Description")] Area area)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +79,7 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "int_IdArea,chr_Clave,Name")] Area area)
+        public ActionResult Edit([Bind(Include = "int_IdArea,chr_Clave,Name,Description")] Area area)
         {
             if (ModelState.IsValid)
             {
