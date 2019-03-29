@@ -49,8 +49,10 @@ namespace LayoutProcessAdmin.Models.Checking
         
         public User int_Owner { get; set; }
 
-        [Required]
+        [NotMapped]
         [Display(Name = "Area")]
+        public int int_Area { get; set; }
+
         public Area Area { get; set; }
 
         [NotMapped]

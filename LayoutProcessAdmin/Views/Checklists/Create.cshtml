@@ -181,10 +181,10 @@
                         </div><br />
                         <div class="row">
                             <div class="col-12">
-                                @Html.LabelFor(model => model.Area, htmlAttributes: new { @class = "control-label"})
+                                @Html.LabelFor(model => model.int_Area, htmlAttributes: new { @class = "control-label"})
                                 <div class="col-10">
-                                    @Html.DropDownListFor(model => model.Area, null, "Select a Option", new { @class = "form-control select2"})
-                                    @Html.ValidationMessageFor(model => model.Area, "", new { @class = "text-danger"})
+                                    @Html.DropDownListFor(model => model.int_Area, (List<SelectListItem>)ViewBag.Areas, "Select a Option", new { @class = "form-control select2"})
+                                    @Html.ValidationMessageFor(model => model.int_Area, "", new { @class = "text-danger"})
                                 </div>
                             </div>
                         </div>

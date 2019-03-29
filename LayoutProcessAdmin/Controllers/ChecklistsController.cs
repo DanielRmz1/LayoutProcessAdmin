@@ -57,6 +57,7 @@ namespace LayoutProcessAdmin.Controllers
 
             ViewBag.CurrentUser = user;
             ViewBag.Users = GetUsersDropDown();
+            ViewBag.Areas = GetAreas();
 
             return View();
         }
@@ -83,11 +84,11 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> CreateAsync([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod, SelectedUsers")] Checklist checklist)
+        public async Task<JsonResult> CreateAsync([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod, SelectedUsers,int_Area")] Checklist checklist)
         {
             if (ModelState.IsValid)
             {
-                var existChl = db.Checklists.Where(x => x.chr_Clave == checklist.chr_Clave).ToList();
+                var existChl = db.Checklists.Include(x => x.int_Owner).Include(x => x.SelectedPeriod).Where(x => x.chr_Clave == checklist.chr_Clave).ToList();
 
                 if (existChl.Count > 0)
                     return Json(-10);
@@ -101,6 +102,8 @@ namespace LayoutProcessAdmin.Controllers
                             Users = db.Users.Find(item)
                         });
                     }
+
+                    checklist.Area = db.Areas.Find(checklist.int_Area);
 
                     User user = (User)Session["User"];
                     checklist.int_Owner = db.Users.Find(user.int_IdUser);
@@ -133,6 +136,21 @@ namespace LayoutProcessAdmin.Controllers
             }
 
         }
+
+        List<SelectListItem> GetAreas()
+        {
+            var areas = db.Areas;
+            var areasList = new List<SelectListItem>();
+
+            foreach (var area in areas)
+                areasList.Add(new SelectListItem()
+                {
+                    Text = area.Name,
+                    Value = area.int_IdArea.ToString()
+                });
+
+            return areasList;
+        } 
 
         bool FindSelectedDay(string[] days, string current)
         {
