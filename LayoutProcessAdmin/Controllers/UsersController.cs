@@ -218,7 +218,12 @@ namespace LayoutProcessAdmin.Controllers
                 }
                 catch (System.Exception e)
                 {
-                    return View();
+                    var _oroles = db.LpaRoles.ToList();
+                    var _ousers = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
+                    _ousers[0].Roles = GetRolesDropDown();
+                    _ousers[0].chr_Password = Security.Decrypt(_ousers[0].chr_Password);
+                    ModelState.AddModelError(string.Empty, e.ToString());
+                    return View(_ousers[0]);
                 }
 
             }
