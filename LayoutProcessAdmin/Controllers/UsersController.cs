@@ -194,7 +194,7 @@ namespace LayoutProcessAdmin.Controllers
                 {
                     var editUser = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
                     var role = db.LpaRoles.Find(user.UserRole);
-                    
+
                     if (editUser[0].UserRoles.Count > 0)
                         editUser[0].UserRoles[0].int_LpaRole = role;
                     else
@@ -205,12 +205,12 @@ namespace LayoutProcessAdmin.Controllers
                         db.UserRoles.Add(userRoles);
                     }
 
+                    editUser[0].chr_Password = Security.Encrypt(user.chr_Password);
+                    editUser[0].chr_Clave = user.chr_Clave;
                     editUser[0].chr_Email = user.chr_Email;
                     editUser[0].chr_LastName = user.chr_LastName;
-                    editUser[0].chr_Clave = user.chr_Clave;
-                    editUser[0].chr_Password = Security.Encrypt(user.chr_Password);
-                    editUser[0].chr_Phone = user.chr_Phone;
                     editUser[0].chr_Name = user.chr_Name;
+                    editUser[0].chr_Phone = user.chr_Phone;
 
                     db.Entry(editUser[0]).State = EntityState.Modified;
                     db.SaveChanges();
@@ -220,7 +220,7 @@ namespace LayoutProcessAdmin.Controllers
                 {
                     return View();
                 }
-                
+
             }
 
             var roles = db.LpaRoles.ToList();
