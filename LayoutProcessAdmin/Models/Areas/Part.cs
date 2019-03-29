@@ -1,14 +1,12 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LayoutProcessAdmin.Models.Areas
+namespace LayoutProcessAdmin
 {
-    public partial class Group
+    public partial class Part
     {
         [Key]
-        public int int_IdGroup { get; set; }
+        public int int_IdPart { get; set; }
 
-        [Required]
         [StringLength(35)]
         public string chr_Key { get; set; }
 
@@ -29,7 +27,5 @@ namespace LayoutProcessAdmin.Models.Areas
 
         [StringLength(30)]
         public string chr_Reference { get; set; }
-
-        public List<Area> Areas { get; set; }
     }
 }

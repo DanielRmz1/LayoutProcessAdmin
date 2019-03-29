@@ -55,6 +55,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -146,8 +148,6 @@
     <Compile Include="Models\Account\User.cs" />
     <Compile Include="Models\Account\UserRoles.cs" />
     <Compile Include="Models\Areas\Area.cs" />
-    <Compile Include="Models\Areas\Group.cs" />
-    <Compile Include="Models\Areas\Machine.cs" />
     <Compile Include="Models\Calendar\Event.cs" />
     <Compile Include="Models\Checking\Answer.cs" />
     <Compile Include="Models\Checking\AnswerLog.cs" />
@@ -159,6 +159,9 @@
     <Compile Include="Models\Checking\UsersChecklist.cs" />
     <Compile Include="Models\LayoutProcessContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\Areas\Group.cs" />
+    <Compile Include="Models\Areas\Machine.cs" />
+    <Compile Include="Models\Areas\Part.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap-checkbox.css" />
