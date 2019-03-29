@@ -1,0 +1,98 @@
+﻿@model LayoutProcessAdmin.Models.Account.Role
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section css{
+    
+    <style type="text/css">
+        .custom-textarea{
+            width: 100%;
+            height: 100px;
+        }
+    </style>    
+
+}
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="breadcrumb-holder">
+                <h1 class="main-title float-left">Roles Managment - Add a new Role</h1>
+                <ol class="breadcrumb float-right">
+                    <li class="breadcrumb-item">Role</li>
+                    <li class="breadcrumb-item active">Add</li>
+                </ol>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.chr_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.chr_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.chr_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.chr_Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextAreaFor(model => model.chr_Description, htmlAttributes: new { @class = "form-control custom-textarea" } )
+                @Html.ValidationMessageFor(model => model.chr_Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-offset-2 col-md-4" style="font-size: 18px;">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="custom-control custom-checkbox">
+                        @Html.CheckBoxFor(model => model.bit_ManageUsers, new { @class = "custom-control-input", type = "checkbox" })
+                        @Html.LabelFor(model => model.bit_ManageUsers, htmlAttributes: new { @class = "custom-control-label" })
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="custom-control custom-checkbox">
+                        @Html.CheckBoxFor(model => model.bit_ManageGlobalUsers, new { @class = "custom-control-input", type = "checkbox" })
+                        @Html.LabelFor(model => model.bit_ManageGlobalUsers, htmlAttributes: new { @class = "custom-control-label" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="custom-control custom-checkbox">
+                        @Html.CheckBoxFor(model => model.bit_ManageChecklist, new { @class = "custom-control-input", type = "checkbox" })
+                        @Html.LabelFor(model => model.bit_ManageChecklist, htmlAttributes: new { @class = "custom-control-label" })
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="custom-control custom-checkbox">
+                        @Html.CheckBoxFor(model => model.bit_FillChecklists, new { @class = "custom-control-input", type = "checkbox" })
+                        @Html.LabelFor(model => model.bit_FillChecklists, htmlAttributes: new { @class = "custom-control-label" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                <input type="submit" value="Create" class="btn btn-success btn-lg" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="@Url.Action("Index", "Roles")" role="button" class="btn btn-warning">
+        <i class="fa fa-long-arrow-alt-left"></i> Back to List
+    </a>
+</div>
