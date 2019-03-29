@@ -175,7 +175,7 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "int_IdUser,chr_Clave,chr_Name,chr_LastName,chr_Password,chr_Email,chr_Phone,UserRole,UserRoles")] User user)
+        public ActionResult Edit([Bind(Include = "int_IdUser,chr_Clave,chr_Name,chr_LastName,chr_Password,chr_ConfirmPassword,chr_Email,chr_Phone,UserRole,UserRoles")] User user)
         {
             User loggedUSer = (User)Session["User"];
 
@@ -185,13 +185,16 @@ namespace LayoutProcessAdmin.Controllers
             if (!loggedUSer.UserRoles[0].int_LpaRole.bit_ManageUsers)
                 return RedirectToAction("NoPermission", "Home", new { module = "Users Managment" });
 
+            if (user.chr_Password != user.chr_ConfirmPassword)
+                ModelState.AddModelError("Chr_ConfirmPassword", "The passwords you have written does not match.");
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     var editUser = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
                     var role = db.LpaRoles.Find(user.UserRole);
-
+                    
                     if (editUser[0].UserRoles.Count > 0)
                         editUser[0].UserRoles[0].int_LpaRole = role;
                     else
@@ -202,12 +205,12 @@ namespace LayoutProcessAdmin.Controllers
                         db.UserRoles.Add(userRoles);
                     }
 
-                    editUser[0].chr_Password = Security.Encrypt(user.chr_Password);
-                    editUser[0].chr_Clave = user.chr_Clave;
                     editUser[0].chr_Email = user.chr_Email;
                     editUser[0].chr_LastName = user.chr_LastName;
-                    editUser[0].chr_Name = user.chr_Name;
+                    editUser[0].chr_Clave = user.chr_Clave;
+                    editUser[0].chr_Password = Security.Encrypt(user.chr_Password);
                     editUser[0].chr_Phone = user.chr_Phone;
+                    editUser[0].chr_Name = user.chr_Name;
 
                     db.Entry(editUser[0]).State = EntityState.Modified;
                     db.SaveChanges();
