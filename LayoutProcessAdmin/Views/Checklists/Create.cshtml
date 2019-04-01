@@ -115,6 +115,7 @@
                     <div style="margin-left: auto; margin-right: 20px;">
                         <label class="text-success" id="successSumary"></label>
                     </div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 </div>
                 <div class="row">
                     <div class="col-lg-8 col-sm-12">
@@ -200,7 +201,8 @@
                 </div><br />
 
                 <div class="row">
-                    <ul id="errorSummary" class="text-danger"></ul>
+                    <ul id="errorSummary" class="text-danger">
+                    </ul>
                     <div style="margin-left: auto; margin-right: 20px;">
                         <button class="btn btn-success" type="submit">Next <i class="fa fa-level-down-alt"></i> </button>
                     </div>
@@ -243,7 +245,6 @@
 
             </div>
             <div class="card-footer">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group float-right">
                     <div class="col-md-10">
                         <button type="submit" class="btn btn-success">Save Checklist <i class="fa fa-check-circle" style="font-size: 20px;"></i></button>

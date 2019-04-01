@@ -4,8 +4,10 @@ using LayoutProcessAdmin.Models.Account;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -206,6 +208,7 @@ namespace LayoutProcessAdmin.Controllers
                     }
 
                     editUser[0].chr_Password = Security.Encrypt(user.chr_Password);
+                    editUser[0].chr_ConfirmPassword = editUser[0].chr_Password;
                     editUser[0].chr_Clave = user.chr_Clave;
                     editUser[0].chr_Email = user.chr_Email;
                     editUser[0].chr_LastName = user.chr_LastName;
@@ -216,13 +219,25 @@ namespace LayoutProcessAdmin.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                catch (System.Exception e)
+                catch (DbEntityValidationException e)
                 {
+                    StringBuilder sb = new StringBuilder();
+
+                    foreach (var failure in e.EntityValidationErrors)
+                    {
+                        sb.AppendFormat("{0} failed validation\n", failure.Entry.Entity.GetType());
+                        foreach (var error in failure.ValidationErrors)
+                        {
+                            sb.AppendFormat("- {0} : {1}", error.PropertyName, error.ErrorMessage);
+                            sb.AppendLine();
+                        }
+                    }
+
                     var _oroles = db.LpaRoles.ToList();
                     var _ousers = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
                     _ousers[0].Roles = GetRolesDropDown();
                     _ousers[0].chr_Password = Security.Decrypt(_ousers[0].chr_Password);
-                    ModelState.AddModelError(string.Empty, e.ToString());
+                    ModelState.AddModelError(string.Empty, sb.ToString());
                     return View(_ousers[0]);
                 }
 

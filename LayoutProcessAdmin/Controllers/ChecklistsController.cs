@@ -4,8 +4,10 @@ using LayoutProcessAdmin.Models.Checking;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -82,57 +84,76 @@ namespace LayoutProcessAdmin.Controllers
         // POST: Checklists/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost, ActionName("Create")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> CreateAsync([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod, SelectedUsers,int_Area")] Checklist checklist)
+        public JsonResult Create([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod, SelectedUsers,int_Area, int_Owner")] Checklist checklist)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var existChl = db.Checklists.Include(x => x.int_Owner).Include(x => x.SelectedPeriod).Where(x => x.chr_Clave == checklist.chr_Clave).ToList();
-
-                if (existChl.Count > 0)
-                    return Json(-10);
-                else
+                if (ModelState.IsValid)
                 {
-                    foreach (var item in checklist.SelectedUsers)
+                    var existChl = db.Checklists.Where(x => x.chr_Clave == checklist.chr_Clave).ToList();
+
+                    if (existChl.Count > 0)
+                        return Json(-10);
+                    else
                     {
-                        db.UsersChecklists.Add(new UsersChecklist()
+                        foreach (var item in checklist.SelectedUsers)
                         {
-                            Checklist = checklist,
-                            Users = db.Users.Find(item)
-                        });
+                            db.UsersChecklists.Add(new UsersChecklist()
+                            {
+                                Checklist = checklist,
+                                Users = db.Users.Find(item)
+                            });
+                        }
+
+                        checklist.Area = db.Areas.Find(checklist.int_Area);
+
+                        User user = (User)Session["User"];
+                        checklist.int_Owner = user;
+
+                        var period = new Period()
+                        {
+                            bit_Sun = FindSelectedDay(checklist.Days, "su"),
+                            bit_Mon = FindSelectedDay(checklist.Days, "mo"),
+                            bit_Tue = FindSelectedDay(checklist.Days, "tu"),
+                            bit_Wed = FindSelectedDay(checklist.Days, "we"),
+                            bit_Thu = FindSelectedDay(checklist.Days, "th"),
+                            bit_Fri = FindSelectedDay(checklist.Days, "fr"),
+                            bit_Sat = FindSelectedDay(checklist.Days, "sa"),
+                            chr_RepeatPeriod = checklist.SelectedPeriod
+                        };
+
+                        checklist.int_Period = period;
+                    
+                        db.Periods.Add(period);
+                        db.Checklists.Add(checklist);
+                        db.SaveChanges();
                     }
 
-                    checklist.Area = db.Areas.Find(checklist.int_Area);
+                    return Json(checklist.int_IdList);
+                }
+                else
+                {
+                    var errorMessagge = ModelState.Values.Where(x => x.Errors.Count > 0).Select(x => x.Errors[0].ErrorMessage).ToList();
+                    return Json(errorMessagge);
+                }
+            }
+            catch (DbEntityValidationException e)
+            {
+                StringBuilder sb = new StringBuilder();
 
-                    User user = (User)Session["User"];
-                    checklist.int_Owner = db.Users.Find(user.int_IdUser);
-
-                    var period = new Period()
+                foreach (var failure in e.EntityValidationErrors)
+                {
+                    sb.AppendFormat("{0} failed validation\n", failure.Entry.Entity.GetType());
+                    foreach (var error in failure.ValidationErrors)
                     {
-                        bit_Sun = FindSelectedDay(checklist.Days, "su"),
-                        bit_Mon = FindSelectedDay(checklist.Days, "mo"),
-                        bit_Tue = FindSelectedDay(checklist.Days, "tu"),
-                        bit_Wed = FindSelectedDay(checklist.Days, "we"),
-                        bit_Thu = FindSelectedDay(checklist.Days, "th"),
-                        bit_Fri = FindSelectedDay(checklist.Days, "fr"),
-                        bit_Sat = FindSelectedDay(checklist.Days, "sa"),
-                        chr_RepeatPeriod = checklist.SelectedPeriod
-                    };
-
-                    checklist.int_Period = period;
-
-                    db.Periods.Add(period);
-                    db.Checklists.Add(checklist);
-                    var task = await Task.Run(() => db.SaveChanges());
+                        sb.AppendFormat("- {0} : {1}", error.PropertyName, error.ErrorMessage);
+                        sb.AppendLine();
+                    }
                 }
 
-                return Json(checklist.int_IdList);
-            }
-            else
-            {
-                var errorMessagge = ModelState.Values.Where(x => x.Errors.Count > 0).Select(x => x.Errors[0].ErrorMessage).ToList();
-                return Json(errorMessagge);
+                return Json(new { Success = false, Message = sb.ToString() });
             }
 
         }
