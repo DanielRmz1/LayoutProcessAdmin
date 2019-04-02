@@ -110,7 +110,7 @@ namespace LayoutProcessAdmin.Controllers
                         checklist.Area = db.Areas.Find(checklist.int_Area);
 
                         User user = (User)Session["User"];
-                        checklist.int_Owner = user;
+                        checklist.int_Owner = db.Users.Find(user.int_IdUser);
 
                         var period = new Period()
                         {

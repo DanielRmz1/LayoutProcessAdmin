@@ -115,7 +115,6 @@
                     <div style="margin-left: auto; margin-right: 20px;">
                         <label class="text-success" id="successSumary"></label>
                     </div>
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 </div>
                 <div class="row">
                     <div class="col-lg-8 col-sm-12">
@@ -269,7 +268,7 @@
                     <div class="col-6">
                         <label for="selectType">Question Type</label>
                         <select id="selectType" class="select2 form-control" style="width: 100%;">
-                            <option value="0">-- Select a Option --</option>
+                            <option value="none">-- Select a Option --</option>
                             <option value="mu">Multiple</option>
                             <option value="yn">Yes/No</option>
                             <option value="op">Open</option>
@@ -285,19 +284,19 @@
                         </div>
                     </div>
                 </div><br />
-                <div class="row answers-control">
-                    <div class="col-6">
-                        <h4 class="text-primary">Answers</h4>
+                <div id="answersContainer">
+                    <div class="row">
+                        <div class="col-4">
+                            <h4 class="text-primary">Answers</h4>
+                        </div>
+                        <div style="margin-left:auto;margin-right:20px;">
+                            <button  class="btn btn-sm btn-success" id="btnAddAnswer">Add <i class="fa fa-plus"></i></button>
+                        </div>
                     </div>
-                    <div style="margin-left:auto;margin-right: 20px;">
-                        <button class="btn btn-sm btn-success" id="btnAddQuestion">Add</button>
-                    </div>
-                </div>
-                <hr />
-                <div class="row answers-control">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <input type="text" class="form-control" />
+                    <div class="row" id="answersTextBoxes">
+                        <div class="col-10 control-group">
+                            <input type="text" id="txtYes" value="Yes" class="form-control" /> <br />
+                            <input type="text" id="txtNo" value="No" class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -319,6 +318,13 @@
             $('.question-container').hide();
 
             var currentChecklistId;
+            var selectedType;
+
+            var Answer = ({
+                addYesNo: function () {
+                    return "";
+                }
+            });
 
             $('#checklistForm').on('submit',function (e) {
                 e.preventDefault();
@@ -356,21 +362,27 @@
             });
 
             $('#btnAddQuestion').on('click', function () {
+                $('#answersContainer').hide();
                 ShowQuestionModal();
             });
 
             $('#selectType').change(function () {
-                var selectedType = $('#selectType').val();
-                if (selectedType != 0)
-                    $('.answers-control').css({ "display": "normal" });
-                else
-                    $('.answers-control').css({ "display": "none" });
+                selectedType = $('#selectType').val();
+                if (selectedType == "none") {
+                    $('#answersContainer').hide();
+                }
+                else if (selectedType == "yn") {
+                    $('#btnAddAnswer').hide();
+                    $('#answersContainer').show();
+                    //$('#answersTextBoxes').append(Answer.addYesNo);
+                }
+                else {
+                    $('#btnAddAnswer').show();
+                    $('#answersContainer').show();
+                }
             });
 
             function ShowQuestionModal() {
-                //$('#deleteModal .modal-body #lblUsername').html(" " + userName);
-                //$('#deleteModal .modal-body #lblEmail').html(" " + email);
-                //$('#deleteModal .modal-footer #id').val(id);
                 $('#addQuestion').modal('show');
             }
             
