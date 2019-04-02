@@ -16,9 +16,10 @@ namespace LayoutProcessAdmin.Controllers
         private LayoutProcessContext db = new LayoutProcessContext();
 
         // GET: Questions
-        public ActionResult Index()
+        [HttpGet]
+        public JsonResult Get(int id)
         {
-            return View(db.Questions.ToList());
+            return Json(db.Questions.Where(x => x.int_Checklist.int_IdList == id).ToList(), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Questions/Details/5
@@ -36,27 +37,33 @@ namespace LayoutProcessAdmin.Controllers
             return View(question);
         }
 
-        // GET: Questions/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
         // POST: Questions/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "int_IdQuestion,chr_Description,chr_Type,bit_SingleAnswer")] Question question)
+        public JsonResult Create(string description, string type, bool singleAnswer, int id_checklist)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Questions.Add(question);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                var newQuestion = db.Questions.Add(new Question()
+                {
+                    bit_SingleAnswer = singleAnswer,
+                    chr_Description = description,
+                    chr_Type = type,
+                    int_Checklist = db.Checklists.Find(id_checklist)
+                });
 
-            return View(question);
+                db.SaveChanges();
+
+                return Json(new { id = newQuestion.int_IdQuestion }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Message = e.ToString() });
+            }
+            
         }
 
         // GET: Questions/Edit/5

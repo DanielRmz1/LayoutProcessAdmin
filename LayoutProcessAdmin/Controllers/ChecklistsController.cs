@@ -257,12 +257,15 @@ namespace LayoutProcessAdmin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            var checklist = await db.Checklists.Include(x => x.UsersChecklists).SingleOrDefaultAsync(p => p.int_IdList == id);
+            var checklist = await db.Checklists.Include(x => x.UsersChecklists).Include(x => x.Questions).SingleOrDefaultAsync(p => p.int_IdList == id);
             
             if(checklist != null)
             {
                 foreach (var child in checklist.UsersChecklists.ToList())
                     db.UsersChecklists.Remove(child);
+
+                foreach (var child in checklist.Questions.ToList())
+                    db.Questions.Remove(child);
 
                 db.Checklists.Remove(checklist);
                 db.SaveChanges();

@@ -257,58 +257,63 @@
 <div class="modal fade" id="addQuestion" tabindex="-1" role="dialog" aria-labelledby="addQuestionLabel" aria-hidden="true">  <!-- Modal for form questions  -->
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addQuestionLabel"><i class="fa fa-plus-circle"></i> Add a new question</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-6">
-                        <label for="selectType">Question Type</label>
-                        <select id="selectType" class="select2 form-control" style="width: 100%;">
-                            <option value="none">-- Select a Option --</option>
-                            <option value="mu">Multiple</option>
-                            <option value="yn">Yes/No</option>
-                            <option value="op">Open</option>
-                            <option value="ca">Calculated</option>
-                        </select>
-                    </div>
+            @using (Html.BeginForm("Create", "Questions", FormMethod.Post, new { id = "questionForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addQuestionLabel"><i class="fa fa-plus-circle"></i> Add a new question</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label for="idPregunta" class="col-form-label">Description</label>
-                            <textarea id="idPregunta" class="form-control custom-textarea"></textarea>
-                        </div>
-                    </div>
-                </div>  
-                <hr />
-                <div id="answersContainer">
+                <div class="modal-body">
                     <div class="row">
-                        <div class="col-4">
-                            <h4 class="text-primary">Answers</h4>
-                        </div>
-                        <div style="margin-left:auto;margin-right:20px;">
-                            <button class="btn btn-sm btn-danger" id="btnRemoveAnswer">Remove <i class="fa fa-minus"></i></button>
-                            <button class="btn btn-sm btn-success" id="btnAddAnswer">Add <i class="fa fa-plus"></i></button>
+                        <div class="col-6">
+                            <label for="selectType">Question Type</label>
+                            <select id="selectType" class="select2 form-control" style="width: 100%;">
+                                <option value="none">-- Select a Option --</option>
+                                <option value="mu">Multiple</option>
+                                <option value="yn">Yes/No</option>
+                                <option value="op">Open</option>
+                                <option value="ca">Calculated</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="row" id="answersTextBoxes">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="idPregunta" class="col-form-label">Description</label>
+                                <textarea id="idPregunta" class="form-control custom-textarea"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row form-group">
-                        <div class="custom-control custom-checkbox" style="margin-left: 20px;">
-                            <input type="checkbox" class="custom-control-input" id="chSingleAnswer" />
-                            <label for="chSingleAnswer" class="custom-control-label">Is single answer</label>
+                    <hr />
+                    <div id="answersContainer">
+                        <div class="row">
+                            <div class="col-4">
+                                <h4 class="text-primary">Answers</h4>
+                            </div>
+                            <div style="margin-left:auto;margin-right:20px;">
+                                <a role="button" class="btn btn-sm btn-danger text-white" id="btnRemoveAnswer">Remove <i class="fa fa-minus"></i></a>
+                                <a role="button" class="btn btn-sm btn-success text-white" id="btnAddAnswer">Add <i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="row" id="answersTextBoxes">
+                        </div>
+                        <div class="row form-group">
+                            <div class="custom-control custom-checkbox" style="margin-left: 20px;" id="aasdasd">
+                                <input type="checkbox" class="custom-control-input" id="chSingleAnswer" />
+                                <label for="chSingleAnswer" class="custom-control-label">Is single answer</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success">Save</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -387,26 +392,63 @@
                 $('#answersContainer').hide();
                 ShowQuestionModal();
             });
+
+            $(window).bind('beforeunload', function () {
+                if(currentChecklistId != 0 && currentChecklistId != null)
+                    return 'Are you sure you want to leave?';
+            });
+
+            window.onunload = function () {
+                var form = $('#checklistForm');
+                var token = $('input[name="__RequestVerificationToken"]', form).val();
+                $.ajax({
+                    url: '@Url.Action("Delete", "Checklists")',
+                    type: "POST",
+                        data: { __RequestVerificationToken: token, id: currentChecklistId }
+                });
+            }
+        });
+
+        $('#questionForm').on('submit', function (e) {
+            e.preventDefault();
+            var token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
+            $.ajax({
+                url: '@Url.Action("Create", "Questions")',
+                type: "POST",
+                data: {
+                    __RequestVerificationToken: token,
+                    description: $('#idPregunta').val(),
+                    type: $('#selectType').val(),
+                    singleAnswer: $('#chSingleAnswer').is(':checked'),
+                    id_checklist: currentChecklistId
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    alert(textStatus);
+                    alert(jXHR);
+                }
+            });
         });
 
         function UpdateQuestionsTable(id) {
-
-        }
-
-        $(window).bind('beforeunload', function () {
-            if(currentChecklistId != 0 && currentChecklistId != null)
-                return 'Are you sure you want to leave?';
-        });
-
-        window.onunload = function () {
-            var form = $('#checklistForm');
-            var token = $('input[name="__RequestVerificationToken"]', form).val();
             $.ajax({
-                url: '@Url.Action("Delete", "Checklists")',
-                type: "POST",
-                    data: { __RequestVerificationToken: token, id: currentChecklistId }
+                url: '@Url.Action("Get", "Questions")',
+                type: "GET",
+                data: { id: id },
+                success: function (data) {
+                    // Aqui voy a actualizar con el resultado de la consulta de todas las preguntas de un checklist :ch
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    alert(textStatus);
+                }
             });
         }
+
+        
 
     </script>
 }
