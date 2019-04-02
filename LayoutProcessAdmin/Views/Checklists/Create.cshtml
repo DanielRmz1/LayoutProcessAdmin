@@ -387,22 +387,26 @@
                 $('#answersContainer').hide();
                 ShowQuestionModal();
             });
-            
-            $(window).bind('beforeunload', function () {
-                if(currentChecklistId != 0 && currentChecklistId != null)
-                    return 'Are you sure you want to leave?';
-            });
-
-            window.onunload = function () {
-                var form = $('#checklistForm');
-                var token = $('input[name="__RequestVerificationToken"]', form).val();
-                 $.ajax({
-                    url: '@Url.Action("Delete", "Checklists")',
-                    type: "POST",
-                     data: { __RequestVerificationToken: token, id: currentChecklistId }
-                 });
-            }
         });
+
+        function UpdateQuestionsTable(id) {
+
+        }
+
+        $(window).bind('beforeunload', function () {
+            if(currentChecklistId != 0 && currentChecklistId != null)
+                return 'Are you sure you want to leave?';
+        });
+
+        window.onunload = function () {
+            var form = $('#checklistForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            $.ajax({
+                url: '@Url.Action("Delete", "Checklists")',
+                type: "POST",
+                    data: { __RequestVerificationToken: token, id: currentChecklistId }
+            });
+        }
 
     </script>
 }
