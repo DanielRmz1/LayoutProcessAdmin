@@ -165,6 +165,7 @@ namespace LayoutProcessAdmin.Controllers
                 }
 
                 users[0].chr_Password = Security.Decrypt(users[0].chr_Password);
+                users[0].chr_ConfirmPassword = users[0].chr_Password;
 
                 return View(users[0]);
             }
@@ -247,6 +248,7 @@ namespace LayoutProcessAdmin.Controllers
             var users = db.Users.Include(x => x.UserRoles).Where(x => x.int_IdUser == user.int_IdUser).ToList();
             users[0].Roles = GetRolesDropDown();
             users[0].chr_Password = Security.Decrypt(users[0].chr_Password);
+            users[0].chr_ConfirmPassword = users[0].chr_Password;
             return View(users[0]);
         }
 
