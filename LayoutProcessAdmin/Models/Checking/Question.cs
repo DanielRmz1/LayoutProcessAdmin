@@ -26,6 +26,13 @@ namespace LayoutProcessAdmin.Models.Checking
         [Display(Name = "Type")]
         public string chr_Type { get; set; }
 
+        /// <summary>
+        /// Propiedad para configurar si una pregunta tiene solamente una respuesta o 
+        /// se pueden elegir mas de 2 respuestas por ejemplo una pregunta de respuesta multiple
+        /// con checkbox y si es SingleAnswer sería con radio buttons para solamente elegir una respuesta
+        /// </summary>
+        public bool bit_SingleAnswer { get; set; }
+
         public List<Answer> Answers { get; set; }
 
         public Checklist int_Checklist { get; set; }

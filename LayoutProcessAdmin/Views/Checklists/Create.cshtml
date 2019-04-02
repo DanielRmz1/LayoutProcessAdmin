@@ -280,23 +280,27 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label for="idPregunta" class="col-form-label">Description</label>
-                            <input type="text" id="idDescription" class="form-control" />
+                            <textarea id="idPregunta" class="form-control custom-textarea"></textarea>
                         </div>
                     </div>
-                </div><br />
+                </div>  
+                <hr />
                 <div id="answersContainer">
                     <div class="row">
                         <div class="col-4">
                             <h4 class="text-primary">Answers</h4>
                         </div>
                         <div style="margin-left:auto;margin-right:20px;">
-                            <button  class="btn btn-sm btn-success" id="btnAddAnswer">Add <i class="fa fa-plus"></i></button>
+                            <button class="btn btn-sm btn-danger" id="btnRemoveAnswer">Remove <i class="fa fa-minus"></i></button>
+                            <button class="btn btn-sm btn-success" id="btnAddAnswer">Add <i class="fa fa-plus"></i></button>
                         </div>
                     </div>
                     <div class="row" id="answersTextBoxes">
-                        <div class="col-10 control-group">
-                            <input type="text" id="txtYes" value="Yes" class="form-control" /> <br />
-                            <input type="text" id="txtNo" value="No" class="form-control" />
+                    </div>
+                    <div class="row form-group">
+                        <div class="custom-control custom-checkbox" style="margin-left: 20px;">
+                            <input type="checkbox" class="custom-control-input" id="chSingleAnswer" />
+                            <label for="chSingleAnswer" class="custom-control-label">Is single answer</label>
                         </div>
                     </div>
                 </div>
@@ -304,6 +308,32 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <!-- Modal for form questions  -->
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-question-circle"></i> Calculated Question - Example</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-10 offset-1">
+                        <img src="@Url.Content("~/Images/EjemploCampoCalculado.PNG")" class="img-fluid" />
+                    </div>
+                </div><hr />
+                <div class="row">
+                    <div class="col-10 offset-1">
+                        <img src="@Url.Content("~/Images/EjemploCampoCalculado-2.PNG")" class="img-fluid" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -322,7 +352,137 @@
 
             var Answer = ({
                 addYesNo: function () {
-                    return "";
+                    var div = document.createElement('div');
+                    div.classList = "col-10 form-group";
+                    var input = document.createElement("input");
+                    input.classList = "form-control";
+                    input.value = "Yes";
+                    input.id = "txtYes";
+
+                    div.appendChild(input);
+                    div.appendChild(document.createElement('br'));
+
+                    var input2 = document.createElement("input");
+                    input2.classList = "form-control";
+                    input2.value = "No";
+                    input2.id = "txtNo";
+
+                    div.appendChild(input2);
+
+                    return div;
+                },
+                addMultiple: function () {
+                    var div = document.createElement('div');
+                    div.classList = "col-10 form-group";
+                    div.id = "multipleContainer";
+
+                    var input = document.createElement("input");
+                    input.classList = "form-control";
+                    input.placeholder = "New Answer";
+
+                    div.appendChild(input);
+                    div.appendChild(document.createElement('br'));
+                    return div;
+                },
+                addInput: function () {
+                    var input = document.createElement('input');
+                    input.classList = "form-control";
+                    input.placeholder = "New Answer";
+                    document.getElementById("multipleContainer").appendChild(input);
+                    document.getElementById("multipleContainer").appendChild(document.createElement('br'));
+                },
+                removeInput: function () {
+                    $('#multipleContainer input').last().remove();
+                    $('#multipleContainer br').last().remove();
+                },
+                addCalculated: function () {
+                    var div = document.createElement('div');
+                    div.classList = "col-12 form-group";
+                    div.id = "calculatedContainer";
+
+                    var newRow = document.createElement('div');
+                    newRow.classList = "row";
+
+                    var formulaInput = document.createElement('input');
+                    formulaInput.classList = "form-control";
+                    formulaInput.id = "formulaInput";
+                    formulaInput.placeholder = "Formula: Example -> (base*height)/2";
+                    
+                    var help = document.createElement('i');
+                    help.classList = "fa fa-question-circle text-primary";
+                    help.style = "font-size: 24px;cursor: pointer;";
+                    help.onclick = function () {
+                        $('#helpModal').modal('show');
+                    };     
+
+                    var formulaDiv = document.createElement('div');
+                    formulaDiv.classList = "col-11";
+                    var helpDiv = document.createElement('div');
+                    helpDiv.classList = "col-1";
+
+                    formulaDiv.appendChild(formulaInput);
+                    helpDiv.appendChild(help);
+
+                    newRow.appendChild(formulaDiv);
+                    newRow.appendChild(helpDiv);
+                    div.appendChild(newRow);
+                    div.appendChild(document.createElement('br'));
+                    
+                    var row = document.createElement('div');
+                    row.classList = "row form-group entry";
+
+                    var variableDiv = document.createElement('div');
+                    variableDiv.classList = "col-3";
+
+                    var answerDiv = document.createElement('div');
+                    answerDiv.classList = "col-9";
+
+                    var variableInput = document.createElement("input");
+                    variableInput.placeholder = "Variable";
+                    variableInput.classList = "form-control";
+                    variableDiv.appendChild(variableInput);
+
+                    var answerInput = document.createElement("input");
+                    answerInput.placeholder = "New answer";
+                    answerInput.classList = "form-control";
+                    answerDiv.appendChild(answerInput);
+
+                    row.appendChild(variableDiv);
+                    row.appendChild(answerDiv);
+
+                    div.appendChild(row);
+
+                    return div;
+                },
+                addCalculatedInput: function () {
+                    var div = document.getElementById("calculatedContainer");
+
+                    var row = document.createElement('div');
+                    row.classList = "row form-group entry";
+
+                    var variableDiv = document.createElement('div');
+                    variableDiv.classList = "col-3";
+
+                    var answerDiv = document.createElement('div');
+                    answerDiv.classList = "col-9";
+
+                    var variableInput = document.createElement("input");
+                    variableInput.placeholder = "Variable";
+                    variableInput.classList = "form-control";
+                    variableDiv.appendChild(variableInput);
+
+                    var answerInput = document.createElement("input");
+                    answerInput.placeholder = "New answer";
+                    answerInput.classList = "form-control";
+                    answerDiv.appendChild(answerInput);
+
+                    row.appendChild(variableDiv);
+                    row.appendChild(answerDiv);
+
+                    div.appendChild(row);
+                },
+                removeCalculatedInput: function () {
+                    $('#calculatedContainer .entry').last().remove();
                 }
             });
 
@@ -342,7 +502,7 @@
 
                         } else {
                             if (data == -10)
-                                $('#lblClave').html('The checklist key already exixts, set another one.');
+                                $('#errorSummary').append("<li>The checklist key already exixts, set another one.</li>");
                             else {
                                 var succesIcon = document.createElement('i');
                                 succesIcon.classList = "fa fa-check-circle";
@@ -367,22 +527,69 @@
             });
 
             $('#selectType').change(function () {
+                $('#answersTextBoxes').html("");
                 selectedType = $('#selectType').val();
-                if (selectedType == "none") {
-                    $('#answersContainer').hide();
+                
+                $('#answersContainer').show();
+
+                switch (selectedType) {
+                    case "none":
+                        $('#answersContainer').hide();
+                        break;
+                    case "yn":
+                        $('#btnAddAnswer').hide();
+                        $('#answersTextBoxes').append(Answer.addYesNo());
+                        $('#chSingleAnswer').prop("checked", true);
+                        $('#chSingleAnswer').attr('disabled', 'disabled');
+                        break;
+                    case "op":
+                        $('#btnAddAnswer').hide();
+                        $('#chSingleAnswer').prop("checked", true);
+                        $('#chSingleAnswer').attr('disabled', 'disabled');
+                        break;
+                    case "mu":
+                        $('#btnAddAnswer').show();
+                        $('#answersTextBoxes').append(Answer.addMultiple());
+                        $('#chSingleAnswer').prop("checked", false);
+                        $('#chSingleAnswer').remove('disabled');
+                        break;
+                    case "ca":
+                        $('#btnAddAnswer').show();
+                        $('#answersTextBoxes').append(Answer.addCalculated());
+                        $('#chSingleAnswer').prop("checked", true);
+                        $('#chSingleAnswer').attr('disabled', 'disabled');
+                        break;
+                    default:
+                        $('#answersContainer').hide();
+                        break;
+
                 }
-                else if (selectedType == "yn") {
-                    $('#btnAddAnswer').hide();
-                    $('#answersContainer').show();
-                    //$('#answersTextBoxes').append(Answer.addYesNo);
+            });
+
+            $('#btnAddAnswer').on('click', function () {
+                switch (selectedType) {
+                    case "mu":
+                        Answer.addInput();
+                        break;
+                    case "ca":
+                        Answer.addCalculatedInput();
+                        break;
                 }
-                else {
-                    $('#btnAddAnswer').show();
-                    $('#answersContainer').show();
+            });
+
+            $('#btnRemoveAnswer').on('click', function () {
+                switch (selectedType) {
+                    case "mu":
+                        Answer.removeInput();
+                        break;
+                    case "ca":
+                        Answer.removeCalculatedInput();
+                        break;
                 }
             });
 
             function ShowQuestionModal() {
+                $('#selectType').val(0);
                 $('#addQuestion').modal('show');
             }
             
