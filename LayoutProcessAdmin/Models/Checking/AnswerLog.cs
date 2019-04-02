@@ -11,10 +11,15 @@ namespace LayoutProcessAdmin.Models.Checking
 
         [StringLength(100)]
         public string chr_Description { get; set; }
-
+        /// <summary>
+        /// Propiedad para almacenar lo que dio entrada el usuario al contestar el checklist, será mas usado en caso de la pregunta de tipo abierto y el resultado del campo calculado
+        /// </summary>
         [Required]
-        public string Entry { get; set; } //Entrada que se dio a la respuesta
+        public string Entry { get; set; } 
 
+        /// <summary>
+        /// Para guardar si la pregunta fue o no seleccionada, mas para el tipo multiple y el Yes/No
+        /// </summary>
         public bool Selected { get; set; }
     }
 }
