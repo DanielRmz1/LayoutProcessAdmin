@@ -427,17 +427,17 @@
                     switch (selectedType) {
                         case "yn":
                             $('#answersTextBoxes .form-group input').each(function () {
-                                AddAnswer(this.value, "", "", data.id)
+                                AddAnswer(this.value, "", "", data.id);
                             });
                             break;
                         case "op":
-                            $('#answersTextBoxes .form-group input').each(function () {
-                                AddAnswer("", "", "", data.id)
+                            $('#answersTextBoxes .form-group').each(function (e) {
+                                AddAnswer("", "", "", data.id);
                             });
                             break;
                         case "mu":
                             $('#answersTextBoxes .form-group input').each(function () {
-                                AddAnswer(this.value, "", "", data.id)
+                                AddAnswer(this.value, "", "", data.id);
                             });
                             break;
                         case "ca":
@@ -466,7 +466,7 @@
                     description: description,
                     formula: formula,
                     variable: variable,
-                    id_checklist: id_question
+                    id_question: id_question
                 },
                 success: function (data) {
                     console.log("Answer return id: " + data.id);

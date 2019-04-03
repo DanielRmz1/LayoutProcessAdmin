@@ -90,7 +90,7 @@ var Answer = ({
 
 		var variableInput = document.createElement("input");
 		variableInput.placeholder = "Variable";
-		variableInput.classList = "form-control";
+		variableInput.classList = "form-control variable";
 		variableDiv.appendChild(variableInput);
 
 		var answerInput = document.createElement("input");

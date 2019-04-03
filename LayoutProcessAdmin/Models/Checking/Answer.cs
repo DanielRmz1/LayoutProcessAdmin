@@ -12,9 +12,7 @@ namespace LayoutProcessAdmin.Models.Checking
         [Required]
         [StringLength(50)]
         public string chr_Description { get; set; }
-
-        public string chr_Formula { get; set; }
-
+        
         public string chr_Variable { get; set; }
         
         public Question int_Question { get; set; }

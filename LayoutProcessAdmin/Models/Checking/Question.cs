@@ -33,6 +33,8 @@ namespace LayoutProcessAdmin.Models.Checking
         /// </summary>
         public bool bit_SingleAnswer { get; set; }
 
+        public string chr_Formula { get; set; }
+
         public List<Answer> Answers { get; set; }
 
         public Checklist int_Checklist { get; set; }
