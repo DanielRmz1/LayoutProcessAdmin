@@ -90,6 +90,16 @@ namespace LayoutProcessAdmin.Controllers
         {
             try
             {
+                if (checklist.SelectedUsers == null)
+                    ModelState.AddModelError(string.Empty, "You have to choose at least one user to answer this checklist.");
+
+                if(checklist.Days == null)
+                    ModelState.AddModelError(string.Empty, "Select at least one day from the week.");
+
+                if(checklist.SelectedPeriod == null)
+                    ModelState.AddModelError(string.Empty, "Select the period for the checklist.");
+
+
                 if (ModelState.IsValid)
                 {
                     var existChl = db.Checklists.Where(x => x.chr_Clave == checklist.chr_Clave).ToList();
