@@ -119,12 +119,12 @@ var Answer = ({
 
 		var variableInput = document.createElement("input");
 		variableInput.placeholder = "Variable";
-		variableInput.classList = "form-control";
+		variableInput.classList = "form-control variable";
 		variableDiv.appendChild(variableInput);
 
 		var answerInput = document.createElement("input");
 		answerInput.placeholder = "New answer";
-		answerInput.classList = "form-control";
+		answerInput.classList = "form-control answer";
 		answerDiv.appendChild(answerInput);
 
 		row.appendChild(variableDiv);
@@ -149,23 +149,28 @@ $('#selectType').change(function () {
 			break;
 		case "yn":
 			$('#btnAddAnswer').hide();
+			$('#btnRemoveAnswer').hide();
+            
 			$('#answersTextBoxes').append(Answer.addYesNo());
 			$('#chSingleAnswer').prop("checked", true);
 			$('#chSingleAnswer').attr('disabled', 'disabled');
 			break;
 		case "op":
 			$('#btnAddAnswer').hide();
+			$('#btnRemoveAnswer').hide();
 			$('#chSingleAnswer').prop("checked", true);
 			$('#chSingleAnswer').attr('disabled', 'disabled');
 			break;
 		case "mu":
 			$('#btnAddAnswer').show();
+            $('#btnRemoveAnswer').show();
 			$('#answersTextBoxes').append(Answer.addMultiple());
 			$('#chSingleAnswer').prop("checked", false);
 			$('#chSingleAnswer').remove('disabled');
 			break;
 		case "ca":
 			$('#btnAddAnswer').show();
+            $('#btnRemoveAnswer').show();
 			$('#answersTextBoxes').append(Answer.addCalculated());
 			$('#chSingleAnswer').prop("checked", true);
 			$('#chSingleAnswer').attr('disabled', 'disabled');

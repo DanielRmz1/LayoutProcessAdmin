@@ -423,10 +423,30 @@
                     id_checklist: currentChecklistId
                 },
                 success: function (data) {
-                    console.log(data);
-                    $('#answersTextBoxes input').each(function () {
-                        console.log(this.value);
-                    });
+
+                    switch (selectedType) {
+                        case "yn":
+                            $('#answersTextBoxes .form-group input').each(function () {
+                                AddAnswer(this.value, "", "", data.id)
+                            });
+                            break;
+                        case "op":
+                            $('#answersTextBoxes .form-group input').each(function () {
+                                AddAnswer("", "", "", data.id)
+                            });
+                            break;
+                        case "mu":
+                            $('#answersTextBoxes .form-group input').each(function () {
+                                AddAnswer(this.value, "", "", data.id)
+                            });
+                            break;
+                        case "ca":
+
+                            break;
+                        default:
+                            $('#answersContainer').hide();
+                            break;
+                    }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     alert(errorThrown);
