@@ -137,6 +137,90 @@ var Answer = ({
 	}
 });
 
+var Question = {
+    addRow: function (index, description, type, single, formula, id) {
+        var row = document.createElement('tr');
+
+        var cell1 = document.createElement('td');
+        var span1 = document.createElement('span');
+        span1.textContent = index;
+        cell1.appendChild(span1);
+
+        var cell2 = document.createElement('td');
+        var span2 = document.createElement('span');
+        span2.textContent = description;
+        cell2.appendChild(span2);
+
+        var cell3 = document.createElement('td');
+        var span3 = document.createElement('span');
+        span3.textContent = type;
+        cell3.appendChild(span3);
+
+        var cell4 = document.createElement('td');
+        var span4 = document.createElement('span');
+        span4.textContent = single;
+        cell4.appendChild(span4);
+
+        var cell5 = document.createElement('td');
+        var span5 = document.createElement('span');
+        span5.textContent = formula;
+        cell5.appendChild(span5);
+
+        // ----------- Celda de los botones de Editar/Eliminar ---------------
+
+        var cell6 = document.createElement('td');
+
+        var divRow = document.createElement('div');
+        divRow.classList = 'row';
+
+        var editTag = document.createElement('i');
+        editTag.classList = "fa fa-pen";
+
+        var deleteTag = document.createElement('i');
+        deleteTag.classList = "fa fa-minus-circle";
+
+        var editBtn = document.createElement('a');
+        editBtn.href = '#';
+        editBtn.setAttribute("role", "button");
+        editBtn.classList = "btn btn-warning btn-sm";
+        editBtn.appendChild(editTag);
+        //editBtn.onclick = DeleteQuestion(id);
+
+        var deleteBtn = document.createElement('a');
+        deleteBtn.href = '#';
+        deleteBtn.setAttribute("role", "button");
+        deleteBtn.classList = "btn btn-danger btn-sm";
+        deleteBtn.appendChild(deleteTag);
+        deleteBtn.onclick = function () {
+            DeleteQuestion(id);
+        };
+
+        var editDiv = document.createElement('div');
+        editDiv.classList = "col-6";
+        editDiv.appendChild(editBtn);
+        
+        var delDiv = document.createElement('div');
+        delDiv.classList = "col-6";
+        delDiv.appendChild(deleteBtn);
+
+        divRow.appendChild(editBtn);
+        divRow.appendChild(delDiv);
+
+        cell6.appendChild(divRow);
+
+        // ---------- Celda de los botones de Editar/Eliminar ---------------
+        
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+        row.appendChild(cell3);
+        row.appendChild(cell4);
+        row.appendChild(cell5);
+        row.appendChild(cell6);
+
+        return row;
+    }
+}
+
 $('#selectType').change(function () {
 	$('#answersTextBoxes').html("");
 	selectedType = $('#selectType').val();

@@ -221,12 +221,14 @@
 
                 <div class="row question-container">
                     <div class="col-12">
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="questionsTable">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>@Html.DisplayNameFor(model => model.Questions[0].chr_Description)</th>
                                     <th>@Html.DisplayNameFor(model => model.Questions[0].chr_Type)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Questions[0].bit_SingleAnswer)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Questions[0].chr_Formula)</th>
                                     <th>Edit</th>
                                 </tr>
                             </thead>
@@ -352,6 +354,7 @@
         $(document).ready(function () {
             $('.select2').select2();
             $('.question-container').hide();
+            var token;
 
             $('#checklistForm').on('submit',function (e) {
                 e.preventDefault();
@@ -400,7 +403,7 @@
 
             window.onunload = function () {
                 var form = $('#checklistForm');
-                var token = $('input[name="__RequestVerificationToken"]', form).val();
+                token = $('input[name="__RequestVerificationToken"]', form).val();
                 $.ajax({
                     url: '@Url.Action("Delete", "Checklists")',
                     type: "POST",
@@ -411,7 +414,7 @@
 
         $('#questionForm').on('submit', function (e) {
             e.preventDefault();
-            var token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
+            token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
             $.ajax({
                 url: '@Url.Action("Create", "Questions")',
                 type: "POST",
@@ -451,6 +454,8 @@
                             $('#answersContainer').hide();
                             break;
                     }
+
+                    UpdateQuestionsTable(currentChecklistId);
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     alert(errorThrown);
@@ -461,7 +466,7 @@
         });
         //string description, string formula, string variable, int id_question
         function AddAnswer(description, variable, id_question) {
-            var token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
+            token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
             $.ajax({
                 url: '@Url.Action("Create", "Answers")',
                 type: "POST",
@@ -485,7 +490,11 @@
                 type: "GET",
                 data: { id: id },
                 success: function (data) {
-                    // Aqui voy a actualizar con el resultado de la consulta de todas las preguntas de un checklist :ch
+                    $('#questionsTable tbody').html('');
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        $('#questionsTable tbody').append(Question.addRow(i + 1, data[i].chr_Description, data[i].chr_Type, data[i].bit_SingleAnswer, data[i].chr_Formula, data[i].int_IdQuestion));
+                    }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     alert(errorThrown);
@@ -494,6 +503,28 @@
             });
         }
 
+        function DeleteQuestion(id) {
+            $.ajax({
+                url: '@Url.Action("Delete", "Questions")',
+                type: "POST",
+                data: {
+                    __RequestVerificationToken: token,
+                    id: id
+                },
+                success: function (result) {
+                    if (!result.Success)
+                        alert(result.Message);
+                    else
+                        UpdateQuestionsTable(currentChecklistId);
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    alert(textStatus);
+                    alert(jXHR);
+                }
+            });
+
+        }
         
 
     </script>

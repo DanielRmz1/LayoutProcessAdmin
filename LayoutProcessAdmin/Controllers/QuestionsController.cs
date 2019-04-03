@@ -98,30 +98,27 @@ namespace LayoutProcessAdmin.Controllers
             return View(question);
         }
 
-        // GET: Questions/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Question question = db.Questions.Find(id);
-            if (question == null)
-            {
-                return HttpNotFound();
-            }
-            return View(question);
-        }
-
         // POST: Questions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public JsonResult DeleteConfirmed(int id)
         {
-            Question question = db.Questions.Find(id);
-            db.Questions.Remove(question);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                Question question = db.Questions.Include(v => v.Answers).SingleOrDefault(v => v.int_IdQuestion == id);
+
+                while (question.Answers.Count > 0)
+                    db.Answers.Remove(question.Answers[0]);
+
+                db.Questions.Remove(question);
+                db.SaveChanges();
+                return Json(new { Success = true });
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Message = e.ToString() });
+            }
+            
         }
 
         protected override void Dispose(bool disposing)
