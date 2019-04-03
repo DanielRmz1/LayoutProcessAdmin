@@ -420,28 +420,32 @@
                     description: $('#idPregunta').val(),
                     type: $('#selectType').val(),
                     singleAnswer: $('#chSingleAnswer').is(':checked'),
+                    formula: $('#formulaInput').val(),
                     id_checklist: currentChecklistId
                 },
                 success: function (data) {
-
                     switch (selectedType) {
                         case "yn":
-                            $('#answersTextBoxes .form-group input').each(function () {
-                                AddAnswer(this.value, "", "", data.id);
+                            $('#answersTextBoxes input').each(function () {
+                                AddAnswer(this.value, "", data.id);
                             });
+                            $('#addQuestion').modal('hide');
                             break;
                         case "op":
-                            $('#answersTextBoxes .form-group').each(function (e) {
-                                AddAnswer("", "", "", data.id);
-                            });
+                            AddAnswer("textarea", "", data.id);
+                            $('#addQuestion').modal('hide');
                             break;
                         case "mu":
-                            $('#answersTextBoxes .form-group input').each(function () {
-                                AddAnswer(this.value, "", "", data.id);
+                            $('#answersTextBoxes input').each(function () {
+                                AddAnswer(this.value, "", data.id);
                             });
+                            $('#addQuestion').modal('hide');
                             break;
                         case "ca":
-
+                            $('#answersTextBoxes .form-group').each(function () {
+                                AddAnswer($(this + " .answer").val(), $(this + " .variable").val(), data.id);
+                            });
+                            $('#addQuestion').modal('hide');
                             break;
                         default:
                             $('#answersContainer').hide();
@@ -456,7 +460,7 @@
             });
         });
         //string description, string formula, string variable, int id_question
-        function AddAnswer(description, formula, variable, id_question) {
+        function AddAnswer(description, variable, id_question) {
             var token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
             $.ajax({
                 url: '@Url.Action("Create", "Answers")',
@@ -464,12 +468,8 @@
                 data: {
                     __RequestVerificationToken: token,
                     description: description,
-                    formula: formula,
                     variable: variable,
                     id_question: id_question
-                },
-                success: function (data) {
-                    console.log("Answer return id: " + data.id);
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     alert(errorThrown);

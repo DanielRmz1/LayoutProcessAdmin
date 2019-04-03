@@ -26,14 +26,13 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(string description, string formula, string variable, int id_question)
+        public JsonResult Create(string description, string variable, int id_question)
         {
             try
             {
                 var answer = db.Answers.Add(new Answer()
                 {
                     chr_Description = description,
-                    chr_Formula = formula,
                     chr_Variable = variable,
                     int_Question = db.Questions.Find(id_question)
                 });

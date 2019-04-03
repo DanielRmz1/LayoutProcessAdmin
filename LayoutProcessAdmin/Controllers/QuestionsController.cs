@@ -43,7 +43,7 @@ namespace LayoutProcessAdmin.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(string description, string type, bool singleAnswer, int id_checklist)
+        public JsonResult Create(string description, string type, bool singleAnswer, string formula, int id_checklist)
         {
             try
             {
@@ -52,6 +52,7 @@ namespace LayoutProcessAdmin.Controllers
                     bit_SingleAnswer = singleAnswer,
                     chr_Description = description,
                     chr_Type = type,
+                    chr_Formula = formula,
                     int_Checklist = db.Checklists.Find(id_checklist)
                 });
 
