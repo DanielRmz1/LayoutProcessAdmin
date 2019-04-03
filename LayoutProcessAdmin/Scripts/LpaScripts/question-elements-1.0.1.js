@@ -192,7 +192,7 @@ var Question = {
         deleteBtn.classList = "btn btn-danger btn-sm";
         deleteBtn.appendChild(deleteTag);
         deleteBtn.onclick = function () {
-            DeleteQuestion(id);
+            ShowDeleteQuestionModal(id);
         };
 
         var editDiv = document.createElement('div');
@@ -294,4 +294,9 @@ function ShowQuestionModal() {
     $('#selectType').val('none').trigger('change');
 
 	$('#addQuestion').modal('show');
+}
+
+function ShowDeleteQuestionModal(id) {
+    $('#deleteQuestionModal .id-question').val(id);
+    $('#deleteQuestionModal').modal('show');
 }
