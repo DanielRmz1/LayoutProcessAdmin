@@ -265,12 +265,24 @@ namespace LayoutProcessAdmin.Controllers
                     db.UsersChecklists.Remove(child);
 
                 foreach (var child in checklist.Questions.ToList())
+                {
+                    RemoveAnswers(child.int_IdQuestion);
                     db.Questions.Remove(child);
+                }
 
                 db.Checklists.Remove(checklist);
                 db.SaveChanges();
             }
             return RedirectToAction("Index");
+        }
+
+        private void RemoveAnswers(int id)
+        {
+            var answers = db.Answers.Where(x => x.int_Question.int_IdQuestion == id).ToList();
+
+            if (answers.Count > 0)
+                foreach (var answer in answers)
+                    db.Answers.Remove(answer);
         }
 
         protected override void Dispose(bool disposing)
