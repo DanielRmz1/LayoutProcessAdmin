@@ -424,6 +424,9 @@
                 },
                 success: function (data) {
                     console.log(data);
+                    $('#answersTextBoxes input').each(function () {
+                        console.log(this.value);
+                    });
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     alert(errorThrown);
@@ -432,9 +435,28 @@
                 }
             });
         });
-
-        function AddAnswer(description, entry, id_question) {
-
+        //string description, string formula, string variable, int id_question
+        function AddAnswer(description, formula, variable, id_question) {
+            var token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
+            $.ajax({
+                url: '@Url.Action("Create", "Answers")',
+                type: "POST",
+                data: {
+                    __RequestVerificationToken: token,
+                    description: description,
+                    formula: formula,
+                    variable: variable,
+                    id_checklist: id_question
+                },
+                success: function (data) {
+                    console.log("Answer return id: " + data.id);
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    alert(textStatus);
+                    alert(jXHR);
+                }
+            });
         }
 
         function UpdateQuestionsTable(id) {

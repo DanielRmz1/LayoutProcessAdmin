@@ -21,3 +21,4 @@ bld/
 .vs/
 packages/
 *.csproj
+*.tmp

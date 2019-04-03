@@ -57,7 +57,7 @@ namespace LayoutProcessAdmin.Controllers
 
                 db.SaveChanges();
 
-                return Json(new { id = newQuestion.int_IdQuestion }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true, id = newQuestion.int_IdQuestion }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
