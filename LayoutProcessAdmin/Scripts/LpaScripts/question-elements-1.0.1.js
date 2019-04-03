@@ -184,7 +184,9 @@ var Question = {
         editBtn.setAttribute("role", "button");
         editBtn.classList = "btn btn-warning btn-sm";
         editBtn.appendChild(editTag);
-        //editBtn.onclick = DeleteQuestion(id);
+        editBtn.onclick = function () {
+            EditQuestion(id);
+        };
 
         var deleteBtn = document.createElement('a');
         deleteBtn.href = '#';

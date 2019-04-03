@@ -23,6 +23,22 @@ namespace LayoutProcessAdmin.Controllers
             return Json(db.Questions.Where(x => x.int_Checklist.int_IdList == id).ToList(), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public JsonResult GetQuestion(int id)
+        {
+            try
+            {
+                var question = db.Questions.Find(id);
+                var answers = db.Answers.Where(x => x.int_Question.int_IdQuestion == question.int_IdQuestion).Select(i => new { i.chr_Description, i.chr_Variable, i.int_IdAnswer }).ToList();
+                return Json(new { Success = true, Quest = question, Answs = answers }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Message = e.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
         // GET: Questions/Details/5
         public ActionResult Details(int? id)
         {

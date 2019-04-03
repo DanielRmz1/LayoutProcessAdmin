@@ -498,8 +498,6 @@
         });
         //string description, string formula, string variable, int id_question
         function AddAnswer(description, variable, id_question) {
-            console.log(description);
-            console.log(variable);
             token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
             $.ajax({
                 url: '@Url.Action("Create", "Answers")',
@@ -562,7 +560,21 @@
 
         }
 
-
+        function EditQuestion(id) {
+            console.log(id);
+            $.ajax({
+                url: '@Url.Action("GetQuestion", "Questions")',
+                type: "GET",
+                data: { id: id },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    alert(textStatus);
+                }
+            });
+        }
 
     </script>
 }
