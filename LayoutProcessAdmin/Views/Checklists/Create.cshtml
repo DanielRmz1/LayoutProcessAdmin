@@ -445,8 +445,8 @@
                             $('#addQuestion').modal('hide');
                             break;
                         case "ca":
-                            $('#answersTextBoxes .form-group').each(function () {
-                                AddAnswer($(this + " .answer").val(), $(this + " .variable").val(), data.id);
+                            $('#answersTextBoxes .entry').each(function () {
+                                AddAnswer($(this).find(".col-9 input").val(), $(this).find(".col-3 input").val(), data.id);
                             });
                             $('#addQuestion').modal('hide');
                             break;
@@ -466,6 +466,8 @@
         });
         //string description, string formula, string variable, int id_question
         function AddAnswer(description, variable, id_question) {
+            console.log(description);
+            console.log(variable);
             token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
             $.ajax({
                 url: '@Url.Action("Create", "Answers")',

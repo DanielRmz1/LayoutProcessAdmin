@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using LayoutProcessAdmin.Models;
@@ -101,11 +102,11 @@ namespace LayoutProcessAdmin.Controllers
         // POST: Questions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public JsonResult DeleteConfirmed(int id)
+        public async Task<JsonResult> DeleteConfirmed(int id)
         {
             try
             {
-                Question question = db.Questions.Include(v => v.Answers).SingleOrDefault(v => v.int_IdQuestion == id);
+                Question question = await db.Questions.Include(v => v.Answers).SingleOrDefaultAsync(v => v.int_IdQuestion == id);
 
                 while (question.Answers.Count > 0)
                     db.Answers.Remove(question.Answers[0]);

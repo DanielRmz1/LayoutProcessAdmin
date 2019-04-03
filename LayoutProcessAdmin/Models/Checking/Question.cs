@@ -31,8 +31,10 @@ namespace LayoutProcessAdmin.Models.Checking
         /// se pueden elegir mas de 2 respuestas por ejemplo una pregunta de respuesta multiple
         /// con checkbox y si es SingleAnswer sería con radio buttons para solamente elegir una respuesta
         /// </summary>
+        [Display(Name = "Single")]
         public bool bit_SingleAnswer { get; set; }
 
+        [Display(Name = "Formula")]
         public string chr_Formula { get; set; }
 
         public List<Answer> Answers { get; set; }

@@ -249,8 +249,8 @@ $('#selectType').change(function () {
 			$('#btnAddAnswer').show();
             $('#btnRemoveAnswer').show();
 			$('#answersTextBoxes').append(Answer.addMultiple());
-			$('#chSingleAnswer').prop("checked", false);
-			$('#chSingleAnswer').remove('disabled');
+            $('#chSingleAnswer').prop("checked", false);
+            $('#chSingleAnswer').removeAttr('disabled');
 			break;
 		case "ca":
 			$('#btnAddAnswer').show();
