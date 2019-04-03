@@ -289,6 +289,9 @@ $('#btnRemoveAnswer').on('click', function () {
 });
 
 function ShowQuestionModal() {
-	$('#selectType').val(0);
+    $('#questionSumary').html('');
+    $('#idPregunta').val('');
+    $('#selectType').val('none').trigger('change');
+
 	$('#addQuestion').modal('show');
 }

@@ -310,6 +310,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="text-danger text-justify" id="questionSumary"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -427,35 +430,39 @@
                     id_checklist: currentChecklistId
                 },
                 success: function (data) {
-                    switch (selectedType) {
-                        case "yn":
-                            $('#answersTextBoxes input').each(function () {
-                                AddAnswer(this.value, "", data.id);
-                            });
-                            $('#addQuestion').modal('hide');
-                            break;
-                        case "op":
-                            AddAnswer("textarea", "", data.id);
-                            $('#addQuestion').modal('hide');
-                            break;
-                        case "mu":
-                            $('#answersTextBoxes input').each(function () {
-                                AddAnswer(this.value, "", data.id);
-                            });
-                            $('#addQuestion').modal('hide');
-                            break;
-                        case "ca":
-                            $('#answersTextBoxes .entry').each(function () {
-                                AddAnswer($(this).find(".col-9 input").val(), $(this).find(".col-3 input").val(), data.id);
-                            });
-                            $('#addQuestion').modal('hide');
-                            break;
-                        default:
-                            $('#answersContainer').hide();
-                            break;
-                    }
+                    if (data.Success) {
+                        switch (selectedType) {
+                            case "yn":
+                                $('#answersTextBoxes input').each(function () {
+                                    AddAnswer(this.value, "", data.id);
+                                });
+                                $('#addQuestion').modal('hide');
+                                break;
+                            case "op":
+                                AddAnswer("textarea", "", data.id);
+                                $('#addQuestion').modal('hide');
+                                break;
+                            case "mu":
+                                $('#answersTextBoxes input').each(function () {
+                                    AddAnswer(this.value, "", data.id);
+                                });
+                                $('#addQuestion').modal('hide');
+                                break;
+                            case "ca":
+                                $('#answersTextBoxes .entry').each(function () {
+                                    AddAnswer($(this).find(".col-9 input").val(), $(this).find(".col-3 input").val(), data.id);
+                                });
+                                $('#addQuestion').modal('hide');
+                                break;
+                            default:
+                                $('#answersContainer').hide();
+                                break;
+                        }
 
-                    UpdateQuestionsTable(currentChecklistId);
+                        UpdateQuestionsTable(currentChecklistId);
+                    } else
+                        $('#questionSumary').append(data.Message);
+                    
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     alert(errorThrown);
