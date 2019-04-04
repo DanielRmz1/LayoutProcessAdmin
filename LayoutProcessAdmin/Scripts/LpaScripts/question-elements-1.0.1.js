@@ -1,44 +1,47 @@
 ﻿var currentChecklistId;
 var selectedType;
+var isEditing = false;
+var editingQuestionId;
 
 var Answer = ({
-	addYesNo: function () {
+	addYesNo: function (text) {
 		var div = document.createElement('div');
 		div.classList = "col-10 form-group";
 		var input = document.createElement("input");
 		input.classList = "form-control";
-		input.value = "Yes";
-		input.id = "txtYes";
+		input.value = (text == "") ? "Yes" : text;
+        input.id = "txtYes";
 
 		div.appendChild(input);
 		div.appendChild(document.createElement('br'));
 
 		var input2 = document.createElement("input");
 		input2.classList = "form-control";
-		input2.value = "No";
+        input2.value = (text == "") ? "No" : text;
 		input2.id = "txtNo";
 
 		div.appendChild(input2);
 
 		return div;
 	},
-	addMultiple: function () {
+    addMultiple: function () {
 		var div = document.createElement('div');
 		div.classList = "col-10 form-group";
 		div.id = "multipleContainer";
 
-		var input = document.createElement("input");
+        var input = document.createElement("input");
 		input.classList = "form-control";
-		input.placeholder = "New Answer";
+        input.placeholder = "New Answer";
 
-		div.appendChild(input);
+        if (!isEditing) { div.appendChild(input); }
 		div.appendChild(document.createElement('br'));
 		return div;
 	},
-	addInput: function () {
+	addInput: function (text) {
 		var input = document.createElement('input');
 		input.classList = "form-control";
-		input.placeholder = "New Answer";
+        input.placeholder = "New Answer";
+        input.value = text;
 		document.getElementById("multipleContainer").appendChild(input);
 		document.getElementById("multipleContainer").appendChild(document.createElement('br'));
 	},
@@ -57,7 +60,7 @@ var Answer = ({
 		var formulaInput = document.createElement('input');
 		formulaInput.classList = "form-control";
 		formulaInput.id = "formulaInput";
-		formulaInput.placeholder = "Formula: Example -> (base*height)/2";
+        formulaInput.placeholder = "Formula: Example -> (base*height)/2";
 
 		var help = document.createElement('i');
 		help.classList = "fa fa-question-circle text-primary";
@@ -77,35 +80,37 @@ var Answer = ({
 		newRow.appendChild(formulaDiv);
 		newRow.appendChild(helpDiv);
 		div.appendChild(newRow);
-		div.appendChild(document.createElement('br'));
+        div.appendChild(document.createElement('br'));
 
-		var row = document.createElement('div');
-		row.classList = "row form-group entry";
+        if (!isEditing) {
+            var row = document.createElement('div');
+            row.classList = "row form-group entry";
 
-		var variableDiv = document.createElement('div');
-		variableDiv.classList = "col-3";
+            var variableDiv = document.createElement('div');
+            variableDiv.classList = "col-3";
 
-		var answerDiv = document.createElement('div');
-		answerDiv.classList = "col-9";
+            var answerDiv = document.createElement('div');
+            answerDiv.classList = "col-9";
 
-		var variableInput = document.createElement("input");
-		variableInput.placeholder = "Variable";
-		variableInput.classList = "form-control variable";
-		variableDiv.appendChild(variableInput);
+            var variableInput = document.createElement("input");
+            variableInput.placeholder = "Variable";
+            variableInput.classList = "form-control variable";
+            variableDiv.appendChild(variableInput);
 
-		var answerInput = document.createElement("input");
-		answerInput.placeholder = "New answer";
-		answerInput.classList = "form-control";
-		answerDiv.appendChild(answerInput);
+            var answerInput = document.createElement("input");
+            answerInput.placeholder = "New answer";
+            answerInput.classList = "form-control answer";
+            answerDiv.appendChild(answerInput);
 
-		row.appendChild(variableDiv);
-		row.appendChild(answerDiv);
+            row.appendChild(variableDiv);
+            row.appendChild(answerDiv);
 
-		div.appendChild(row);
+            div.appendChild(row);
+        }
 
 		return div;
 	},
-	addCalculatedInput: function () {
+    addCalculatedInput: function (variable, text) {
 		var div = document.getElementById("calculatedContainer");
 
 		var row = document.createElement('div');
@@ -120,12 +125,14 @@ var Answer = ({
 		var variableInput = document.createElement("input");
 		variableInput.placeholder = "Variable";
 		variableInput.classList = "form-control variable";
-		variableDiv.appendChild(variableInput);
+        variableDiv.appendChild(variableInput);
+        variableInput.value = variable;
 
 		var answerInput = document.createElement("input");
 		answerInput.placeholder = "New answer";
 		answerInput.classList = "form-control answer";
-		answerDiv.appendChild(answerInput);
+        answerDiv.appendChild(answerInput);
+        answerInput.value = text;
 
 		row.appendChild(variableDiv);
 		row.appendChild(answerDiv);
@@ -138,7 +145,7 @@ var Answer = ({
 });
 
 var Question = {
-    addRow: function (index, description, type, single, formula, id) {
+    addRow: function (index, description, type, single, formula, id, text, edit_id) {
         var row = document.createElement('tr');
 
         var cell1 = document.createElement('td');
@@ -237,7 +244,7 @@ $('#selectType').change(function () {
 			$('#btnAddAnswer').hide();
 			$('#btnRemoveAnswer').hide();
             
-			$('#answersTextBoxes').append(Answer.addYesNo());
+			$('#answersTextBoxes').append(Answer.addYesNo(""));
 			$('#chSingleAnswer').prop("checked", true);
 			$('#chSingleAnswer').attr('disabled', 'disabled');
 			break;
@@ -250,14 +257,14 @@ $('#selectType').change(function () {
 		case "mu":
 			$('#btnAddAnswer').show();
             $('#btnRemoveAnswer').show();
-			$('#answersTextBoxes').append(Answer.addMultiple());
+			$('#answersTextBoxes').append(Answer.addMultiple(true));
             $('#chSingleAnswer').prop("checked", false);
             $('#chSingleAnswer').removeAttr('disabled');
 			break;
 		case "ca":
 			$('#btnAddAnswer').show();
             $('#btnRemoveAnswer').show();
-			$('#answersTextBoxes').append(Answer.addCalculated());
+			$('#answersTextBoxes').append(Answer.addCalculated(true));
 			$('#chSingleAnswer').prop("checked", true);
 			$('#chSingleAnswer').attr('disabled', 'disabled');
 			break;
@@ -271,10 +278,10 @@ $('#selectType').change(function () {
 $('#btnAddAnswer').on('click', function () {
 	switch (selectedType) {
 		case "mu":
-			Answer.addInput();
+			Answer.addInput("");
 			break;
 		case "ca":
-			Answer.addCalculatedInput();
+			Answer.addCalculatedInput("", "");
 			break;
 	}
 });
@@ -290,12 +297,73 @@ $('#btnRemoveAnswer').on('click', function () {
 	}
 });
 
-function ShowQuestionModal() {
+function ShowQuestionModal(question) {
+    console.log(question);
     $('#questionSumary').html('');
-    $('#idPregunta').val('');
-    $('#selectType').val('none').trigger('change');
 
+    if (question != "") {
+        $('#idPregunta').val(question.Quest.chr_Description);
+        $('#selectType').val(question.Quest.chr_Type).trigger('change');
+        $('#chSingleAnswer').prop('checked', question.Quest.bit_SingleAnswer);
+
+        for (var i = 0; i < question.Answs.length; i++) {
+            if (question.Quest.chr_Type == 'ca' && i == 0) {
+                Answer.addCalculated(true);
+                $('#formulaInput').val(question.Quest.chr_Formula);
+            }
+            else if (question.Quest.chr_Type == 'mu' && i == 0)
+                Answer.addMultiple(false);
+          
+            AddEditingControls(question.Quest.chr_Type, question.Answs[i].chr_Description, question.Answs[i].chr_Variable);
+        }
+    } else {
+        $('#idPregunta').val('');
+        $('#selectType').val('none').trigger('change');
+    }
+    
 	$('#addQuestion').modal('show');
+}
+
+function AddEditingControls(type, text, variable) {
+    $('#answersContainer').show();
+
+    switch (type) {
+        case "none":
+            $('#answersContainer').hide();
+            break;
+        case "yn":
+            $('#btnAddAnswer').hide();
+            $('#btnRemoveAnswer').hide();
+
+            $('#answersTextBoxes').append(Answer.addYesNo(text));
+
+            $('#chSingleAnswer').prop("checked", true);
+            $('#chSingleAnswer').attr('disabled', 'disabled');
+            break;
+        case "op":
+            $('#btnAddAnswer').hide();
+            $('#btnRemoveAnswer').hide();
+            $('#chSingleAnswer').prop("checked", true);
+            $('#chSingleAnswer').attr('disabled', 'disabled');
+            break;
+        case "mu":
+            $('#btnAddAnswer').show();
+            $('#btnRemoveAnswer').show();
+            $('#answersTextBoxes').append(Answer.addInput(text));
+            $('#chSingleAnswer').removeAttr('disabled');
+            break;
+        case "ca":
+            $('#btnAddAnswer').show();
+            $('#btnRemoveAnswer').show();
+            $('#answersTextBoxes').append(Answer.addCalculatedInput(variable, text));
+            $('#chSingleAnswer').prop("checked", true);
+            $('#chSingleAnswer').attr('disabled', 'disabled');
+            break;
+        default:
+            $('#answersContainer').hide();
+            break;
+
+    }
 }
 
 function ShowDeleteQuestionModal(id) {

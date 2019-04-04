@@ -60,7 +60,7 @@ namespace LayoutProcessAdmin.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(string description, string type, bool singleAnswer, string formula, int id_checklist)
+        public JsonResult Create(string description, string type, bool singleAnswer, string formula, int id_checklist, int id)
         {
             try
             {

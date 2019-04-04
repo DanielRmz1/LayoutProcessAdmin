@@ -413,10 +413,10 @@
                     }
                 });
             });
-
+            
             $('#btnAddQuestion').on('click', function () {
                 $('#answersContainer').hide();
-                ShowQuestionModal();
+                ShowQuestionModal("");
             });
 
             $(window).bind('beforeunload', function () {
@@ -438,6 +438,10 @@
                 currentChecklistId = undefined;
                 window.location = '@Url.Action("index", "Home")';
             });
+
+            $('#addQuestion').on('hide.bs.modal', function () {
+                isEditing = false;
+            });
         });
 
         $('#questionForm').on('submit', function (e) {
@@ -452,7 +456,8 @@
                     type: $('#selectType').val(),
                     singleAnswer: $('#chSingleAnswer').is(':checked'),
                     formula: $('#formulaInput').val(),
-                    id_checklist: currentChecklistId
+                    id_checklist: currentChecklistId,
+                    id = editingQuestionId
                 },
                 success: function (data) {
                     if (data.Success) {
@@ -502,6 +507,7 @@
             $.ajax({
                 url: '@Url.Action("Create", "Answers")',
                 type: "POST",
+                async: false,
                 data: {
                     __RequestVerificationToken: token,
                     description: description,
@@ -561,13 +567,14 @@
         }
 
         function EditQuestion(id) {
-            console.log(id);
             $.ajax({
                 url: '@Url.Action("GetQuestion", "Questions")',
                 type: "GET",
                 data: { id: id },
                 success: function (data) {
-                    console.log(data);
+                    isEditing = true;
+                    editingQuestionId = id;
+                    ShowQuestionModal(data);
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     alert(errorThrown);
