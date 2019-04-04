@@ -4,26 +4,48 @@ var isEditing = false;
 var editingQuestionId = -1;
 
 var Answer = ({
-	addYesNo: function (text) {
-		var div = document.createElement('div');
-		div.classList = "col-10 form-group";
-		var input = document.createElement("input");
-		input.classList = "form-control";
-		input.value = (text == "") ? "Yes" : text;
+    addYesNo: function () {
+        if (!isEditing) {
+            var div = document.createElement('div');
+            div.classList = "col-10 form-group";
+            var input = document.createElement("input");
+            input.classList = "form-control";
+            input.value = "Yes";
+            input.id = "txtYes";
+
+            div.appendChild(input);
+            div.appendChild(document.createElement('br'));
+
+            var input2 = document.createElement("input");
+            input2.classList = "form-control";
+            input2.value = "No";
+            input2.id = "txtNo";
+
+            div.appendChild(input2);
+            return div;
+        }
+    },
+    addYesNoEdit: function (yesText, noText) {
+
+        var div = document.createElement('div');
+        div.classList = "col-10 form-group";
+        var input = document.createElement("input");
+        input.classList = "form-control";
+        input.value = yesText;
         input.id = "txtYes";
 
-		div.appendChild(input);
-		div.appendChild(document.createElement('br'));
+        div.appendChild(input);
+        div.appendChild(document.createElement('br'));
 
-		var input2 = document.createElement("input");
-		input2.classList = "form-control";
-        input2.value = (text == "") ? "No" : text;
-		input2.id = "txtNo";
+        var input2 = document.createElement("input");
+        input2.classList = "form-control";
+        input2.value = noText;
+        input2.id = "txtNo";
 
-		div.appendChild(input2);
-
-		return div;
-	},
+        div.appendChild(input2);
+        
+        return div;
+    },
     addMultiple: function () {
 		var div = document.createElement('div');
 		div.classList = "col-10 form-group";
@@ -244,7 +266,7 @@ $('#selectType').change(function () {
 			$('#btnAddAnswer').hide();
 			$('#btnRemoveAnswer').hide();
             
-			$('#answersTextBoxes').append(Answer.addYesNo(""));
+			$('#answersTextBoxes').append(Answer.addYesNo("", ""));
 			$('#chSingleAnswer').prop("checked", true);
 			$('#chSingleAnswer').attr('disabled', 'disabled');
 			break;
@@ -257,14 +279,14 @@ $('#selectType').change(function () {
 		case "mu":
 			$('#btnAddAnswer').show();
             $('#btnRemoveAnswer').show();
-			$('#answersTextBoxes').append(Answer.addMultiple(true));
+			$('#answersTextBoxes').append(Answer.addMultiple());
             $('#chSingleAnswer').prop("checked", false);
             $('#chSingleAnswer').removeAttr('disabled');
 			break;
 		case "ca":
 			$('#btnAddAnswer').show();
             $('#btnRemoveAnswer').show();
-			$('#answersTextBoxes').append(Answer.addCalculated(true));
+			$('#answersTextBoxes').append(Answer.addCalculated());
 			$('#chSingleAnswer').prop("checked", true);
 			$('#chSingleAnswer').attr('disabled', 'disabled');
 			break;
@@ -301,6 +323,7 @@ function ShowQuestionModal(question) {
     $('#questionSumary').html('');
 
     if (question != "") {
+        $('#answersContainer').show();
         $('#idPregunta').val(question.Quest.chr_Description);
         $('#selectType').val(question.Quest.chr_Type).trigger('change');
         $('#chSingleAnswer').prop('checked', question.Quest.bit_SingleAnswer);
@@ -312,6 +335,13 @@ function ShowQuestionModal(question) {
             }
             else if (question.Quest.chr_Type == 'mu' && i == 0)
                 Answer.addMultiple(false);
+            else if (question.Quest.chr_Type == 'yn' && i == 0) {
+                $('#btnAddAnswer').hide();
+                $('#btnRemoveAnswer').hide();
+                $('#answersTextBoxes').append(Answer.addYesNoEdit(question.Answs[0].chr_Description, question.Answs[1].chr_Description));
+                $('#chSingleAnswer').prop("checked", true);
+                $('#chSingleAnswer').attr('disabled', 'disabled');
+            }
           
             AddEditingControls(question.Quest.chr_Type, question.Answs[i].chr_Description, question.Answs[i].chr_Variable);
         }
@@ -324,20 +354,10 @@ function ShowQuestionModal(question) {
 }
 
 function AddEditingControls(type, text, variable) {
-    $('#answersContainer').show();
 
     switch (type) {
         case "none":
             $('#answersContainer').hide();
-            break;
-        case "yn":
-            $('#btnAddAnswer').hide();
-            $('#btnRemoveAnswer').hide();
-
-            $('#answersTextBoxes').append(Answer.addYesNo(text));
-
-            $('#chSingleAnswer').prop("checked", true);
-            $('#chSingleAnswer').attr('disabled', 'disabled');
             break;
         case "op":
             $('#btnAddAnswer').hide();
@@ -357,9 +377,6 @@ function AddEditingControls(type, text, variable) {
             $('#answersTextBoxes').append(Answer.addCalculatedInput(variable, text));
             $('#chSingleAnswer').prop("checked", true);
             $('#chSingleAnswer').attr('disabled', 'disabled');
-            break;
-        default:
-            $('#answersContainer').hide();
             break;
 
     }
