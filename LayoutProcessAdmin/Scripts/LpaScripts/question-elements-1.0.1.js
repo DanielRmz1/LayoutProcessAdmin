@@ -1,7 +1,7 @@
 ﻿var currentChecklistId;
 var selectedType;
 var isEditing = false;
-var editingQuestionId;
+var editingQuestionId = -1;
 
 var Answer = ({
 	addYesNo: function (text) {
@@ -298,7 +298,6 @@ $('#btnRemoveAnswer').on('click', function () {
 });
 
 function ShowQuestionModal(question) {
-    console.log(question);
     $('#questionSumary').html('');
 
     if (question != "") {

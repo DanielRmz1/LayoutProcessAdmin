@@ -60,22 +60,40 @@ namespace LayoutProcessAdmin.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(string description, string type, bool singleAnswer, string formula, int id_checklist, int id)
+        public JsonResult Create(string description, string type, bool singleAnswer, string formula, int id_checklist, int id_question)
         {
             try
             {
-                var newQuestion = db.Questions.Add(new Question()
+                if(id_question == -1)
                 {
-                    bit_SingleAnswer = singleAnswer,
-                    chr_Description = description,
-                    chr_Type = type,
-                    chr_Formula = formula,
-                    int_Checklist = db.Checklists.Find(id_checklist)
-                });
+                    var newQuestion = db.Questions.Add(new Question()
+                    {
+                        bit_SingleAnswer = singleAnswer,
+                        chr_Description = description,
+                        chr_Type = type,
+                        chr_Formula = formula,
+                        int_Checklist = db.Checklists.Find(id_checklist)
+                    });
 
-                db.SaveChanges();
+                    db.SaveChanges();
 
-                return Json(new { Success = true, id = newQuestion.int_IdQuestion }, JsonRequestBehavior.AllowGet);
+                    return Json(new { Success = true, id = newQuestion.int_IdQuestion }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var editQuestion = db.Questions.Include(x => x.Answers).SingleOrDefault(x => x.int_IdQuestion == id_question);
+                    editQuestion.chr_Description = description;
+                    editQuestion.chr_Type = type;
+                    editQuestion.bit_SingleAnswer = singleAnswer;
+                    editQuestion.chr_Formula = formula;
+
+                    while (editQuestion.Answers.Count > 0)
+                        db.Answers.Remove(editQuestion.Answers[0]);
+
+                    db.Entry(editQuestion).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json(new { Success = true, id = id_question }, JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception e)
             {
