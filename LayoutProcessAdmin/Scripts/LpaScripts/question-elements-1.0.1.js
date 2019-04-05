@@ -264,9 +264,13 @@ $('#selectType').change(function () {
 			break;
 		case "yn":
 			$('#btnAddAnswer').hide();
-			$('#btnRemoveAnswer').hide();
-            
-			$('#answersTextBoxes').append(Answer.addYesNo("", ""));
+            $('#btnRemoveAnswer').hide();
+
+            if (isEditing)
+                $('#answersTextBoxes').append(Answer.addYesNoEdit("Yes", "No"));
+            else
+                $('#answersTextBoxes').append(Answer.addYesNo());
+
 			$('#chSingleAnswer').prop("checked", true);
 			$('#chSingleAnswer').attr('disabled', 'disabled');
 			break;

@@ -170,7 +170,7 @@
                             <div class="col-12">
                                 @Html.LabelFor(model => model.Days, htmlAttributes: new { @class = "control-label" })
                                 <div class="col-10">
-                                    @Html.DropDownListFor(model => model.Days, weekDays, "Select a Option", new { @class = "form-control select2", multiple = "multiple" })
+                                    @Html.DropDownListFor(model => model.Days, weekDays, htmlAttributes: new { @class = "form-control select2", multiple = "multiple" })
                                     @Html.ValidationMessageFor(model => model.Days, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -179,7 +179,7 @@
                             <div class="col-12">
                                 @Html.LabelFor(model => model.SelectedUsers, htmlAttributes: new { @class = "control-label" })
                                 <div class="col-10">
-                                    @Html.DropDownListFor(model => model.SelectedUsers, users, "Select a Option", new { @class = "form-control select2", multiple = "multiple" })
+                                    @Html.DropDownListFor(model => model.SelectedUsers, users, htmlAttributes: new { @class = "form-control select2", multiple = "multiple" })
                                     @Html.ValidationMessageFor(model => model.SelectedUsers, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -274,6 +274,7 @@
                             <label for="selectType">Question Type</label>
                             <select id="selectType" class="select2 form-control" style="width: 100%;">
                                 <option value="none">-- Select a Option --</option>
+                                <option value="in">Numerical</option>
                                 <option value="mu">Multiple</option>
                                 <option value="yn">Yes/No</option>
                                 <option value="op">Open</option>
