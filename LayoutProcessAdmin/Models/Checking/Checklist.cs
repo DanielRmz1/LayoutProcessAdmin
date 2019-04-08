@@ -59,6 +59,9 @@ namespace LayoutProcessAdmin.Models.Checking
         [Display(Name = "Who can answer this?")]
         public int[] SelectedUsers { get; set; }
 
+        [NotMapped]
+        public int id_Period { get; set; }
+
         public List<Question> Questions { get; set; }
         
         public List<UsersChecklist> UsersChecklists { get; set; }

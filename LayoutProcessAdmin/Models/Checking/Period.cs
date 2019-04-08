@@ -21,5 +21,6 @@ namespace LayoutProcessAdmin.Models.Checking
         public bool bit_Fri { get; set; }
         public bool bit_Sat { get; set; }
         public bool bit_Sun { get; set; }
+        
     }
 }

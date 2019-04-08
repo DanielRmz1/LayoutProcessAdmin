@@ -58,13 +58,13 @@ namespace LayoutProcessAdmin.Controllers
                 return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
 
             ViewBag.CurrentUser = user;
-            ViewBag.Users = GetUsersDropDown();
-            ViewBag.Areas = GetAreas();
+            ViewBag.Users = GetUsersDropDown(null);
+            ViewBag.Areas = GetAreas(-1);
 
             return View();
         }
 
-        List<SelectListItem> GetUsersDropDown()
+        List<SelectListItem> GetUsersDropDown(List<UsersChecklist> users)
         {
             var list = db.Users.ToList();
             var listado = new List<SelectListItem>();
@@ -74,11 +74,24 @@ namespace LayoutProcessAdmin.Controllers
                 listado.Add(new SelectListItem()
                 {
                     Text = item.chr_Name + " " + item.chr_LastName,
-                    Value = item.int_IdUser.ToString()
+                    Value = item.int_IdUser.ToString(),
+                    Selected = IsUserSelected(item.int_IdUser, users)
                 });
             }
 
             return listado;
+        }
+
+        bool IsUserSelected(int idUser, List<UsersChecklist> users)
+        {
+            if (users == null)
+                return false;
+
+            foreach (var user in users)
+                if (user.Users.int_IdUser == idUser)
+                    return true;
+
+            return false;
         }
 
         // POST: Checklists/Create
@@ -168,7 +181,7 @@ namespace LayoutProcessAdmin.Controllers
 
         }
 
-        List<SelectListItem> GetAreas()
+        List<SelectListItem> GetAreas(int idArea)
         {
             var areas = db.Areas;
             var areasList = new List<SelectListItem>();
@@ -177,7 +190,8 @@ namespace LayoutProcessAdmin.Controllers
                 areasList.Add(new SelectListItem()
                 {
                     Text = area.Name,
-                    Value = area.int_IdArea.ToString()
+                    Value = area.int_IdArea.ToString(),
+                    Selected = (area.int_IdArea == idArea) ? true : false
                 });
 
             return areasList;
@@ -207,12 +221,140 @@ namespace LayoutProcessAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Checklist checklist = db.Checklists.Find(id);
+            var users = db.Users.Find(user.int_IdUser);
+            Checklist checklist = db.Checklists.Include(x => x.int_Period).Include(x => x.UsersChecklists).Include(x=>x.Area).SingleOrDefault(x => x.int_IdList == id);
+
             if (checklist == null)
             {
                 return HttpNotFound();
             }
+            checklist.id_Period = checklist.int_Period.int_IdPeriod;
+            ViewBag.Periods = GetPeriods(checklist.int_Period.chr_RepeatPeriod);
+            ViewBag.Days = GetDays();
+            ViewBag.Users = GetUsersDropDown(checklist.UsersChecklists);
+            ViewBag.Areas = GetAreas(-1);
             return View(checklist);
+        }
+
+        [HttpGet]
+        public JsonResult GetSelectedDays(int period)
+        {
+            try
+            {
+                var result = db.Periods.Find(period);
+
+                string[] days = new string[10];
+
+                days[0] = (result.bit_Sun) ? "su" : "";
+                days[1] = (result.bit_Mon) ? "mo" : "";
+                days[2] = (result.bit_Tue) ? "tu" : "";
+                days[3] = (result.bit_Wed) ? "we" : "";
+                days[4] = (result.bit_Thu) ? "th" : "";
+                days[5] = (result.bit_Sun) ? "fr" : "";
+                days[6] = (result.bit_Sun) ? "su" : "";
+
+                return Json(new { Success = true, Result = days }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Messagge = e.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetSelectedArea(int checklist)
+        {
+            try
+            {
+                var check = db.Checklists.Include(x => x.Area).SingleOrDefault(x => x.int_IdList == checklist);
+                return Json(new { Success = true, Result = check.Area.int_IdArea }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Messagge = e.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        List<SelectListItem> GetPeriods(string selectedPeriod)
+        {
+            var sPeriods = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text = "Once",
+                    Value = "o",
+                    Selected = (selectedPeriod == "o") ? true : false
+                },
+                new SelectListItem()
+                {
+                    Text = "Daily",
+                    Value = "d",
+                    Selected = (selectedPeriod == "d") ? true : false
+                },
+                new SelectListItem()
+                {
+                    Text = "Weekly",
+                    Value = "w",
+                    Selected = (selectedPeriod == "w") ? true : false
+                },
+                new SelectListItem()
+                {
+                    Text = "Monthly",
+                    Value = "m",
+                    Selected = (selectedPeriod == "m") ? true : false
+                },
+                new SelectListItem()
+                {
+                    Text = "15 Days",
+                    Value = "q",
+                    Selected = (selectedPeriod == "q") ? true : false
+                }
+            };
+            return sPeriods;
+        }
+
+        List<SelectListItem> GetDays()
+        {
+            var weekDays = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text = "Sunday",
+                    Value = "su"
+                },
+                new SelectListItem()
+                {
+                    Text = "Monday",
+                    Value = "mo"
+                },
+                new SelectListItem()
+                {
+                    Text = "Tuesday",
+                    Value = "tu"
+                },
+                new SelectListItem()
+                {
+                    Text = "Wednesday",
+                    Value = "we"
+                },
+                new SelectListItem()
+                {
+                    Text = "Thursday",
+                    Value = "th"
+                },
+                new SelectListItem()
+                {
+                    Text = "Friday",
+                    Value = "fr"
+                },
+                new SelectListItem()
+                {
+                    Text = "Saturday",
+                    Value = "sa"
+                }
+            };
+            return weekDays;
         }
 
         // POST: Checklists/Edit/5
@@ -220,23 +362,70 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo")] Checklist checklist)
+        public JsonResult Edit([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod, SelectedUsers,int_Area, id_Period")] Checklist checklist)
         {
+            if (checklist.SelectedUsers == null)
+                ModelState.AddModelError(string.Empty, "You have to choose at least one user to answer this checklist.");
+
+            if (checklist.Days == null)
+                ModelState.AddModelError(string.Empty, "Select at least one day from the week.");
+
+            if (checklist.SelectedPeriod == null)
+                ModelState.AddModelError(string.Empty, "Select the period for the checklist.");
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var result = db.UsersChecklists.Where(x => x.Checklist.int_IdList == checklist.int_IdList).ToList();
+
+                    foreach (var userChecklist in result)
+                        db.UsersChecklists.Remove(userChecklist);
+
+                    foreach (var item in checklist.SelectedUsers)
+                    {
+                        db.UsersChecklists.Add(new UsersChecklist()
+                        {
+                            Checklist = checklist,
+                            Users = db.Users.Find(item)
+                        });
+                    }
+                    var period = db.Periods.Find(checklist.id_Period);
+
+                    period.bit_Sun = FindSelectedDay(checklist.Days, "su");
+                    period.bit_Mon = FindSelectedDay(checklist.Days, "mo");
+                    period.bit_Tue = FindSelectedDay(checklist.Days, "tu");
+                    period.bit_Wed = FindSelectedDay(checklist.Days, "we");
+                    period.bit_Thu = FindSelectedDay(checklist.Days, "th");
+                    period.bit_Fri = FindSelectedDay(checklist.Days, "fr");
+                    period.bit_Sat = FindSelectedDay(checklist.Days, "sa");
+                    period.chr_RepeatPeriod = checklist.SelectedPeriod;
+                    
+                    db.Entry(period).State = EntityState.Modified;
                     db.Entry(checklist).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return Json(new { Success = true});
                 }
-                catch (System.Exception e)
+                catch (DbEntityValidationException e)
                 {
-                    return View(e);
+                    StringBuilder sb = new StringBuilder();
+
+                    foreach (var failure in e.EntityValidationErrors)
+                    {
+                        sb.AppendFormat("{0} failed validation\n", failure.Entry.Entity.GetType());
+                        foreach (var error in failure.ValidationErrors)
+                        {
+                            sb.AppendFormat("- {0} : {1}", error.PropertyName, error.ErrorMessage);
+                            sb.AppendLine();
+                        }
+                    }
+
+                    return Json(new { Success = false, Message = sb.ToString() });
                 }
-                
+
             }
-            return View(checklist);
+            var errorMessagge = ModelState.Values.Where(x => x.Errors.Count > 0).Select(x => x.Errors[0].ErrorMessage).ToList();
+            return Json(new { Success = false, Message = errorMessagge});
         }
 
         // GET: Checklists/Delete/5
