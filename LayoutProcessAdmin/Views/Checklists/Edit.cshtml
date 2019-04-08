@@ -34,9 +34,7 @@
     </div>
 </div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 
 <div class="row">
     <div class="col-lg-12 col-xl-8 col-12 offset-xl-2 offset-lg-0 offset-md-0">
@@ -174,7 +172,8 @@
             </div>
             <div class="card-footer">
                 <div class="form-group float-right">
-                    <div class="col-md-10">
+                    <div class="row">
+                        <a href="@Url.Action("Index", "Checklists")" class="btn btn-warning" role="button"><i class="fa fa-long-arrow-alt-left"></i> Return</a> &nbsp;
                         <button type="button" class="btn btn-success" id="saveChecklist">Save Checklist <i class="fa fa-check-circle" style="font-size: 20px;"></i></button>
                     </div>
                 </div>
@@ -369,24 +368,28 @@
                     switch (selectedType) {
                         case "yn":
                             $('#answersTextBoxes input').each(function () {
-                                AddAnswer(this.value, "", data.id);
+                                AddAnswer(this.value, "", data.id, 0, 0);
                             });
                             $('#addQuestion').modal('hide');
                             break;
                         case "op":
-                            AddAnswer("textarea", "", data.id);
+                            AddAnswer("textarea", "", data.id, 0, 0);
                             $('#addQuestion').modal('hide');
                             break;
                         case "mu":
                             $('#answersTextBoxes input').each(function () {
-                                AddAnswer(this.value, "", data.id);
+                                AddAnswer(this.value, "", data.id, 0, 0);
                             });
                             $('#addQuestion').modal('hide');
                             break;
                         case "ca":
                             $('#answersTextBoxes .entry').each(function () {
-                                AddAnswer($(this).find(".col-9 input").val(), $(this).find(".col-3 input").val(), data.id);
+                                AddAnswer($(this).find(".col-9 input").val(), $(this).find(".col-3 input").val(), data.id, 0, 0);
                             });
+                            $('#addQuestion').modal('hide');
+                            break;
+                        case "in":
+                            AddAnswer("", "", data.id, $('#lower-limit').val(), $('#upper-limit').val());
                             $('#addQuestion').modal('hide');
                             break;
                         default:
@@ -408,7 +411,7 @@
     });
 
     //string description, string formula, string variable, int id_question
-    function AddAnswer(description, variable, id_question) {
+    function AddAnswer(description, variable, id_question, lwLimit, upLimit) {
         token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
         $.ajax({
             url: '@Url.Action("Create", "Answers")',
@@ -418,7 +421,9 @@
                 __RequestVerificationToken: token,
                 description: description,
                 variable: variable,
-                id_question: id_question
+                id_question: id_question,
+                lowerLimit: lwLimit,
+                upperLimit: upLimit
             },
             error: function (jXHR, textStatus, errorThrown) {
                 alert(errorThrown);

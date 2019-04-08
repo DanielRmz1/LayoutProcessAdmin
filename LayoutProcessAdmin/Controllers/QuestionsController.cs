@@ -29,7 +29,7 @@ namespace LayoutProcessAdmin.Controllers
             try
             {
                 var question = db.Questions.Find(id);
-                var answers = db.Answers.Where(x => x.int_Question.int_IdQuestion == question.int_IdQuestion).Select(i => new { i.chr_Description, i.chr_Variable, i.int_IdAnswer }).ToList();
+                var answers = db.Answers.Where(x => x.int_Question.int_IdQuestion == question.int_IdQuestion).Select(i => new { i.chr_Description, i.chr_Variable, i.int_IdAnswer, i.dbl_LowerLimit, i.dbl_UpperLimit }).ToList();
                 return Json(new { Success = true, Quest = question, Answs = answers }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

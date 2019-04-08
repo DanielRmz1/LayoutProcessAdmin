@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using LayoutProcessAdmin.Models;
+using LayoutProcessAdmin.Models.Checking;
+using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using LayoutProcessAdmin.Models;
-using LayoutProcessAdmin.Models.Checking;
 
 namespace LayoutProcessAdmin.Controllers
 {
@@ -26,7 +22,7 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(string description, string variable, int id_question)
+        public JsonResult Create(string description, string variable, int id_question, string lowerLimit, string upperLimit)
         {
             try
             {
@@ -34,7 +30,9 @@ namespace LayoutProcessAdmin.Controllers
                 {
                     chr_Description = description,
                     chr_Variable = variable,
-                    int_Question = db.Questions.Find(id_question)
+                    int_Question = db.Questions.Find(id_question),
+                    dbl_LowerLimit = double.Parse(lowerLimit),
+                    dbl_UpperLimit = double.Parse(upperLimit)
                 });
                 db.SaveChanges();
                 return Json(new { Success = true, id = answer.int_IdAnswer }, JsonRequestBehavior.AllowGet);

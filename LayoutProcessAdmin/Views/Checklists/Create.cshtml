@@ -461,24 +461,28 @@
                     switch (selectedType) {
                         case "yn":
                             $('#answersTextBoxes input').each(function () {
-                                AddAnswer(this.value, "", data.id);
+                                AddAnswer(this.value, "", data.id, 0, 0);
                             });
                             $('#addQuestion').modal('hide');
                             break;
                         case "op":
-                            AddAnswer("textarea", "", data.id);
+                            AddAnswer("textarea", "", data.id, 0, 0);
                             $('#addQuestion').modal('hide');
                             break;
                         case "mu":
                             $('#answersTextBoxes input').each(function () {
-                                AddAnswer(this.value, "", data.id);
+                                AddAnswer(this.value, "", data.id, 0, 0);
                             });
                             $('#addQuestion').modal('hide');
                             break;
                         case "ca":
                             $('#answersTextBoxes .entry').each(function () {
-                                AddAnswer($(this).find(".col-9 input").val(), $(this).find(".col-3 input").val(), data.id);
+                                AddAnswer($(this).find(".col-9 input").val(), $(this).find(".col-3 input").val(), data.id, 0, 0);
                             });
+                            $('#addQuestion').modal('hide');
+                            break;
+                        case "in":
+                            AddAnswer("", "", data.id, $('#lower-limit').val(), $('#upper-limit').val());
                             $('#addQuestion').modal('hide');
                             break;
                         default:
@@ -500,7 +504,7 @@
     });
 
     //string description, string formula, string variable, int id_question
-    function AddAnswer(description, variable, id_question) {
+    function AddAnswer(description, variable, id_question, lwLimit, upLimit) {
         token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
         $.ajax({
             url: '@Url.Action("Create", "Answers")',
@@ -510,7 +514,9 @@
                 __RequestVerificationToken: token,
                 description: description,
                 variable: variable,
-                id_question: id_question
+                id_question: id_question,
+                lowerLimit: lwLimit,
+                upperLimit: upLimit
             },
             error: function (jXHR, textStatus, errorThrown) {
                 alert(errorThrown);

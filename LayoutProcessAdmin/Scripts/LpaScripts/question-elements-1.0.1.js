@@ -164,7 +164,67 @@ var Answer = ({
 	},
 	removeCalculatedInput: function () {
 		$('#calculatedContainer .entry').last().remove();
-	}
+    },
+    addNumericInputs: function () {
+        if (!isEditing) {
+            //Numeric Container
+            var div = document.createElement('div');
+            div.classList = 'row form-group';
+
+            //Low Limit Container
+            var lDiv = document.createElement('div');
+            lDiv.classList = 'col-6';
+            var lInput = document.createElement('input');
+            lInput.classList = "form-control";
+            lInput.id = "lower-limit";
+            lInput.placeholder = "Lower limit";
+            lDiv.appendChild(lInput);
+
+            //Upper Limit Container
+            var uDiv = document.createElement('div');
+            uDiv.classList = 'col-6';
+            var uInput = document.createElement('input');
+            uInput.classList = "form-control";
+            uInput.id = "upper-limit";
+            uInput.placeholder = "Upper limit";
+            uDiv.appendChild(uInput);
+
+            div.appendChild(lDiv);
+            div.appendChild(uDiv);
+
+            return div;
+        }
+    },
+    addNumericInputsEdit: function (lower, upper) {
+        //Numeric Container
+        var div = document.createElement('div');
+        div.classList = 'row form-group';
+
+        //Low Limit Container
+        var lDiv = document.createElement('div');
+        lDiv.classList = 'col-6';
+        var lInput = document.createElement('input');
+        lInput.classList = "form-control";
+        lInput.id = "lower-limit";
+        lInput.placeholder = "Lower limit";
+        lInput.value = lower;
+        lDiv.appendChild(lInput);
+
+        //Upper Limit Container
+        var uDiv = document.createElement('div');
+        uDiv.classList = 'col-6';
+        var uInput = document.createElement('input');
+        uInput.classList = "form-control";
+        uInput.id = "upper-limit";
+        uInput.placeholder = "Upper limit";
+        uInput.value = upper;
+        uDiv.appendChild(uInput);
+
+        div.appendChild(lDiv);
+        div.appendChild(uDiv);
+
+        return div;
+    }
 });
 
 var Question = {
@@ -262,7 +322,14 @@ $('#selectType').change(function () {
 	switch (selectedType) {
 		case "none":
 			$('#answersContainer').hide();
-			break;
+            break;
+        case "in":
+            $('#btnAddAnswer').hide();
+            $('#btnRemoveAnswer').hide();
+            $('#answersTextBoxes').append(Answer.addNumericInputs("", ""));
+            $('#chSingleAnswer').prop("checked", true);
+            $('#chSingleAnswer').attr('disabled', 'disabled');
+            break;
 		case "yn":
 			$('#btnAddAnswer').hide();
             $('#btnRemoveAnswer').hide();
@@ -356,6 +423,9 @@ function ShowQuestionModal(question) {
                 $('#answersTextBoxes').append(Answer.addYesNoEdit(question.Answs[0].chr_Description, question.Answs[1].chr_Description));
                 $('#chSingleAnswer').prop("checked", true);
                 $('#chSingleAnswer').attr('disabled', 'disabled');
+            } else if (question.Quest.chr_Type == 'in' && i == 0) {
+                console.log(question);
+                $('#answersTextBoxes').append(Answer.addNumericInputsEdit(question.Answs[0].dbl_LowerLimit, question.Answs[0].dbl_UpperLimit));
             }
           
             AddEditingControls(question.Quest.chr_Type, question.Answs[i].chr_Description, question.Answs[i].chr_Variable);
