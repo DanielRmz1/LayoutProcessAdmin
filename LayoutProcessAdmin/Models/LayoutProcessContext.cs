@@ -126,5 +126,7 @@ namespace LayoutProcessAdmin.Models
                 .Property(e => e.chr_Reference)
                 .IsUnicode(false);
         }
+
+        public System.Data.Entity.DbSet<LayoutProcessAdmin.Models.Auditing.Audit> Audits { get; set; }
     }
 }
