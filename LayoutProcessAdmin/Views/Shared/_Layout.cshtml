@@ -90,6 +90,13 @@
                             </li>
                         }
 
+                        @*@if (user.UserRoles[0].int_LpaRole.bit_ManageAudits)
+                        {*@
+                            <li class="submenu">
+                                <a href="@Url.Action("Index", "Audits")"><i class="fas fa-file-invoice"></i><span> Audits </span> </a>
+                            </li>
+                        @*}*@
+
                         @if (user.UserRoles[0].int_LpaRole.bit_ManageUsers)
                         {
                             <li class="submenu">
@@ -100,6 +107,7 @@
                                 </ul>
                             </li>
                         }
+
                     </ul>
 
                     <div class="clearfix"></div>
