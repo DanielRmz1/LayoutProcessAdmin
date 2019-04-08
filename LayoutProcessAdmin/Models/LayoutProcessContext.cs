@@ -128,5 +128,7 @@ namespace LayoutProcessAdmin.Models
         }
 
         public System.Data.Entity.DbSet<LayoutProcessAdmin.Models.Auditing.Audit> Audits { get; set; }
+
+        public System.Data.Entity.DbSet<LayoutProcessAdmin.Models.Auditing.AuditConfig> AuditConfigs { get; set; }
     }
 }
