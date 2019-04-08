@@ -11,7 +11,7 @@ namespace LayoutProcessAdmin.Models.Checking
         public int int_IdQuestion { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(200)]
         [Display(Name = "Description")]
         public string chr_Description { get; set; }
 
