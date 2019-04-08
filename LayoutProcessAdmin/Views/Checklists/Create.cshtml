@@ -375,220 +375,209 @@
 </div>
 
 @section Scripts {
-    <script src="~/plugins/select2/js/select2.min.js"></script>
-    <script src="~/Scripts/LpaScripts/question-elements-1.0.1.js"></script>
+<script src="~/plugins/select2/js/select2.min.js"></script>
+<script src="~/Scripts/LpaScripts/question-elements-1.0.1.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $('.select2').select2();
-            $('.question-container').hide();
-            var token;
+<script>
+    $(document).ready(function () {
+        $('.select2').select2();
+        $('.question-container').hide();
 
-            $('#checklistForm').on('submit',function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '@Url.Action("Create", "Checklists")',
-                    type: "POST",
-                    data: $('#checklistForm').serialize(),
-                    success: function (data) {
-                        $('#errorSummary').html('');
-                        if (data.length > 0) {
-                            
-                            data.forEach(function (e) {
-                                $('#errorSummary').append("<li>" + e + "</li>");
-                            });
-
-                        } else {
-                            if (data == -10)
-                                $('#errorSummary').append("<li>The checklist key already exixts, set another one.</li>");
-                            else {
-                                var succesIcon = document.createElement('i');
-                                succesIcon.classList = "fa fa-check-circle";
-                                succesIcon.style = "font-size: 18px;"
-                                $('#successSumary').html('Checklist registered successfuly ');
-                                $('#successSumary').append(succesIcon);
-                                $('#lblClave').html('');
-                                currentChecklistId = data;
-                                $('.question-container').show();
-                            }
-                        }
-                    },
-                    error: function (jXHR, textStatus, errorThrown) {
-                        alert(errorThrown);
-                        alert(textStatus);
-                    }
-                });
-            });
-            
-            $('#btnAddQuestion').on('click', function () {
-                $('#answersContainer').hide();
-                ShowQuestionModal("");
-            });
-
-            $(window).bind('beforeunload', function () {
-                if(currentChecklistId != 0 && currentChecklistId != null)
-                    return 'Are you sure you want to leave?';
-            });
-
-            window.onunload = function () {
-                var form = $('#checklistForm');
-                token = $('input[name="__RequestVerificationToken"]', form).val();
-                $.ajax({
-                    url: '@Url.Action("Delete", "Checklists")',
-                    type: "POST",
-                        data: { __RequestVerificationToken: token, id: currentChecklistId }
-                });
-            }
-
-            $('#saveChecklist').on('click', function () {
-                currentChecklistId = undefined;
-                window.location = '@Url.Action("index", "Home")';
-            });
-
-            $('#addQuestion').on('hide.bs.modal', function () {
-                isEditing = false;
-                editingQuestionId = -1;
-            });
-        });
-
-        $('#questionForm').on('submit', function (e) {
+        $('#checklistForm').on('submit',function (e) {
             e.preventDefault();
-            token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
             $.ajax({
-                url: '@Url.Action("Create", "Questions")',
+                url: '@Url.Action("Create", "Checklists")',
                 type: "POST",
-                data: {
-                    __RequestVerificationToken: token,
-                    description: $('#idPregunta').val(),
-                    type: $('#selectType').val(),
-                    singleAnswer: $('#chSingleAnswer').is(':checked'),
-                    formula: $('#formulaInput').val(),
-                    id_checklist: currentChecklistId,
-                    id_question: editingQuestionId
-                },
+                data: $('#checklistForm').serialize(),
                 success: function (data) {
-                    if (data.Success) {
-                        switch (selectedType) {
-                            case "yn":
-                                $('#answersTextBoxes input').each(function () {
-                                    AddAnswer(this.value, "", data.id);
-                                });
-                                $('#addQuestion').modal('hide');
-                                break;
-                            case "op":
-                                AddAnswer("textarea", "", data.id);
-                                $('#addQuestion').modal('hide');
-                                break;
-                            case "mu":
-                                $('#answersTextBoxes input').each(function () {
-                                    AddAnswer(this.value, "", data.id);
-                                });
-                                $('#addQuestion').modal('hide');
-                                break;
-                            case "ca":
-                                $('#answersTextBoxes .entry').each(function () {
-                                    AddAnswer($(this).find(".col-9 input").val(), $(this).find(".col-3 input").val(), data.id);
-                                });
-                                $('#addQuestion').modal('hide');
-                                break;
-                            default:
-                                $('#answersContainer').hide();
-                                break;
-                        }
+                    $('#errorSummary').html('');
+                    if (data.length > 0) {
+                            
+                        data.forEach(function (e) {
+                            $('#errorSummary').append("<li>" + e + "</li>");
+                        });
 
-                        UpdateQuestionsTable(currentChecklistId);
-                    } else
-                        $('#questionSumary').append(data.Message);
-                    
+                    } else {
+                        if (data == -10)
+                            $('#errorSummary').append("<li>The checklist key already exixts, set another one.</li>");
+                        else {
+                            var succesIcon = document.createElement('i');
+                            succesIcon.classList = "fa fa-check-circle";
+                            succesIcon.style = "font-size: 18px;"
+                            $('#successSumary').html('Checklist registered successfuly ');
+                            $('#successSumary').append(succesIcon);
+                            $('#lblClave').html('');
+                            currentChecklistId = data;
+                            $('.question-container').show();
+                        }
+                    }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     alert(errorThrown);
                     alert(textStatus);
-                    alert(jXHR);
                 }
             });
         });
-        //string description, string formula, string variable, int id_question
-        function AddAnswer(description, variable, id_question) {
-            token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
+
+        $(window).bind('beforeunload', function () {
+            if(currentChecklistId != 0 && currentChecklistId != null)
+                return 'Are you sure you want to leave?';
+        });
+
+        window.onunload = function () {
+            var form = $('#checklistForm');
+            token = $('input[name="__RequestVerificationToken"]', form).val();
             $.ajax({
-                url: '@Url.Action("Create", "Answers")',
+                url: '@Url.Action("Delete", "Checklists")',
                 type: "POST",
-                async: false,
-                data: {
-                    __RequestVerificationToken: token,
-                    description: description,
-                    variable: variable,
-                    id_question: id_question
-                },
-                error: function (jXHR, textStatus, errorThrown) {
-                    alert(errorThrown);
-                    alert(textStatus);
-                    alert(jXHR);
-                }
+                    data: { __RequestVerificationToken: token, id: currentChecklistId }
             });
         }
 
-        function UpdateQuestionsTable(id) {
-            $.ajax({
-                url: '@Url.Action("Get", "Questions")',
-                type: "GET",
-                data: { id: id },
-                success: function (data) {
-                    $('#questionsTable tbody').html('');
-                    for (var i = 0; i < data.length; i++)
-                    {
-                        $('#questionsTable tbody').append(Question.addRow(i + 1, data[i].chr_Description, data[i].chr_Type, data[i].bit_SingleAnswer, data[i].chr_Formula, data[i].int_IdQuestion));
+        $('#saveChecklist').on('click', function () {
+            currentChecklistId = undefined;
+            window.location = '@Url.Action("index", "Home")';
+        });
+
+    });
+
+    $('#questionForm').on('submit', function (e) {
+        e.preventDefault();
+        token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
+        $.ajax({
+            url: '@Url.Action("Create", "Questions")',
+            type: "POST",
+            data: {
+                __RequestVerificationToken: token,
+                description: $('#idPregunta').val(),
+                type: $('#selectType').val(),
+                singleAnswer: $('#chSingleAnswer').is(':checked'),
+                formula: $('#formulaInput').val(),
+                id_checklist: currentChecklistId,
+                id_question: editingQuestionId
+            },
+            success: function (data) {
+                if (data.Success) {
+                    switch (selectedType) {
+                        case "yn":
+                            $('#answersTextBoxes input').each(function () {
+                                AddAnswer(this.value, "", data.id);
+                            });
+                            $('#addQuestion').modal('hide');
+                            break;
+                        case "op":
+                            AddAnswer("textarea", "", data.id);
+                            $('#addQuestion').modal('hide');
+                            break;
+                        case "mu":
+                            $('#answersTextBoxes input').each(function () {
+                                AddAnswer(this.value, "", data.id);
+                            });
+                            $('#addQuestion').modal('hide');
+                            break;
+                        case "ca":
+                            $('#answersTextBoxes .entry').each(function () {
+                                AddAnswer($(this).find(".col-9 input").val(), $(this).find(".col-3 input").val(), data.id);
+                            });
+                            $('#addQuestion').modal('hide');
+                            break;
+                        default:
+                            $('#answersContainer').hide();
+                            break;
                     }
-                },
-                error: function (jXHR, textStatus, errorThrown) {
-                    alert(errorThrown);
-                    alert(textStatus);
+
+                    UpdateQuestionsTable(currentChecklistId);
+                } else
+                    $('#questionSumary').append(data.Message);
+
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+                alert(textStatus);
+                alert(jXHR);
+            }
+        });
+    });
+
+    //string description, string formula, string variable, int id_question
+    function AddAnswer(description, variable, id_question) {
+        token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
+        $.ajax({
+            url: '@Url.Action("Create", "Answers")',
+            type: "POST",
+            async: false,
+            data: {
+                __RequestVerificationToken: token,
+                description: description,
+                variable: variable,
+                id_question: id_question
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+                alert(textStatus);
+                alert(jXHR);
+            }
+        });
+    }
+
+    function UpdateQuestionsTable(id) {
+        $.ajax({
+            url: '@Url.Action("Get", "Questions")',
+            type: "GET",
+            data: { id: id },
+            success: function (data) {
+                $('#questionsTable tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+                    $('#questionsTable tbody').append(Question.addRow(i + 1, data[i].chr_Description, data[i].chr_Type, data[i].bit_SingleAnswer, data[i].chr_Formula, data[i].int_IdQuestion));
                 }
-            });
-        }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+                alert(textStatus);
+            }
+        });
+    }
 
-        function DeleteQuestion() {
-            $.ajax({
-                url: '@Url.Action("Delete", "Questions")',
-                type: "POST",
-                data: {
-                    __RequestVerificationToken: token,
-                    id: $('#deleteQuestionModal .id-question').val()
-                },
-                success: function (result) {
-                    if (!result.Success)
-                        alert(result.Message);
-                    else {
-                        $('#deleteQuestionModal').modal('hide');
-                        UpdateQuestionsTable(currentChecklistId);
-                    }
-                },
-                error: function (jXHR, textStatus, errorThrown) {
-                    alert(errorThrown);
-                    alert(textStatus);
-                    alert(jXHR);
+    function DeleteQuestion() {
+        $.ajax({
+            url: '@Url.Action("Delete", "Questions")',
+            type: "POST",
+            data: {
+                __RequestVerificationToken: token,
+                id: $('#deleteQuestionModal .id-question').val()
+            },
+            success: function (result) {
+                if (!result.Success)
+                    alert(result.Message);
+                else {
+                    $('#deleteQuestionModal').modal('hide');
+                    UpdateQuestionsTable(currentChecklistId);
                 }
-            });
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+                alert(textStatus);
+                alert(jXHR);
+            }
+        });
 
-        }
+    }
 
-        function EditQuestion(id) {
-            $.ajax({
-                url: '@Url.Action("GetQuestion", "Questions")',
-                type: "GET",
-                data: { id: id },
-                success: function (data) {
-                    isEditing = true;
-                    editingQuestionId = id;
-                    ShowQuestionModal(data);
-                },
-                error: function (jXHR, textStatus, errorThrown) {
-                    alert(errorThrown);
-                    alert(textStatus);
-                }
-            });
-        }
-
+    function EditQuestion(id) {
+        $.ajax({
+            url: '@Url.Action("GetQuestion", "Questions")',
+            type: "GET",
+            data: { id: id },
+            success: function (data) {
+                isEditing = true;
+                editingQuestionId = id;
+                ShowQuestionModal(data);
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+                alert(textStatus);
+            }
+        });
+    }
     </script>
 }

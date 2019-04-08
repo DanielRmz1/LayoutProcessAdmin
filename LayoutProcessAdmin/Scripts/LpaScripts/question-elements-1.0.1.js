@@ -2,6 +2,7 @@
 var selectedType;
 var isEditing = false;
 var editingQuestionId = -1;
+var token;
 
 var Answer = ({
     addYesNo: function () {
@@ -299,6 +300,16 @@ $('#selectType').change(function () {
 			break;
 
 	}
+});
+
+$('#btnAddQuestion').on('click', function () {
+    $('#answersContainer').hide();
+    ShowQuestionModal("");
+});
+
+$('#addQuestion').on('hide.bs.modal', function () {
+    isEditing = false;
+    editingQuestionId = -1;
 });
 
 $('#btnAddAnswer').on('click', function () {

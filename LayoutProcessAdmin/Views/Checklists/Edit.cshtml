@@ -313,7 +313,6 @@
         currentChecklistId = '@Model.int_IdList';
         intPeriod = '@Model.int_Period.int_IdPeriod';
         console.log(intPeriod);
-        var token;
         GetSelectedDays();
         GetSelectedArea();
         UpdateQuestionsTable(currentChecklistId);
@@ -342,21 +341,10 @@
             });
         });
 
-        $('#btnAddQuestion').on('click', function () {
-            $('#answersContainer').hide();
-            ShowQuestionModal("");
-        });
-
         $('#saveChecklist').on('click', function () {
             $('#checklistForm').submit();
                 
         });
-
-        $('#addQuestion').on('hide.bs.modal', function () {
-            isEditing = false;
-            editingQuestionId = -1;
-        });
-
 
         $('.select2').select2();
     });
@@ -418,6 +406,7 @@
             }
         });
     });
+
     //string description, string formula, string variable, int id_question
     function AddAnswer(description, variable, id_question) {
         token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
@@ -446,8 +435,7 @@
             data: { id: id },
             success: function (data) {
                 $('#questionsTable tbody').html('');
-                for (var i = 0; i < data.length; i++)
-                {
+                for (var i = 0; i < data.length; i++) {
                     $('#questionsTable tbody').append(Question.addRow(i + 1, data[i].chr_Description, data[i].chr_Type, data[i].bit_SingleAnswer, data[i].chr_Formula, data[i].int_IdQuestion));
                 }
             },
