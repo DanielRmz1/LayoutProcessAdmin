@@ -29,6 +29,9 @@ namespace LayoutProcessAdmin.Models.Account
         [Display(Name = "Checklists")]
         public bool bit_ManageChecklist { get; set; }
 
+        [Display(Name = "Audits")]
+        public bool bit_ManageAudits { get; set; }
+
         [Display(Name = "Answer Checlists")]
         public bool bit_FillChecklists { get; set; }
         
