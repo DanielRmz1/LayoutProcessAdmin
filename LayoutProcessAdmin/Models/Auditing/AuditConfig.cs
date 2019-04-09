@@ -1,4 +1,5 @@
 ﻿using LayoutProcessAdmin.Models.Checking;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,5 +16,6 @@ namespace LayoutProcessAdmin.Models.Auditing
         public Checklist int_Checklist { get; set; }
         
         public Audit Audit { get; set; }
+        
     }
 }

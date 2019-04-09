@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using LayoutProcessAdmin.Models;
+﻿using LayoutProcessAdmin.Models;
 using LayoutProcessAdmin.Models.Auditing;
+using System.Data.Entity;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace LayoutProcessAdmin.Controllers
 {
@@ -29,7 +24,7 @@ namespace LayoutProcessAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Audit audit = await db.Audits.FindAsync(id);
+            Audit audit = await db.Audits.Include(x => x.AuditConfigs).SingleOrDefaultAsync(x => x.int_IdAudit == id);
             if (audit == null)
             {
                 return HttpNotFound();
