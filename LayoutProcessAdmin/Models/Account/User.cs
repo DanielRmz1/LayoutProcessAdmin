@@ -1,4 +1,5 @@
 ﻿
+using LayoutProcessAdmin.Models.Calendar;
 using LayoutProcessAdmin.Models.Checking;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -69,5 +70,7 @@ namespace LayoutProcessAdmin.Models.Account
         public IEnumerable<SelectListItem> Roles { get; set; }
 
         public List<UsersChecklist> UsersChecklists { get; set; }
+        
+        public List<Event> Events { get; set; }
     }
 }
