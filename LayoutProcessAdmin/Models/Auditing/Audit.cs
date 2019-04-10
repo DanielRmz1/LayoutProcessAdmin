@@ -28,6 +28,9 @@ namespace LayoutProcessAdmin.Models.Auditing
         [Display(Name = "Type")]
         public int int_Type { get; set; }
 
+        [Display(Name = "Active")]
+        public bool bit_Activo { get; set; }
+
         public List<AuditConfig> AuditConfigs { get; set; }
     }
 }

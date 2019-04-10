@@ -106,11 +106,11 @@ namespace LayoutProcessAdmin.Controllers
                 if (checklist.SelectedUsers == null)
                     ModelState.AddModelError(string.Empty, "You have to choose at least one user to answer this checklist.");
 
-                if(checklist.Days == null)
-                    ModelState.AddModelError(string.Empty, "Select at least one day from the week.");
+                //if(checklist.Days == null)
+                //    ModelState.AddModelError(string.Empty, "Select at least one day from the week.");
 
-                if(checklist.SelectedPeriod == null)
-                    ModelState.AddModelError(string.Empty, "Select the period for the checklist.");
+                //if(checklist.SelectedPeriod == null)
+                //    ModelState.AddModelError(string.Empty, "Select the period for the checklist.");
 
 
                 if (ModelState.IsValid)
@@ -135,21 +135,21 @@ namespace LayoutProcessAdmin.Controllers
                         User user = (User)Session["User"];
                         checklist.int_Owner = db.Users.Find(user.int_IdUser);
 
-                        var period = new Period()
-                        {
-                            bit_Sun = FindSelectedDay(checklist.Days, "su"),
-                            bit_Mon = FindSelectedDay(checklist.Days, "mo"),
-                            bit_Tue = FindSelectedDay(checklist.Days, "tu"),
-                            bit_Wed = FindSelectedDay(checklist.Days, "we"),
-                            bit_Thu = FindSelectedDay(checklist.Days, "th"),
-                            bit_Fri = FindSelectedDay(checklist.Days, "fr"),
-                            bit_Sat = FindSelectedDay(checklist.Days, "sa"),
-                            chr_RepeatPeriod = checklist.SelectedPeriod
-                        };
+                        //var period = new Period()
+                        //{
+                        //    bit_Sun = FindSelectedDay(checklist.Days, "su"),
+                        //    bit_Mon = FindSelectedDay(checklist.Days, "mo"),
+                        //    bit_Tue = FindSelectedDay(checklist.Days, "tu"),
+                        //    bit_Wed = FindSelectedDay(checklist.Days, "we"),
+                        //    bit_Thu = FindSelectedDay(checklist.Days, "th"),
+                        //    bit_Fri = FindSelectedDay(checklist.Days, "fr"),
+                        //    bit_Sat = FindSelectedDay(checklist.Days, "sa"),
+                        //    chr_RepeatPeriod = checklist.SelectedPeriod
+                        //};
 
-                        checklist.int_Period = period;
+                        //checklist.int_Period = period;
                     
-                        db.Periods.Add(period);
+                        //db.Periods.Add(period);
                         db.Checklists.Add(checklist);
                         db.SaveChanges();
                     }
@@ -222,14 +222,14 @@ namespace LayoutProcessAdmin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var users = db.Users.Find(user.int_IdUser);
-            Checklist checklist = db.Checklists.Include(x => x.int_Period).Include(x => x.UsersChecklists).Include(x=>x.Area).SingleOrDefault(x => x.int_IdList == id);
+            Checklist checklist = db.Checklists.Include(x => x.UsersChecklists).Include(x=>x.Area).SingleOrDefault(x => x.int_IdList == id);
 
             if (checklist == null)
             {
                 return HttpNotFound();
             }
-            checklist.id_Period = checklist.int_Period.int_IdPeriod;
-            ViewBag.Periods = GetPeriods(checklist.int_Period.chr_RepeatPeriod);
+            //checklist.id_Period = checklist.int_Period.int_IdPeriod;
+            //ViewBag.Periods = GetPeriods(checklist.int_Period.chr_RepeatPeriod);
             ViewBag.Days = GetDays();
             ViewBag.Users = GetUsersDropDown(checklist.UsersChecklists);
             ViewBag.Areas = GetAreas(-1);
@@ -367,11 +367,11 @@ namespace LayoutProcessAdmin.Controllers
             if (checklist.SelectedUsers == null)
                 ModelState.AddModelError(string.Empty, "You have to choose at least one user to answer this checklist.");
 
-            if (checklist.Days == null)
-                ModelState.AddModelError(string.Empty, "Select at least one day from the week.");
+            //if (checklist.Days == null)
+            //    ModelState.AddModelError(string.Empty, "Select at least one day from the week.");
 
-            if (checklist.SelectedPeriod == null)
-                ModelState.AddModelError(string.Empty, "Select the period for the checklist.");
+            //if (checklist.SelectedPeriod == null)
+            //    ModelState.AddModelError(string.Empty, "Select the period for the checklist.");
 
             if (ModelState.IsValid)
             {
@@ -390,18 +390,18 @@ namespace LayoutProcessAdmin.Controllers
                             User = db.Users.Find(item)
                         });
                     }
-                    var period = db.Periods.Find(checklist.id_Period);
+                    //var period = db.Periods.Find(checklist.id_Period);
 
-                    period.bit_Sun = FindSelectedDay(checklist.Days, "su");
-                    period.bit_Mon = FindSelectedDay(checklist.Days, "mo");
-                    period.bit_Tue = FindSelectedDay(checklist.Days, "tu");
-                    period.bit_Wed = FindSelectedDay(checklist.Days, "we");
-                    period.bit_Thu = FindSelectedDay(checklist.Days, "th");
-                    period.bit_Fri = FindSelectedDay(checklist.Days, "fr");
-                    period.bit_Sat = FindSelectedDay(checklist.Days, "sa");
-                    period.chr_RepeatPeriod = checklist.SelectedPeriod;
+                    //period.bit_Sun = FindSelectedDay(checklist.Days, "su");
+                    //period.bit_Mon = FindSelectedDay(checklist.Days, "mo");
+                    //period.bit_Tue = FindSelectedDay(checklist.Days, "tu");
+                    //period.bit_Wed = FindSelectedDay(checklist.Days, "we");
+                    //period.bit_Thu = FindSelectedDay(checklist.Days, "th");
+                    //period.bit_Fri = FindSelectedDay(checklist.Days, "fr");
+                    //period.bit_Sat = FindSelectedDay(checklist.Days, "sa");
+                    //period.chr_RepeatPeriod = checklist.SelectedPeriod;
                     
-                    db.Entry(period).State = EntityState.Modified;
+                    //db.Entry(period).State = EntityState.Modified;
                     db.Entry(checklist).State = EntityState.Modified;
                     db.SaveChanges();
                     return Json(new { Success = true});
@@ -456,14 +456,14 @@ namespace LayoutProcessAdmin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            var checklist = await db.Checklists.Include(x => x.UsersChecklists).Include(x => x.Questions).Include(x => x.int_Period).SingleOrDefaultAsync(p => p.int_IdList == id);
+            var checklist = await db.Checklists.Include(x => x.UsersChecklists).Include(x => x.Questions).SingleOrDefaultAsync(p => p.int_IdList == id);
             
             if(checklist != null)
             {
                 foreach (var child in checklist.UsersChecklists.ToList())
                     db.UsersChecklists.Remove(child);
 
-                db.Periods.Remove(checklist.int_Period);
+                //db.Periods.Remove(checklist.int_Period);
 
                 foreach (var child in checklist.Questions.ToList())
                 {

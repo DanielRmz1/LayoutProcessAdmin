@@ -54,7 +54,7 @@
                     <div class="row">
                         <div class="col-lg-8 col-sm-12">
                             @Html.HiddenFor(x => x.int_IdList)
-                            @Html.HiddenFor(x => x.id_Period)
+                            @*@Html.HiddenFor(x => x.id_Period)*@
                             <div class="row">
                                 <div class="col-lg-4 col-sm-12">
                                     <div class="form-group">
@@ -88,7 +88,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-12">
-                            <div class="row">
+                            @*<div class="row">
                                 <div class="col-12">
                                     @Html.LabelFor(model => model.SelectedPeriod, htmlAttributes: new { @class = "control-label" })
                                     <div class="col-10">
@@ -105,7 +105,7 @@
                                         @Html.ValidationMessageFor(model => model.Days, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                            </div><br />
+                            </div><br />*@
                             <div class="row">
                                 <div class="col-12">
                                     @Html.LabelFor(model => model.SelectedUsers, htmlAttributes: new { @class = "control-label" })
@@ -124,14 +124,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            @*<div class="row">
                                 <div class="form-group col-12" style="background-color: white;">
                                     <div class="custom-control custom-checkbox">
                                         @Html.CheckBoxFor(model => model.bit_Activo, new { @class = "custom-control-input", type = "checkbox", style = "width: 30px; height: 30px;" })
                                         @Html.LabelFor(model => model.bit_Activo, htmlAttributes: new { @class = "custom-control-label" })
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div><br />
 
@@ -307,10 +307,10 @@
 <script src="~/Scripts/LpaScripts/question-elements-1.0.1.js"></script>
 
 <script>
-    var intPeriod;
+    //var intPeriod;
     $(document).ready(function () {
         currentChecklistId = '@Model.int_IdList';
-        intPeriod = '@Model.int_Period.int_IdPeriod';
+        @*intPeriod = '@Model.int_Period.int_IdPeriod';*@
         console.log(intPeriod);
         GetSelectedDays();
         GetSelectedArea();

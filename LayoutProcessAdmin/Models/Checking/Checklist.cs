@@ -28,25 +28,6 @@ namespace LayoutProcessAdmin.Models.Checking
         [Display(Name = "Description")]
         public string chr_Description { get; set; }
         
-        /// <summary>
-        ///  d for Day
-        ///  m for Month
-        ///  w for Week
-        ///  q for quincena
-        /// </summary>
-        [Display(Name = "Period")]
-        [Column("int_idPeriod")]
-        public Period int_Period { get; set; }
-
-        [NotMapped]
-        public string SelectedPeriod { get; set; }
-
-        [NotMapped]
-        public string[] Days { get; set; }
-
-        [Display(Name = "Active")]
-        public bool bit_Activo { get; set; }
-        
         public User int_Owner { get; set; }
 
         [NotMapped]
@@ -58,9 +39,6 @@ namespace LayoutProcessAdmin.Models.Checking
         [NotMapped]
         [Display(Name = "Who can answer this?")]
         public int[] SelectedUsers { get; set; }
-
-        [NotMapped]
-        public int id_Period { get; set; }
 
         public List<Question> Questions { get; set; }
         

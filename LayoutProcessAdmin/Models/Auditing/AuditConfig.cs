@@ -23,6 +23,25 @@ namespace LayoutProcessAdmin.Models.Auditing
         public Checklist int_Checklist { get; set; }
         
         public Audit Audit { get; set; }
-        
+
+        [NotMapped]
+        public int id_Period { get; set; }
+
+        [NotMapped]
+        public string[] Days { get; set; }
+
+        /// <summary>
+        ///  d for Day
+        ///  m for Month
+        ///  w for Week
+        ///  q for quincena
+        /// </summary>
+        [Display(Name = "Period")]
+        [Column("int_idPeriod")]
+        public Period int_Period { get; set; }
+
+        [NotMapped]
+        public string SelectedPeriod { get; set; }
+
     }
 }
