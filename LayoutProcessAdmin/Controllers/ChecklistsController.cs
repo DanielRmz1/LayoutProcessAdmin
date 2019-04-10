@@ -58,41 +58,41 @@ namespace LayoutProcessAdmin.Controllers
                 return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
 
             ViewBag.CurrentUser = user;
-            ViewBag.Users = GetUsersDropDown(null);
+            //ViewBag.Users = GetUsersDropDown(null);
             ViewBag.Areas = GetAreas(-1);
 
             return View();
         }
 
-        List<SelectListItem> GetUsersDropDown(List<UsersChecklist> users)
-        {
-            var list = db.Users.ToList();
-            var listado = new List<SelectListItem>();
+        //List<SelectListItem> GetUsersDropDown(List<UsersChecklist> users)
+        //{
+        //    var list = db.Users.ToList();
+        //    var listado = new List<SelectListItem>();
 
-            foreach (var item in list)
-            {
-                listado.Add(new SelectListItem()
-                {
-                    Text = item.chr_Name + " " + item.chr_LastName,
-                    Value = item.int_IdUser.ToString(),
-                    Selected = IsUserSelected(item.int_IdUser, users)
-                });
-            }
+        //    foreach (var item in list)
+        //    {
+        //        listado.Add(new SelectListItem()
+        //        {
+        //            Text = item.chr_Name + " " + item.chr_LastName,
+        //            Value = item.int_IdUser.ToString(),
+        //            Selected = IsUserSelected(item.int_IdUser, users)
+        //        });
+        //    }
 
-            return listado;
-        }
+        //    return listado;
+        //}
 
-        bool IsUserSelected(int idUser, List<UsersChecklist> users)
-        {
-            if (users == null)
-                return false;
+        //bool IsUserSelected(int idUser, List<UsersChecklist> users)
+        //{
+        //    if (users == null)
+        //        return false;
 
-            foreach (var user in users)
-                if (user.User.int_IdUser == idUser)
-                    return true;
+        //    foreach (var user in users)
+        //        if (user.User.int_IdUser == idUser)
+        //            return true;
 
-            return false;
-        }
+        //    return false;
+        //}
 
         // POST: Checklists/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
@@ -103,8 +103,8 @@ namespace LayoutProcessAdmin.Controllers
         {
             try
             {
-                if (checklist.SelectedUsers == null)
-                    ModelState.AddModelError(string.Empty, "You have to choose at least one user to answer this checklist.");
+                //if (checklist.SelectedUsers == null)
+                //    ModelState.AddModelError(string.Empty, "You have to choose at least one user to answer this checklist.");
 
                 //if(checklist.Days == null)
                 //    ModelState.AddModelError(string.Empty, "Select at least one day from the week.");
@@ -121,14 +121,14 @@ namespace LayoutProcessAdmin.Controllers
                         return Json(-10);
                     else
                     {
-                        foreach (var item in checklist.SelectedUsers)
-                        {
-                            db.UsersChecklists.Add(new UsersChecklist()
-                            {
-                                Checklist = checklist,
-                                User = db.Users.Find(item)
-                            });
-                        }
+                        //foreach (var item in checklist.SelectedUsers)
+                        //{
+                        //    db.UsersChecklists.Add(new UsersChecklist()
+                        //    {
+                        //        Checklist = checklist,
+                        //        User = db.Users.Find(item)
+                        //    });
+                        //}
 
                         checklist.Area = db.Areas.Find(checklist.int_Area);
 
@@ -222,7 +222,7 @@ namespace LayoutProcessAdmin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var users = db.Users.Find(user.int_IdUser);
-            Checklist checklist = db.Checklists.Include(x => x.UsersChecklists).Include(x=>x.Area).SingleOrDefault(x => x.int_IdList == id);
+            Checklist checklist = db.Checklists.Include(x=>x.Area).SingleOrDefault(x => x.int_IdList == id);
 
             if (checklist == null)
             {
@@ -231,7 +231,7 @@ namespace LayoutProcessAdmin.Controllers
             //checklist.id_Period = checklist.int_Period.int_IdPeriod;
             //ViewBag.Periods = GetPeriods(checklist.int_Period.chr_RepeatPeriod);
             ViewBag.Days = GetDays();
-            ViewBag.Users = GetUsersDropDown(checklist.UsersChecklists);
+            //ViewBag.Users = GetUsersDropDown(checklist.UsersChecklists);
             ViewBag.Areas = GetAreas(-1);
             return View(checklist);
         }
@@ -364,8 +364,8 @@ namespace LayoutProcessAdmin.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Edit([Bind(Include = "int_IdList,chr_Clave,chr_Name,chr_Description,bit_Activo, Days, SelectedPeriod, SelectedUsers,int_Area, id_Period")] Checklist checklist)
         {
-            if (checklist.SelectedUsers == null)
-                ModelState.AddModelError(string.Empty, "You have to choose at least one user to answer this checklist.");
+            //if (checklist.SelectedUsers == null)
+            //    ModelState.AddModelError(string.Empty, "You have to choose at least one user to answer this checklist.");
 
             //if (checklist.Days == null)
             //    ModelState.AddModelError(string.Empty, "Select at least one day from the week.");
@@ -377,19 +377,19 @@ namespace LayoutProcessAdmin.Controllers
             {
                 try
                 {
-                    var result = db.UsersChecklists.Where(x => x.Checklist.int_IdList == checklist.int_IdList).ToList();
+                    //var result = db.UsersChecklists.Where(x => x.Checklist.int_IdList == checklist.int_IdList).ToList();
 
-                    foreach (var userChecklist in result)
-                        db.UsersChecklists.Remove(userChecklist);
+                    //foreach (var userChecklist in result)
+                    //    db.UsersChecklists.Remove(userChecklist);
 
-                    foreach (var item in checklist.SelectedUsers)
-                    {
-                        db.UsersChecklists.Add(new UsersChecklist()
-                        {
-                            Checklist = checklist,
-                            User = db.Users.Find(item)
-                        });
-                    }
+                    //foreach (var item in checklist.SelectedUsers)
+                    //{
+                    //    db.UsersChecklists.Add(new UsersChecklist()
+                    //    {
+                    //        Checklist = checklist,
+                    //        User = db.Users.Find(item)
+                    //    });
+                    //}
                     //var period = db.Periods.Find(checklist.id_Period);
 
                     //period.bit_Sun = FindSelectedDay(checklist.Days, "su");
@@ -456,12 +456,12 @@ namespace LayoutProcessAdmin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            var checklist = await db.Checklists.Include(x => x.UsersChecklists).Include(x => x.Questions).SingleOrDefaultAsync(p => p.int_IdList == id);
+            var checklist = await db.Checklists.Include(x => x.Questions).SingleOrDefaultAsync(p => p.int_IdList == id);
             
             if(checklist != null)
             {
-                foreach (var child in checklist.UsersChecklists.ToList())
-                    db.UsersChecklists.Remove(child);
+                //foreach (var child in checklist.UsersChecklists.ToList())
+                //    db.UsersChecklists.Remove(child);
 
                 //db.Periods.Remove(checklist.int_Period);
 

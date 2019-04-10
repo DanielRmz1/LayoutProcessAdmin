@@ -36,12 +36,6 @@ namespace LayoutProcessAdmin.Models.Checking
 
         public Area Area { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Who can answer this?")]
-        public int[] SelectedUsers { get; set; }
-
         public List<Question> Questions { get; set; }
-        
-        public List<UsersChecklist> UsersChecklists { get; set; }
     }
 }

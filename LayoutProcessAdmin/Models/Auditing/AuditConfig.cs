@@ -25,6 +25,12 @@ namespace LayoutProcessAdmin.Models.Auditing
         public Audit Audit { get; set; }
 
         [NotMapped]
+        [Display(Name = "Who will answer this?")]
+        public int[] SelectedUsers { get; set; }
+
+        public List<UsersAudits> UsersAudits { get; set; }
+
+        [NotMapped]
         public int id_Period { get; set; }
 
         [NotMapped]
