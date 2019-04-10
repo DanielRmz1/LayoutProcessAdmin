@@ -88,7 +88,7 @@ namespace LayoutProcessAdmin.Controllers
                 return false;
 
             foreach (var user in users)
-                if (user.Users.int_IdUser == idUser)
+                if (user.User.int_IdUser == idUser)
                     return true;
 
             return false;
@@ -126,7 +126,7 @@ namespace LayoutProcessAdmin.Controllers
                             db.UsersChecklists.Add(new UsersChecklist()
                             {
                                 Checklist = checklist,
-                                Users = db.Users.Find(item)
+                                User = db.Users.Find(item)
                             });
                         }
 
@@ -387,7 +387,7 @@ namespace LayoutProcessAdmin.Controllers
                         db.UsersChecklists.Add(new UsersChecklist()
                         {
                             Checklist = checklist,
-                            Users = db.Users.Find(item)
+                            User = db.Users.Find(item)
                         });
                     }
                     var period = db.Periods.Find(checklist.id_Period);
