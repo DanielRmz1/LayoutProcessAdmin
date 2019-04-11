@@ -8,9 +8,13 @@ namespace LayoutProcessAdmin.Models.Auditing
     {
         [Key]
         public int int_IdPeriod { get; set; }
-        
+
         /// <summary>
-        /// Daily = d, weekly = w, monthly = m, 15 days = q
+        ///  o for Once
+        ///  d for Day
+        ///  w for Week
+        ///  q for quincena
+        ///  m for Month
         /// </summary>
         public string chr_RepeatPeriod { get; set; } 
 

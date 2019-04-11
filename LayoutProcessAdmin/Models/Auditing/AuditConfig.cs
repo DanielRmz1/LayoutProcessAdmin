@@ -42,13 +42,7 @@ namespace LayoutProcessAdmin.Models.Auditing
 
         [NotMapped]
         public string[] Days { get; set; }
-
-        /// <summary>
-        ///  d for Day
-        ///  m for Month
-        ///  w for Week
-        ///  q for quincena
-        /// </summary>
+        
         [Display(Name = "Period")]
         [Column("int_idPeriod")]
         public Period int_Period { get; set; }

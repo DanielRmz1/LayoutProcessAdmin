@@ -25,7 +25,7 @@ namespace LayoutProcessAdmin.Models
         public DbSet<Period> Periods { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionLog> QuestionsLog { get; set; }
-        public DbSet<UsersAudits> UsersAudits { get; set; }
+        //public DbSet<UsersAudits> UsersAudits { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Area> Areas { get; set; }
 
