@@ -9,8 +9,9 @@ namespace LayoutProcessAdmin.Models.Auditing
     public class UsersAudits
     {
         [Key]
-        public int int_IdUsersChecklist { get; set; }
-        public AuditConfig Checklist { get; set; }
+        public int int_IdUsersAudit { get; set; }
+
+        public AuditConfig AuditConfig { get; set; }
         public User User { get; set; }
     }
 }

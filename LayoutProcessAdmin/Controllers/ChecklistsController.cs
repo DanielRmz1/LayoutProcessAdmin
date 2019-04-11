@@ -130,7 +130,7 @@ namespace LayoutProcessAdmin.Controllers
                         //    });
                         //}
 
-                        checklist.Area = db.Areas.Find(checklist.int_Area);
+                        //checklist.Area = db.Areas.Find(checklist.int_Area);
 
                         User user = (User)Session["User"];
                         checklist.int_Owner = db.Users.Find(user.int_IdUser);
@@ -222,7 +222,7 @@ namespace LayoutProcessAdmin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var users = db.Users.Find(user.int_IdUser);
-            Checklist checklist = db.Checklists.Include(x=>x.Area).SingleOrDefault(x => x.int_IdList == id);
+            Checklist checklist = db.Checklists.SingleOrDefault(x => x.int_IdList == id);
 
             if (checklist == null)
             {
@@ -261,20 +261,20 @@ namespace LayoutProcessAdmin.Controllers
             }
         }
 
-        [HttpGet]
-        public JsonResult GetSelectedArea(int checklist)
-        {
-            try
-            {
-                var check = db.Checklists.Include(x => x.Area).SingleOrDefault(x => x.int_IdList == checklist);
-                return Json(new { Success = true, Result = check.Area.int_IdArea }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception e)
-            {
-                return Json(new { Success = false, Messagge = e.ToString() }, JsonRequestBehavior.AllowGet);
-            }
+        //[HttpGet]
+        //public JsonResult GetSelectedArea(int checklist)
+        //{
+        //    try
+        //    {
+        //        var check = db.Checklists.Include(x => x.Area.SingleOrDefault(x => x.int_IdList == checklist);
+        //        return Json(new { Success = true, Result = check.Area.int_IdArea }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Json(new { Success = false, Messagge = e.ToString() }, JsonRequestBehavior.AllowGet);
+        //    }
 
-        }
+        //}
 
         List<SelectListItem> GetPeriods(string selectedPeriod)
         {

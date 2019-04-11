@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LayoutProcessAdmin.Models.Checking
+namespace LayoutProcessAdmin.Models.Auditing
 {
     [Table("Tbl_Periods")]
     public class Period

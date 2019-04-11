@@ -1,4 +1,5 @@
-﻿using LayoutProcessAdmin.Models.Checking;
+﻿using LayoutProcessAdmin.Models.Areas;
+using LayoutProcessAdmin.Models.Checking;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,6 +24,12 @@ namespace LayoutProcessAdmin.Models.Auditing
         public Checklist int_Checklist { get; set; }
         
         public Audit Audit { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Area")]
+        public int int_Area { get; set; }
+
+        public Area Area { get; set; }
 
         [NotMapped]
         [Display(Name = "Who will answer this?")]

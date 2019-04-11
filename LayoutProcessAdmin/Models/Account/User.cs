@@ -70,7 +70,7 @@ namespace LayoutProcessAdmin.Models.Account
 
         public IEnumerable<SelectListItem> Roles { get; set; }
 
-        public List<UsersAudits> UsersChecklists { get; set; }
+        public List<UsersAudits> UsersAudits { get; set; }
         
         public List<Event> Events { get; set; }
     }
