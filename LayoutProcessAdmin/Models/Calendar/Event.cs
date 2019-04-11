@@ -1,4 +1,5 @@
 ﻿using LayoutProcessAdmin.Models.Account;
+using LayoutProcessAdmin.Models.Auditing;
 using LayoutProcessAdmin.Models.Checking;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -12,6 +13,8 @@ namespace LayoutProcessAdmin.Models.Calendar
         [Key]
         public int int_IdEvent { get; set; }
         public Checklist Checklist_Id { get; set; }
+
+        public AuditConfig AuditConfig { get; set; }
 
         public string chr_Title { get; set; }
         public DateTime dte_ScheduleDate { get; set; }

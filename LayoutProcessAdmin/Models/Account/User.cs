@@ -58,8 +58,6 @@ namespace LayoutProcessAdmin.Models.Account
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "Only numbers are allowed.")]
         public string chr_Phone { get; set; }
         
-        public List<Checklist> Checklists { get; set; }
-
         [NotMapped]
         [Required]
         [Display(Name = "Select a Role")]

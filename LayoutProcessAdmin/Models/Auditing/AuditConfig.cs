@@ -20,8 +20,6 @@ namespace LayoutProcessAdmin.Models.Auditing
         /// esto con el fin de que el servicio pueda comparar contra la fecha actual y crear nuevos eventos.
         /// </summary>
         public DateTime dte_LastDateCreated { get; set; }
-
-        public Checklist int_Checklist { get; set; }
         
         public Audit Audit { get; set; }
 
@@ -37,6 +35,8 @@ namespace LayoutProcessAdmin.Models.Auditing
 
         public List<UsersAudits> UsersAudits { get; set; }
 
+        public List<AuditsChecklists> AuditsChecklists { get; set; }
+
         [NotMapped]
         public int id_Period { get; set; }
 
@@ -49,6 +49,8 @@ namespace LayoutProcessAdmin.Models.Auditing
 
         [NotMapped]
         public string SelectedPeriod { get; set; }
+
+
 
     }
 }
