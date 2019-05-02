@@ -230,9 +230,9 @@ namespace LayoutProcessAdmin.Controllers
             }
             //checklist.id_Period = checklist.int_Period.int_IdPeriod;
             //ViewBag.Periods = GetPeriods(checklist.int_Period.chr_RepeatPeriod);
-            ViewBag.Days = GetDays();
+            //ViewBag.Days = GetDays();
             //ViewBag.Users = GetUsersDropDown(checklist.UsersChecklists);
-            ViewBag.Areas = GetAreas(-1);
+            //ViewBag.Areas = GetAreas(-1);
             return View(checklist);
         }
 

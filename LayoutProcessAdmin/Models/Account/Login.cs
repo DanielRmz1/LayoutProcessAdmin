@@ -11,7 +11,7 @@ namespace LayoutProcessAdmin.Models.Account
 
         [DataType(DataType.Password)]
         [Required]
-        [Display(Name = "Password:")]
+        [Display(Name = "Password:")] 
         public string Chr_Password { get; set; }
     }
 }

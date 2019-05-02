@@ -20,7 +20,8 @@ namespace LayoutProcessAdmin.Controllers
         [HttpGet]
         public JsonResult Get(int id)
         {
-            return Json(db.Questions.Where(x => x.int_Checklist.int_IdList == id).ToList(), JsonRequestBehavior.AllowGet);
+            var questions = db.Questions.Where(x => x.int_Checklist.int_IdList == id).ToList();
+            return Json(questions, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

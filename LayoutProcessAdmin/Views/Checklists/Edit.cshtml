@@ -52,9 +52,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-8 col-sm-12">
-                            @Html.HiddenFor(x => x.int_IdList)
-                            @*@Html.HiddenFor(x => x.id_Period)*@
+                        @Html.HiddenFor(x => x.int_IdList)
+                    </div>
+                    
+                    <div class="row">
+
+                        <div class="col-12">
                             <div class="row">
                                 <div class="col-lg-4 col-sm-12">
                                     <div class="form-group">
@@ -87,53 +90,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-sm-12">
-                            @*<div class="row">
-                                <div class="col-12">
-                                    @Html.LabelFor(model => model.SelectedPeriod, htmlAttributes: new { @class = "control-label" })
-                                    <div class="col-10">
-                                        @Html.DropDownListFor(model => model.SelectedPeriod, (List<SelectListItem>)ViewBag.Periods, "Select a Option", new { @class = "form-control select2 " })
-                                        @Html.ValidationMessageFor(model => model.SelectedPeriod, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div><br />
-                            <div class="row">
-                                <div class="col-12">
-                                    @Html.LabelFor(model => model.Days, htmlAttributes: new { @class = "control-label" })
-                                    <div class="col-10">
-                                        @Html.DropDownListFor(model => model.Days, (List<SelectListItem>)ViewBag.Days, htmlAttributes: new { @class = "form-control select2", multiple = "multiple", id = "daysSelect" })
-                                        @Html.ValidationMessageFor(model => model.Days, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div><br />*@
-                            <div class="row">
-                                <div class="col-12">
-                                    @Html.LabelFor(model => model.SelectedUsers, htmlAttributes: new { @class = "control-label" })
-                                    <div class="col-10">
-                                        @Html.DropDownListFor(model => model.SelectedUsers, (List<SelectListItem>)ViewBag.Users, htmlAttributes: new { @class = "form-control select2", multiple = "multiple" })
-                                        @Html.ValidationMessageFor(model => model.SelectedUsers, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div><br />
-                            <div class="row">
-                                <div class="col-12">
-                                    @Html.LabelFor(model => model.int_Area, htmlAttributes: new { @class = "control-label" })
-                                    <div class="col-10">
-                                        @Html.DropDownListFor(model => model.int_Area, (List<SelectListItem>)ViewBag.Areas, "Select a Option", new { @class = "form-control select2", id = "areaSelect" })
-                                        @Html.ValidationMessageFor(model => model.int_Area, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-                            @*<div class="row">
-                                <div class="form-group col-12" style="background-color: white;">
-                                    <div class="custom-control custom-checkbox">
-                                        @Html.CheckBoxFor(model => model.bit_Activo, new { @class = "custom-control-input", type = "checkbox", style = "width: 30px; height: 30px;" })
-                                        @Html.LabelFor(model => model.bit_Activo, htmlAttributes: new { @class = "custom-control-label" })
-                                    </div>
-                                </div>
-                            </div>*@
-                        </div>
-                    </div><br />
+                    </div>
+                    
+                    <br />
 
                     <div class="row">
                         <ul id="errorSummary" class="text-danger"></ul>
@@ -311,9 +270,9 @@
     $(document).ready(function () {
         currentChecklistId = '@Model.int_IdList';
         @*intPeriod = '@Model.int_Period.int_IdPeriod';*@
-        console.log(intPeriod);
-        GetSelectedDays();
-        GetSelectedArea();
+        //console.log(intPeriod);
+        //GetSelectedDays();
+        //GetSelectedArea();
         UpdateQuestionsTable(currentChecklistId);
 
         $('#checklistForm').on('submit',function (e) {
@@ -493,7 +452,7 @@
         });
     }
 
-    function GetSelectedDays() {
+    @*function GetSelectedDays() {
         $.ajax({
             url: '@Url.Action("GetSelectedDays", "Checklists")',
             type: "GET",
@@ -510,9 +469,9 @@
                     alert(textStatus);
                 }
             });
-    }
+    }*@
 
-    function GetSelectedArea() {
+    @*function GetSelectedArea() {
         $.ajax({
             url: '@Url.Action("GetSelectedArea", "Checklists")',
             type: "GET",
@@ -529,6 +488,6 @@
                     alert(textStatus);
                 }
             });
-    }
+    }*@
 </script>
 }

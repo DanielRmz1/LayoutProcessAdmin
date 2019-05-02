@@ -505,6 +505,7 @@
 
     //string description, string formula, string variable, int id_question
     function AddAnswer(description, variable, id_question, lwLimit, upLimit) {
+        
         token = $('input[name="__RequestVerificationToken"]', $('#questionForm')).val();
         $.ajax({
             url: '@Url.Action("Create", "Answers")',
