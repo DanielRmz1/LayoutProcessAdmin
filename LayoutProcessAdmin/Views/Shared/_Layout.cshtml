@@ -48,9 +48,21 @@
                             Welcome @user.chr_Name !
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+
+                            <a href="#" class="dropdown-item notify-item">
+                                <i class="fa fa-user"></i> <span>BOM</span>
+                            </a>
+
+                            <a href="~/Applications/BOM/" class="dropdown-item notify-item">
+                                <i class="fa fa-user"></i> <span>LPA</span>
+                            </a>
+
+                            <hr />
+
                             <a href="@Url.Action("Logout", "Users")" class="dropdown-item notify-item" role="button">
                                 <i class="fa fa-power-off"></i> <span>Logout</span>
                             </a>
+
                         </div>
                     </li>
                 </ul>
@@ -85,7 +97,6 @@
                                 <ul class="list-unstyled">
                                     <li><a href="@Url.Action("Create", "Checklists")">Create</a></li>
                                     <li><a href="@Url.Action("Index", "Checklists")">My checklists</a></li>
-                                    <li><a href="@Url.Action("Index", "Areas")">Areas</a></li>
                                 </ul>
                             </li>
                         }
@@ -93,7 +104,11 @@
                         @*@if (user.UserRoles[0].int_LpaRole.bit_ManageAudits)
                         {*@
                             <li class="submenu">
-                                <a href="@Url.Action("Index", "Audits")"><i class="fas fa-file-invoice"></i><span> Audits </span> </a>
+                                <a href="#"><i class="fas fa-file-invoice"></i><span> Audits </span> <i class="fas fa-angle-right menu-arrow"></i></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="@Url.Action("Index", "Audits")">My Audits</a></li>
+                                    <li><a href="@Url.Action("Index", "Areas")">Areas</a></li>
+                                </ul>
                             </li>
                         @*}*@
 

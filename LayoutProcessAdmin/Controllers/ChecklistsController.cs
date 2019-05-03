@@ -20,7 +20,17 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Checklists
         public ActionResult Index()
         {
-            return View(db.Checklists.ToList());
+            User user = (User)Session["User"];
+
+            if (user == null)
+                return RedirectToAction("Login", "Users");
+
+            if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
+                return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
+
+            var myChecklists = db.Checklists.Where(x => x.int_Owner.int_IdUser == user.int_IdUser).ToList();
+
+            return View(myChecklists);
         }
 
         // GET: Checklists/Details/5
