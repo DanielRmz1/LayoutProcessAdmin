@@ -47,16 +47,24 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "int_IdAudit,chr_Name,chr_Description,int_Type")] Audit audit)
+        public async Task<JsonResult> Create([Bind(Include = "int_IdAudit,chr_Name,chr_Description,int_Type,bit_Activo")] Audit audit)
         {
+            var existAudit = await db.Audits.SingleOrDefaultAsync(x => x.chr_Name == audit.chr_Name);
+
+            if (existAudit != null)
+                ModelState.Values.Add(new System.Web.Mvc.ModelState() {
+                    Value = new ValueProviderResult("que onda", "", null)
+                });
+
+
             if (ModelState.IsValid)
             {
                 db.Audits.Add(audit);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Json(new { success = true, data = new { auditId = audit.int_IdAudit} });
             }
 
-            return View(audit);
+            return Json(new { success = false, messagge = ModelState.Values.Where(x => x.Errors.Count > 0).Select(x => x.Errors[0].ErrorMessage).ToList() });
         }
 
         // GET: Audits/Edit/5

@@ -13,6 +13,7 @@ namespace LayoutProcessAdmin.Models.Auditing
         [StringLength(50)]
         [Required]
         [Display(Name = "Name")]
+        [Index(IsUnique = true)]
         public string chr_Name { get; set; }
 
         [StringLength(200)]
