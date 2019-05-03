@@ -5,77 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{
-    var users = (List<SelectListItem>) ViewBag.Users;
 
-    var periods = new List<SelectListItem>()
-    {
-        new SelectListItem()
-        {
-            Text = "Once",
-            Value = "o"
-        },
-        new SelectListItem()
-        {
-            Text = "Daily",
-            Value = "d"
-        },
-        new SelectListItem()
-        {
-            Text = "Weekly",
-            Value = "w"
-        },
-        new SelectListItem()
-        {
-            Text = "Monthly",
-            Value = "m"
-        },
-        new SelectListItem()
-        {
-            Text = "15 Days",
-            Value = "q"
-        }
-    };
-
-    var weekDays = new List<SelectListItem>()
-    {
-        new SelectListItem()
-        {
-            Text = "Sunday",
-            Value = "su"
-        },
-        new SelectListItem()
-        {
-            Text = "Monday",
-            Value = "mo"
-        },
-        new SelectListItem()
-        {
-            Text = "Tuesday",
-            Value = "tu"
-        },
-        new SelectListItem()
-        {
-            Text = "Wednesday",
-            Value = "we"
-        },
-        new SelectListItem()
-        {
-            Text = "Thursday",
-            Value = "th"
-        },
-        new SelectListItem()
-        {
-            Text = "Friday",
-            Value = "fr"
-        },
-        new SelectListItem()
-        {
-            Text = "Saturday",
-            Value = "sa"
-        }
-    };
-}
 
 @section css{
     <link href="~/plugins/select2/css/select2.min.css" rel="stylesheet" />

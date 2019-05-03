@@ -49,8 +49,6 @@ namespace LayoutProcessAdmin.Models.Auditing
 
         [NotMapped]
         public string SelectedPeriod { get; set; }
-
-
-
+        
     }
 }

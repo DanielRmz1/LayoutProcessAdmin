@@ -1,6 +1,9 @@
 ﻿using LayoutProcessAdmin.Models;
 using LayoutProcessAdmin.Models.Auditing;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -35,6 +38,7 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Audits/Create
         public ActionResult Create()
         {
+            ViewBag.AuditTypes = GetAuditTypes();
             return View();
         }
 
@@ -120,5 +124,69 @@ namespace LayoutProcessAdmin.Controllers
             }
             base.Dispose(disposing);
         }
+
+        List<SelectListItem> GetAuditTypes(string selectedType = "-1")
+        {
+            return new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text = "Auditoria",
+                    Value = "0",
+                    Selected = (selectedType == "0") ? true : false
+                },
+                new SelectListItem()
+                {
+                    Text = "Encuesta",
+                    Value = "1",
+                    Selected = (selectedType == "0") ? true : false
+                }
+            };
+        }
+
+        //List<SelectListItem> GetUsersDropDown(List<UsersAudits> users)
+        //{
+        //    var list = db.Users.ToList();
+        //    var listado = new List<SelectListItem>();
+
+        //    foreach (var item in list)
+        //    {
+        //        listado.Add(new SelectListItem()
+        //        {
+        //            Text = item.chr_Name + " " + item.chr_LastName,
+        //            Value = item.int_IdUser.ToString(),
+        //            Selected = IsUserSelected(item.int_IdUser, users)
+        //        });
+        //    }
+
+        //    return listado;
+        //}
+
+        //bool IsUserSelected(int idUser, List<UsersAudits> users)
+        //{
+        //    if (users == null)
+        //        return false;
+
+        //    foreach (var user in users)
+        //        if (user.User.int_IdUser == idUser)
+        //            return true;
+
+        //    return false;
+        //}
+
+        //[HttpGet]
+        //public JsonResult GetSelectedArea(int checklist)
+        //{
+        //    try
+        //    {
+        //        var check = db.Audits.Include(x => x.Area.SingleOrDefault(x => x.int_IdList == checklist);
+        //        return Json(new { Success = true, Result = check.Area.int_IdArea }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Json(new { Success = false, Messagge = e.ToString() }, JsonRequestBehavior.AllowGet);
+        //    }
+
+        //}
     }
 }

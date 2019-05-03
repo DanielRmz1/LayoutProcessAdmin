@@ -67,42 +67,14 @@ namespace LayoutProcessAdmin.Controllers
             if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
                 return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
 
-            ViewBag.CurrentUser = user;
+            //ViewBag.CurrentUser = user;
             //ViewBag.Users = GetUsersDropDown(null);
-            ViewBag.Areas = GetAreas(-1);
+            //ViewBag.Areas = GetAreas(-1);
 
             return View();
         }
 
-        //List<SelectListItem> GetUsersDropDown(List<UsersChecklist> users)
-        //{
-        //    var list = db.Users.ToList();
-        //    var listado = new List<SelectListItem>();
-
-        //    foreach (var item in list)
-        //    {
-        //        listado.Add(new SelectListItem()
-        //        {
-        //            Text = item.chr_Name + " " + item.chr_LastName,
-        //            Value = item.int_IdUser.ToString(),
-        //            Selected = IsUserSelected(item.int_IdUser, users)
-        //        });
-        //    }
-
-        //    return listado;
-        //}
-
-        //bool IsUserSelected(int idUser, List<UsersChecklist> users)
-        //{
-        //    if (users == null)
-        //        return false;
-
-        //    foreach (var user in users)
-        //        if (user.User.int_IdUser == idUser)
-        //            return true;
-
-        //    return false;
-        //}
+        
 
         // POST: Checklists/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
@@ -271,101 +243,9 @@ namespace LayoutProcessAdmin.Controllers
             }
         }
 
-        //[HttpGet]
-        //public JsonResult GetSelectedArea(int checklist)
-        //{
-        //    try
-        //    {
-        //        var check = db.Checklists.Include(x => x.Area.SingleOrDefault(x => x.int_IdList == checklist);
-        //        return Json(new { Success = true, Result = check.Area.int_IdArea }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return Json(new { Success = false, Messagge = e.ToString() }, JsonRequestBehavior.AllowGet);
-        //    }
+        
 
-        //}
-
-        List<SelectListItem> GetPeriods(string selectedPeriod)
-        {
-            var sPeriods = new List<SelectListItem>()
-            {
-                new SelectListItem()
-                {
-                    Text = "Once",
-                    Value = "o",
-                    Selected = (selectedPeriod == "o") ? true : false
-                },
-                new SelectListItem()
-                {
-                    Text = "Daily",
-                    Value = "d",
-                    Selected = (selectedPeriod == "d") ? true : false
-                },
-                new SelectListItem()
-                {
-                    Text = "Weekly",
-                    Value = "w",
-                    Selected = (selectedPeriod == "w") ? true : false
-                },
-                new SelectListItem()
-                {
-                    Text = "Monthly",
-                    Value = "m",
-                    Selected = (selectedPeriod == "m") ? true : false
-                },
-                new SelectListItem()
-                {
-                    Text = "15 Days",
-                    Value = "q",
-                    Selected = (selectedPeriod == "q") ? true : false
-                }
-            };
-            return sPeriods;
-        }
-
-        List<SelectListItem> GetDays()
-        {
-            var weekDays = new List<SelectListItem>()
-            {
-                new SelectListItem()
-                {
-                    Text = "Sunday",
-                    Value = "su"
-                },
-                new SelectListItem()
-                {
-                    Text = "Monday",
-                    Value = "mo"
-                },
-                new SelectListItem()
-                {
-                    Text = "Tuesday",
-                    Value = "tu"
-                },
-                new SelectListItem()
-                {
-                    Text = "Wednesday",
-                    Value = "we"
-                },
-                new SelectListItem()
-                {
-                    Text = "Thursday",
-                    Value = "th"
-                },
-                new SelectListItem()
-                {
-                    Text = "Friday",
-                    Value = "fr"
-                },
-                new SelectListItem()
-                {
-                    Text = "Saturday",
-                    Value = "sa"
-                }
-            };
-            return weekDays;
-        }
+        
 
         // POST: Checklists/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
