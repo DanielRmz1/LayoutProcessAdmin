@@ -160,7 +160,7 @@
                     <div class="row">
                         <ul id="errorSummary" class="text-danger"></ul>
                         <div style="margin-left: auto; margin-right: 20px;">
-                            <button class="btn btn-success" type="submit">Next <i class="fa fa-level-down-alt"></i> </button>
+                            <button class="btn btn-success" type="submit" id="btnNext">Next <i class="fa fa-level-down-alt"></i> </button>
                         </div>
                     </div>
 
@@ -172,10 +172,27 @@
                     <div class="col-sm-4 col-xl-4 col-lg-4 col-8">
                         <h4 class="text-primary"><i class="fa fa-layer-group"></i> Layers</h4>
                     </div>
-                    <div style="margin-left: auto;margin-right: 20px;" class="question-container">
+                    <div style="margin-left: auto;margin-right: 20px;" class="layers-container">
                         <button id="btnAddLay" type="button" class="btn btn-primary text-white" data-toggle="modal" data-target="#addLay">Add New Lay <i class="fa fa-plus"></i></button>
                     </div>
                 </div><br />
+
+                <div class="row layers-container">
+                    <div class="col-12">
+                        <table class="table table-hover table-responsive-sm" id="questionsTable">
+                            <thead>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.AuditConfigs[0].int_Level)</th>
+                                    <th>@Html.DisplayNameFor(model => model.AuditConfigs[0].Checklist)</th>
+                                    <th>@Html.DisplayNameFor(model => model.AuditConfigs[0].Area)</th>
+                                    <th>@Html.DisplayNameFor(model => model.AuditConfigs[0].int_Period.chr_RepeatPeriod)</th>
+                                    <th>Edit / Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
             <div class="card-footer">
@@ -235,6 +252,11 @@
                             @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.Areas, new { @class = "form-control select2", id = "selectArea", style = "width: 100%;" })
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul id="errorLayerSummary" class="text-danger"></ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -249,14 +271,18 @@
     <script src="~/plugins/select2/js/select2.min.js"></script>
 
     <script>
+        var currentAuditId;
+        var token;
+        var level = 1;
         $(document).ready(function() {
+
+            $('.layers-container').hide();
 
             $('#btnAddLay').on('click', function (){
                 $('#addLayer').modal('show');
             });
 
             $('.select2').select2();
-            var currentAuditId;
 
             $('#auditForm').on('submit',function (e) {
                 e.preventDefault();
@@ -269,6 +295,9 @@
 
                         if (data.success) {
                             currentAuditId = data.data.auditId;
+                            $('.layers-container').show();
+                            $('#btnNext').attr('disabled', 'disabled');
+                            
                         } else {
                             data.messagge.forEach(function (e) {
                                 $('#errorSummary').append("<li>" + e + "</li>");
@@ -282,7 +311,71 @@
                     }
                 });
             });
+
+            $('#layerForm').on('submit', function (e) {
+                e.preventDefault();
+                var form = $('#layerForm');
+                token = $('input[name="__RequestVerificationToken"]', form).val();
+                $.ajax({
+                    url: '@Url.Action("Create", "AuditConfigs")',
+                    type: "POST",
+                    data: {
+                        __RequestVerificationToken: token,
+                        checklist: $('#selectChecklist').val(),
+                        period: $('#selectPeriod').val(),
+                        days: $('#selectDays').val(),
+                        users: $('#selectUsers').val(),
+                        area: $('#selectArea').val(),
+                        level: level,
+                        audit: currentAuditId
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            UpdateLayersTable(currentAuditId);
+                            level++;
+                            $('#addLayer').modal('hide');
+                        } else {
+                            data.messagge.forEach(function (e) {
+                                $('#errorLayerSummary').append("<li>" + e + "</li>");
+                            });
+                        }
+                    }
+                });
+            });
         });
+
+        function UpdateLayersTable(id) {
+            $.ajax({
+                url: '@Url.Action("Get", "Questions")',
+                type: "GET",
+                data: { id: id },
+                success: function (data) {
+                    $('#questionsTable tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
+                        $('#questionsTable tbody').append(Question.addRow(i + 1, data[i].chr_Description, data[i].chr_Type, data[i].bit_SingleAnswer, data[i].chr_Formula, data[i].int_IdQuestion));
+                    }
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    alert(textStatus);
+                }
+            });
+        }
+
+        $(window).bind('beforeunload', function () {
+            if (currentAuditId != 0 && currentAuditId != null)
+                return 'Are you sure you want to leave?';
+        });
+
+        window.onunload = function () {
+            var form = $('#auditForm');
+            token = $('input[name="__RequestVerificationToken"]', form).val();
+            $.ajax({
+                url: '@Url.Action("Delete", "Audits")',
+                type: "POST",
+                data: { __RequestVerificationToken: token, id: currentAuditId }
+            });
+        } 
 
         $(window).resize(function () {
             $('.select2').select2();

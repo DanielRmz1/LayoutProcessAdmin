@@ -57,18 +57,22 @@ namespace LayoutProcessAdmin.Controllers
             var existAudit = await db.Audits.SingleOrDefaultAsync(x => x.chr_Name == audit.chr_Name);
 
             if (existAudit != null)
-                ModelState.Values.Add(new System.Web.Mvc.ModelState() {
-                    Value = new ValueProviderResult("que onda", "", null)
-                });
+                ModelState.AddModelError(string.Empty, "The audit Name already exists.");
 
-
-            if (ModelState.IsValid)
+            try
             {
-                db.Audits.Add(audit);
-                await db.SaveChangesAsync();
-                return Json(new { success = true, data = new { auditId = audit.int_IdAudit} });
+                if (ModelState.IsValid)
+                {
+                    db.Audits.Add(audit);
+                    await db.SaveChangesAsync();
+                    return Json(new { success = true, data = new { auditId = audit.int_IdAudit } });
+                }
             }
-
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.ToString());
+            }
+            
             return Json(new { success = false, messagge = ModelState.Values.Where(x => x.Errors.Count > 0).Select(x => x.Errors[0].ErrorMessage).ToList() });
         }
 
@@ -103,30 +107,15 @@ namespace LayoutProcessAdmin.Controllers
             return View(audit);
         }
 
-        // GET: Audits/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Audit audit = await db.Audits.FindAsync(id);
-            if (audit == null)
-            {
-                return HttpNotFound();
-            }
-            return View(audit);
-        }
-
         // POST: Audits/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public async Task<JsonResult> Delete(int id)
         {
             Audit audit = await db.Audits.FindAsync(id);
             db.Audits.Remove(audit);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

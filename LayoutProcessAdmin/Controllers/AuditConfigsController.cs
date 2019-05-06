@@ -22,6 +22,13 @@ namespace LayoutProcessAdmin.Controllers
             return View(await db.AuditConfigs.ToListAsync());
         }
 
+        [HttpGet]
+        public async Task<JsonResult> Get(int id)
+        {
+            var configs = await db.AuditConfigs.Where(x => x.Audit.int_IdAudit == id).ToListAsync();
+            return Json(configs, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: AuditConfigs/Details/5
         public async Task<ActionResult> Details(int? id)
         {
@@ -42,25 +49,25 @@ namespace LayoutProcessAdmin.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> Create(string checklist, string period, string[] days, string[] users, string area, string level, string audit)
+        public async Task<JsonResult> Create(int? checklist, string period, string[] days, int[] users, int? area, int level, int audit)
         {
             var auditConfig = new AuditConfig();
 
             List<string> errors = new List<string>();
 
-            if (checklist == "")
+            if (checklist == 0)
                 errors.Add("The checklist cannot be blank");
 
             if (period == "")
                 errors.Add("The period cannot be blank");
 
-            if (days.Length == 0)
+            if (days[0] == "")
                 errors.Add("It is necessary to select at least a one day");
 
             if (users.Length == 0)
                 errors.Add("It is necessary to select at least a one user");
 
-            if (area == "")
+            if (area == null)
                 errors.Add("The area cannot be blank");
 
             if (errors.Count == 0)
@@ -76,24 +83,24 @@ namespace LayoutProcessAdmin.Controllers
                     chr_RepeatPeriod = period
                 });
                 
-                db.AuditConfigs.Add(new AuditConfig()
+                var config = db.AuditConfigs.Add(new AuditConfig()
                 {
                     Area = db.Areas.Find(area),
                     Audit = db.Audits.Find(audit),
-                    int_Level = int.Parse(level),
-                    int_Period = newPeriod
+                    int_Level = level,
+                    int_Period = newPeriod,
+                    Checklist = db.Checklists.Find(checklist)
                 });
-                
-            }
 
-            if (ModelState.IsValid)
-            {
-                db.AuditConfigs.Add(auditConfig);
-                await db.SaveChangesAsync();
-                return Json(new { success = true, data = new { id = auditConfig.int_IdAuditConfig } });
+                for (var i = 0; i < users.Length; i++)
+                    db.UsersAudits.Add(new UsersAudits()
+                    {
+                        AuditConfig = config,
+                        User = db.Users.Find(users[i])
+                    });
             }
-
-            return Json(new { success = true, messagge = ModelState.Values.Where(x => x.Errors.Count > 0).Select(x => x.Errors[0].ErrorMessage).ToList() });
+            
+            return Json(new { success = false, messagge = errors });
         }
 
         // GET: AuditConfigs/Edit/5

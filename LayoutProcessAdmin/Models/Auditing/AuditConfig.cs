@@ -12,7 +12,8 @@ namespace LayoutProcessAdmin.Models.Auditing
     {
         [Key]
         public int int_IdAuditConfig { get; set; }
-
+        
+        [Display(Name = "Level")]
         public int int_Level { get; set; }
 
         /// <summary>
