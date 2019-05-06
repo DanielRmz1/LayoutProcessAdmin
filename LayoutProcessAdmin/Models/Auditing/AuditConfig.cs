@@ -23,32 +23,37 @@ namespace LayoutProcessAdmin.Models.Auditing
         
         public Audit Audit { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Area")]
-        public int int_Area { get; set; }
+        //[NotMapped]
+        //[Display(Name = "Area")]
+        //public int int_Area { get; set; }
 
         public Area Area { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Who will answer this?")]
-        public int[] SelectedUsers { get; set; }
+        //[NotMapped]
+        //[Display(Name = "Who will answer this?")]
+        //public int[] SelectedUsers { get; set; }
 
         public List<UsersAudits> UsersAudits { get; set; }
 
-        public List<AuditsChecklists> AuditsChecklists { get; set; }
+        public Checklist Checklist { get; set; }
 
-        [NotMapped]
-        public int id_Period { get; set; }
+        /// <summary>
+        /// No me acuerdo por que existe esta propiedad, la relacion entre checklists y audit configs es muchos a uno, no muchos a muchos
+        /// </summary>
+        //public List<AuditsChecklists> AuditsChecklists { get; set; }
 
-        [NotMapped]
-        public string[] Days { get; set; }
-        
+        //[NotMapped]
+        //public int id_Period { get; set; }
+
+        //[NotMapped]
+        //public string[] Days { get; set; }
+
         [Display(Name = "Period")]
         [Column("int_idPeriod")]
         public Period int_Period { get; set; }
 
-        [NotMapped]
-        public string SelectedPeriod { get; set; }
+        //[NotMapped]
+        //public string SelectedPeriod { get; set; }
         
     }
 }

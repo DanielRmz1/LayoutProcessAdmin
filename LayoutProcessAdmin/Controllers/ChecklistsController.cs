@@ -163,31 +163,6 @@ namespace LayoutProcessAdmin.Controllers
 
         }
 
-        List<SelectListItem> GetAreas(int idArea)
-        {
-            var areas = db.Areas;
-            var areasList = new List<SelectListItem>();
-
-            foreach (var area in areas)
-                areasList.Add(new SelectListItem()
-                {
-                    Text = area.Name,
-                    Value = area.int_IdArea.ToString(),
-                    Selected = (area.int_IdArea == idArea) ? true : false
-                });
-
-            return areasList;
-        } 
-
-        bool FindSelectedDay(string[] days, string current)
-        {
-            foreach (var day in days)
-                if (day == current)
-                    return true;
-
-            return false;
-        }
-
         // GET: Checklists/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -217,35 +192,6 @@ namespace LayoutProcessAdmin.Controllers
             //ViewBag.Areas = GetAreas(-1);
             return View(checklist);
         }
-
-        [HttpGet]
-        public JsonResult GetSelectedDays(int period)
-        {
-            try
-            {
-                var result = db.Periods.Find(period);
-
-                string[] days = new string[10];
-
-                days[0] = (result.bit_Sun) ? "su" : "";
-                days[1] = (result.bit_Mon) ? "mo" : "";
-                days[2] = (result.bit_Tue) ? "tu" : "";
-                days[3] = (result.bit_Wed) ? "we" : "";
-                days[4] = (result.bit_Thu) ? "th" : "";
-                days[5] = (result.bit_Sun) ? "fr" : "";
-                days[6] = (result.bit_Sun) ? "su" : "";
-
-                return Json(new { Success = true, Result = days }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception e)
-            {
-                return Json(new { Success = false, Messagge = e.ToString() }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        
-
-        
 
         // POST: Checklists/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 

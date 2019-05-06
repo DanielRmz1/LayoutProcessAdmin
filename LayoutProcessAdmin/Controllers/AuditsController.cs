@@ -1,5 +1,7 @@
 ﻿using LayoutProcessAdmin.Models;
+using LayoutProcessAdmin.Models.Account;
 using LayoutProcessAdmin.Models.Auditing;
+using LayoutProcessAdmin.Models.Checking;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -38,7 +40,10 @@ namespace LayoutProcessAdmin.Controllers
         // GET: Audits/Create
         public ActionResult Create()
         {
+            ViewBag.ListUsers = GetUsersDropDown(null);
             ViewBag.AuditTypes = GetAuditTypes();
+            ViewBag.Areas = GetAreas(-1);
+            ViewBag.MyChecklists = GetMyChecklists(null);
             return View();
         }
 
@@ -152,35 +157,106 @@ namespace LayoutProcessAdmin.Controllers
             };
         }
 
-        //List<SelectListItem> GetUsersDropDown(List<UsersAudits> users)
-        //{
-        //    var list = db.Users.ToList();
-        //    var listado = new List<SelectListItem>();
+        List<SelectListItem> GetUsersDropDown(List<UsersAudits> users)
+        {
+            var list = db.Users.ToList();
+            var listado = new List<SelectListItem>();
 
-        //    foreach (var item in list)
-        //    {
-        //        listado.Add(new SelectListItem()
-        //        {
-        //            Text = item.chr_Name + " " + item.chr_LastName,
-        //            Value = item.int_IdUser.ToString(),
-        //            Selected = IsUserSelected(item.int_IdUser, users)
-        //        });
-        //    }
+            foreach (var item in list)
+            {
+                listado.Add(new SelectListItem()
+                {
+                    Text = item.chr_Name + " " + item.chr_LastName,
+                    Value = item.int_IdUser.ToString(),
+                    Selected = IsUserSelected(item.int_IdUser, users)
+                });
+            }
 
-        //    return listado;
-        //}
+            return listado;
+        }
 
-        //bool IsUserSelected(int idUser, List<UsersAudits> users)
-        //{
-        //    if (users == null)
-        //        return false;
+        bool IsUserSelected(int idUser, List<UsersAudits> users)
+        {
+            if (users == null)
+                return false;
 
-        //    foreach (var user in users)
-        //        if (user.User.int_IdUser == idUser)
-        //            return true;
+            foreach (var user in users)
+                if (user.User.int_IdUser == idUser)
+                    return true;
 
-        //    return false;
-        //}
+            return false;
+        }
+
+        List<SelectListItem> GetAreas(int idArea)
+        {
+            var areas = db.Areas;
+            var areasList = new List<SelectListItem>();
+
+            foreach (var area in areas)
+                areasList.Add(new SelectListItem()
+                {
+                    Text = area.Name,
+                    Value = area.int_IdArea.ToString(),
+                    Selected = (area.int_IdArea == idArea) ? true : false
+                });
+
+            return areasList;
+        }
+
+        List<SelectListItem> GetMyChecklists(List<Checklist> checklistsSelected)
+        {
+            var checkLists = new List<SelectListItem>();
+            var user = (User)Session["User"];
+
+            var myChecklists = db.Checklists.Where(x => x.int_Owner.int_IdUser == user.int_IdUser).ToList();
+
+            foreach (var checklist in myChecklists)
+                checkLists.Add(new SelectListItem() {
+                    Text = checklist.chr_Name,
+                    Value = checklist.int_IdList.ToString(),
+                    Selected = ChecklistsIsSelected(checklist, checklistsSelected)
+                });
+            
+            return checkLists;
+        }
+
+        bool ChecklistsIsSelected(Checklist checklist, List<Checklist> checklistsSelected)
+        {
+            if (checklistsSelected == null)
+                return false;
+
+            foreach(var check in checklistsSelected)
+                if (check.int_IdList == checklist.int_IdList)
+                    return true;
+
+            return false;
+        }
+
+
+        [HttpGet]
+        public JsonResult GetSelectedDays(int period)
+        {
+            try
+            {
+                var result = db.Periods.Find(period);
+
+                string[] days = new string[10];
+
+                days[0] = (result.bit_Sun) ? "su" : "";
+                days[1] = (result.bit_Mon) ? "mo" : "";
+                days[2] = (result.bit_Tue) ? "tu" : "";
+                days[3] = (result.bit_Wed) ? "we" : "";
+                days[4] = (result.bit_Thu) ? "th" : "";
+                days[5] = (result.bit_Sun) ? "fr" : "";
+                days[6] = (result.bit_Sun) ? "su" : "";
+
+                return Json(new { Success = true, Result = days }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Messagge = e.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         //[HttpGet]
         //public JsonResult GetSelectedArea(int checklist)

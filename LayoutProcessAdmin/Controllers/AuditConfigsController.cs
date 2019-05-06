@@ -37,27 +37,63 @@ namespace LayoutProcessAdmin.Controllers
             return View(auditConfig);
         }
 
-        // GET: AuditConfigs/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
         // POST: AuditConfigs/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "int_IdAuditConfig,int_Level")] AuditConfig auditConfig)
+        public async Task<JsonResult> Create(string checklist, string period, string[] days, string[] users, string area, string level, string audit)
         {
+            var auditConfig = new AuditConfig();
+
+            List<string> errors = new List<string>();
+
+            if (checklist == "")
+                errors.Add("The checklist cannot be blank");
+
+            if (period == "")
+                errors.Add("The period cannot be blank");
+
+            if (days.Length == 0)
+                errors.Add("It is necessary to select at least a one day");
+
+            if (users.Length == 0)
+                errors.Add("It is necessary to select at least a one user");
+
+            if (area == "")
+                errors.Add("The area cannot be blank");
+
+            if (errors.Count == 0)
+            {
+                var newPeriod = db.Periods.Add(new Period() {
+                    bit_Sun = FindSelectedDay(days, "su"),
+                    bit_Mon = FindSelectedDay(days, "mo"),
+                    bit_Tue = FindSelectedDay(days, "tu"),
+                    bit_Wed = FindSelectedDay(days, "we"),
+                    bit_Thu = FindSelectedDay(days, "th"),
+                    bit_Fri = FindSelectedDay(days, "fr"),
+                    bit_Sat = FindSelectedDay(days, "sa"),
+                    chr_RepeatPeriod = period
+                });
+                
+                db.AuditConfigs.Add(new AuditConfig()
+                {
+                    Area = db.Areas.Find(area),
+                    Audit = db.Audits.Find(audit),
+                    int_Level = int.Parse(level),
+                    int_Period = newPeriod
+                });
+                
+            }
+
             if (ModelState.IsValid)
             {
                 db.AuditConfigs.Add(auditConfig);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Json(new { success = true, data = new { id = auditConfig.int_IdAuditConfig } });
             }
 
-            return View(auditConfig);
+            return Json(new { success = true, messagge = ModelState.Values.Where(x => x.Errors.Count > 0).Select(x => x.Errors[0].ErrorMessage).ToList() });
         }
 
         // GET: AuditConfigs/Edit/5
@@ -124,6 +160,15 @@ namespace LayoutProcessAdmin.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        
+        bool FindSelectedDay(string[] days, string current)
+        {
+            foreach (var day in days)
+                if (day == current)
+                    return true;
+
+            return false;
         }
     }
 }
