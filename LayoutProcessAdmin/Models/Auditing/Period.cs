@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LayoutProcessAdmin.Models.Auditing
@@ -16,6 +17,7 @@ namespace LayoutProcessAdmin.Models.Auditing
         ///  q for quincena
         ///  m for Month
         /// </summary>
+        [Display(Name = "Periodo")]
         public string chr_RepeatPeriod { get; set; } 
 
         public bool bit_Mon { get; set; }
@@ -25,6 +27,8 @@ namespace LayoutProcessAdmin.Models.Auditing
         public bool bit_Fri { get; set; }
         public bool bit_Sat { get; set; }
         public bool bit_Sun { get; set; }
-        
+
+        public List<AuditConfig> AuditConfigs { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LayoutProcessAdmin.Models.Account;
+using LayoutProcessAdmin.Models.Auditing;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -30,5 +31,7 @@ namespace LayoutProcessAdmin.Models.Checking
         public User int_Owner { get; set; }
 
         public List<Question> Questions { get; set; }
+
+        public List<AuditConfig> AuditConfigs { get; set; }
     }
 }

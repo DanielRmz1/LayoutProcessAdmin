@@ -179,7 +179,7 @@
 
                 <div class="row layers-container">
                     <div class="col-12">
-                        <table class="table table-hover table-responsive-sm" id="questionsTable">
+                        <table class="table table-hover table-responsive-sm" id="layersTable">
                             <thead>
                                 <tr>
                                     <th>@Html.DisplayNameFor(model => model.AuditConfigs[0].int_Level)</th>
@@ -199,7 +199,6 @@
                 <div class="form-group float-right">
                     <div class="row">
                         @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-warning", role = "button" }) &nbsp;
-                            
                     </div>
                 </div>
             </div>
@@ -225,31 +224,31 @@
                     <div class="row">
                         <div class="col-lg-12">
                             @Html.Label("Select a Checklist", new { @class = "control-label", @for = "selectChecklist" })
-                            @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.MyChecklists, new { @class = "form-control select2", id = "selectChecklist", style = "width: 100%;" })
+                            @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.MyChecklists, "Select a Option", new { @class = "form-control select2", id = "selectChecklist", style = "width: 100%;" })
                         </div>
                     </div><br />
                     <div class="row">
                         <div class="col-lg-12">
                             @Html.Label("Seleccionar Periodo", new { @for = "selectPeriod", @class = "control-label" })
-                            @Html.DropDownList("Select a Option", periods, new { @class = "form-control select2", id = "selectPeriod", style = "width: 100%;", name = "SelectedPeriod" })
+                            @Html.DropDownList("Select a Option", periods, "Select a Option", new { @class = "form-control select2", id = "selectPeriod", style = "width: 100%;", name = "SelectedPeriod" })
                         </div>
                     </div><br />
                     <div class="row">
                         <div class="col-lg-12">
                             @Html.Label("Seleccionar Dias", new { @for = "selectDays", @class = "control-label" })
-                            @Html.DropDownList("Select a Option", weekDays, new { @class = "form-control select2", id = "selectDays", multiple = "multiple", style = "width: 100%;" })
+                            @Html.DropDownList("Select a Option", weekDays, htmlAttributes: new { @class = "form-control select2", id = "selectDays", multiple = "multiple", style = "width: 100%;" })
                         </div>
                     </div><br />
                     <div class="row">
                         <div class="col-lg-12">
                             @Html.Label("Select Users", new { @class = "control-label", @for = "selectUsers" })
-                            @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.ListUsers, new { @class = "form-control select2", multiple = "multiple", id = "selectUsers", style = "width: 100%;" })
+                            @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.ListUsers,htmlAttributes: new { @class = "form-control select2", multiple = "multiple", id = "selectUsers", style = "width: 100%;" })
                         </div>
                     </div><br />
                     <div class="row">
                         <div class="col-lg-12">
                             @Html.Label("Select Area", new { @class = "control-label", @for = "selectArea" })
-                            @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.Areas, new { @class = "form-control select2", id = "selectArea", style = "width: 100%;" })
+                            @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.Areas, "Select a Option", new { @class = "form-control select2", id = "selectArea", style = "width: 100%;" })
                         </div>
                     </div>
                     <div class="row">
@@ -278,7 +277,19 @@
 
             $('.layers-container').hide();
 
-            $('#btnAddLay').on('click', function (){
+            $('#btnAddLay').on('click', function () {
+                document.getElementById('selectChecklist').selectedIndex = 0;
+                $('#selectChecklist').trigger('change');
+
+                document.getElementById('selectPeriod').selectedIndex = 0;
+                $('#selectPeriod').trigger('change');
+
+                document.getElementById('selectArea').selectedIndex = 0;
+                $('#selectArea').trigger('change');
+
+                $('#selectDays').val('').trigger('change');
+                $('#selectUsers').val('').trigger('change');
+
                 $('#addLayer').modal('show');
             });
 
@@ -331,9 +342,9 @@
                     },
                     success: function (data) {
                         if (data.success) {
-                            UpdateLayersTable(currentAuditId);
                             level++;
                             $('#addLayer').modal('hide');
+                            UpdateLayersTable(currentAuditId);
                         } else {
                             data.messagge.forEach(function (e) {
                                 $('#errorLayerSummary').append("<li>" + e + "</li>");
@@ -344,15 +355,95 @@
             });
         });
 
+        var Layer = {
+            addRow: function (level, checklist, area, repeatPeriod) {
+                var row = document.createElement('tr');
+
+                var cell1 = document.createElement('td');
+                var span1 = document.createElement('span');
+                span1.textContent = level;
+                cell1.appendChild(span1);
+
+                var cell2 = document.createElement('td');
+                var span2 = document.createElement('span');
+                span2.textContent = checklist;
+                cell2.appendChild(span2);
+
+                var cell3 = document.createElement('td');
+                var span3 = document.createElement('span');
+                span3.textContent = area;
+                cell3.appendChild(span3);
+
+                var cell4 = document.createElement('td');
+                var span4 = document.createElement('span');
+                span4.textContent = repeatPeriod;
+                cell4.appendChild(span4);
+
+                // ----------- Celda de los botones de Editar/Eliminar ---------------
+
+                var cell6 = document.createElement('td');
+
+                var divRow = document.createElement('div');
+                divRow.classList = 'row';
+
+                var editTag = document.createElement('i');
+                editTag.classList = "fa fa-pen";
+
+                var deleteTag = document.createElement('i');
+                deleteTag.classList = "fa fa-minus-circle";
+
+                var editBtn = document.createElement('a');
+                editBtn.href = '#';
+                editBtn.setAttribute("role", "button");
+                editBtn.classList = "btn btn-warning btn-sm";
+                editBtn.appendChild(editTag);
+                editBtn.onclick = function () {
+                    //EditQuestion(id);
+                };
+
+                var deleteBtn = document.createElement('a');
+                deleteBtn.href = '#';
+                deleteBtn.setAttribute("role", "button");
+                deleteBtn.classList = "btn btn-danger btn-sm";
+                deleteBtn.appendChild(deleteTag);
+                deleteBtn.onclick = function () {
+                    //ShowDeleteQuestionModal(id);
+                };
+
+                var editDiv = document.createElement('div');
+                editDiv.classList = "col-6";
+                editDiv.appendChild(editBtn);
+
+                var delDiv = document.createElement('div');
+                delDiv.classList = "col-6";
+                delDiv.appendChild(deleteBtn);
+
+                divRow.appendChild(editBtn);
+                divRow.appendChild(delDiv);
+
+                cell6.appendChild(divRow);
+
+                // ---------- Celda de los botones de Editar/Eliminar ---------------
+
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+                row.appendChild(cell3);
+                row.appendChild(cell4);
+                row.appendChild(cell6);
+
+                return row;
+            }
+        }
+
         function UpdateLayersTable(id) {
             $.ajax({
-                url: '@Url.Action("Get", "Questions")',
+                url: '@Url.Action("Get", "AuditConfigs")',
                 type: "GET",
                 data: { id: id },
                 success: function (data) {
-                    $('#questionsTable tbody').html('');
+                    $('#layersTable tbody').html('');
                     for (var i = 0; i < data.length; i++) {
-                        $('#questionsTable tbody').append(Question.addRow(i + 1, data[i].chr_Description, data[i].chr_Type, data[i].bit_SingleAnswer, data[i].chr_Formula, data[i].int_IdQuestion));
+                        $('#layersTable tbody').append(Layer.addRow(data[i].Level, data[i].Checklist, data[i].Area, data[i].Period));
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {

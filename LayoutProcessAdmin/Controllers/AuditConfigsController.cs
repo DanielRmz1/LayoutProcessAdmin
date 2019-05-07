@@ -25,8 +25,18 @@ namespace LayoutProcessAdmin.Controllers
         [HttpGet]
         public async Task<JsonResult> Get(int id)
         {
-            var configs = await db.AuditConfigs.Where(x => x.Audit.int_IdAudit == id).ToListAsync();
-            return Json(configs, JsonRequestBehavior.AllowGet);
+            var table = new List<LayersTable>();
+            var configs = await db.AuditConfigs.Include(x => x.Area).Include(x => x.int_Period).Include(x => x.Checklist).Where(x => x.Audit.int_IdAudit == id).ToListAsync();
+
+            foreach (var config in configs)
+                table.Add(new LayersTable() {
+                    Area = config.Area.chr_Clave,
+                    Checklist = config.Checklist.chr_Name,
+                    Id = config.int_IdAuditConfig,
+                    Level = config.int_Level,
+                    Period = config.int_Period.chr_RepeatPeriod
+                });
+            return Json(table, JsonRequestBehavior.AllowGet);
         }
 
         // GET: AuditConfigs/Details/5
@@ -72,7 +82,8 @@ namespace LayoutProcessAdmin.Controllers
 
             if (errors.Count == 0)
             {
-                var newPeriod = db.Periods.Add(new Period() {
+                var newPeriod = new Period()
+                {
                     bit_Sun = FindSelectedDay(days, "su"),
                     bit_Mon = FindSelectedDay(days, "mo"),
                     bit_Tue = FindSelectedDay(days, "tu"),
@@ -81,23 +92,40 @@ namespace LayoutProcessAdmin.Controllers
                     bit_Fri = FindSelectedDay(days, "fr"),
                     bit_Sat = FindSelectedDay(days, "sa"),
                     chr_RepeatPeriod = period
-                });
-                
-                var config = db.AuditConfigs.Add(new AuditConfig()
+                };
+
+                db.Periods.Add(newPeriod);
+
+                var area1 = db.Areas.Find(area);
+                var audit1 = db.Audits.Find(audit);
+                var checklist1 = db.Checklists.Find(checklist);
+
+                var config = new AuditConfig()
                 {
-                    Area = db.Areas.Find(area),
-                    Audit = db.Audits.Find(audit),
+                    Area = area1,
+                    Audit = audit1,
                     int_Level = level,
                     int_Period = newPeriod,
-                    Checklist = db.Checklists.Find(checklist)
-                });
+                    Checklist = checklist1,
+                    dte_LastDateCreated = new DateTime(2000, 1, 1)
+                };
+
+                db.AuditConfigs.Add(config);
 
                 for (var i = 0; i < users.Length; i++)
+                {
+                    var thisUser = db.Users.Find(users[i]);
                     db.UsersAudits.Add(new UsersAudits()
                     {
                         AuditConfig = config,
-                        User = db.Users.Find(users[i])
+                        User = thisUser
                     });
+                }
+                    
+                await db.SaveChangesAsync();
+
+                return Json(new { success = true });
+
             }
             
             return Json(new { success = false, messagge = errors });

@@ -22,3 +22,5 @@ bld/
 packages/
 *.csproj
 *.tmp
+
+LayoutProcessAdmin/Migrations/*
