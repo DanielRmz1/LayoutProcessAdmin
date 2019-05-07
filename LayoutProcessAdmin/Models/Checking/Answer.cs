@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace LayoutProcessAdmin.Models.Checking
 {
     [Table("Tbl_Answers")]
-    [DataContract(IsReference = true)]
+    [DataContract(IsReference = false)]
     public class Answer
     {
         [Key]

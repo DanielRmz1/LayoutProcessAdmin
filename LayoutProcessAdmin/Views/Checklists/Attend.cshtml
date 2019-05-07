@@ -5,6 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section css{
+    <style type="text/css">
+        .custom-textarea {
+            width: 100%;
+            height: 15vh;
+            resize: none;
+        }
+    </style>
+
+}
+
 <div class="row">
     <div class="col-xl-12">
         <div class="breadcrumb-holder">
@@ -19,7 +30,7 @@
 </div>
 
 <div class="row">
-    <div class="col-10 offset-1">
+    <div class="col-lg-10 col-xl-10 offset-lg-1 offset-xl-1 col-12">
         <div class="card">
             <div class="card-header">
                 <div class="card-title">
@@ -30,12 +41,13 @@
                 <p id="description" class="text-justify"></p>
             </div>
             <div class="card-body">
-                <div class="col-12" style="background-color: coral;">
-
+                <div class="col-12" id="questions">
                 </div>
             </div>
             <div class="card-footer">
-
+                <div class="row float-right">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-success text-light">Finish <i class="fa fa-check"></i></a>
+                </div>
             </div>
         </div>
     </div>
@@ -58,32 +70,17 @@
         function GetChecklistQuestions(id)
         {
             $.ajax({
-                url: '@Url.Action("Get", "Questions")',
+                url: '@Url.Action("GetQuestions", "Questions")',
                 type: 'GET',
                 data: { id: id },
-                success: function (data) {
-                    console.log(data);
+                success: function (result) {
+                    console.log(result);
+                    result.data.forEach(function (e) {
+                        $('#questions').append(lpaForm.Question(e.chr_Description, e.chr_Type, e.Answers, e.bit_SingleAnswer, e.chr_Formula));
 
-                    data.forEach(function (e) {
-                        AddQuestion(e.int_IdQuestion, e.chr_Type, e.chr_Description);
+                        var hr = document.createElement('hr');
+                        $('#questions').append(hr);
                     });
-                },
-                error: function (data) {
-                    alert(data);
-                }
-            });
-        }
-
-        function AddQuestion(id, type, description)
-        {
-            $.ajax({
-                url: '@Url.Action("GetQuestion", "Questions")',
-                type: 'GET',
-                data: { id: id },
-                success: function (data) {
-
-                    console.log(data);
-
                 },
                 error: function (data) {
                     alert(data);
