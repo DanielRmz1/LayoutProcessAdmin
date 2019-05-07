@@ -46,7 +46,7 @@
                              <td>@e.Checklist</td>
                              <td>@e.State</td>
                              <td>@e.Date</td>
-                             <td><center><a class="btn btn-primary text-light" role="button" onclick="unaFunction(@e.EventId)">Attend <i class="fa fa-check-square"></i></a></center></td>
+                             <td><center><a href="@Url.Action("Attend", "Checklists", new { id = e.EventId})" class="btn btn-primary text-light" role="button">Attend <i class="fa fa-check-square"></i></a>  </center></td>
                          </tr>
                          c++;
                      }

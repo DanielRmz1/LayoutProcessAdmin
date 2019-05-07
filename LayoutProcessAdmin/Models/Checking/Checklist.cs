@@ -3,10 +3,12 @@ using LayoutProcessAdmin.Models.Auditing;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
     [Table("Tbl_Checklist")]
+    [DataContract(IsReference = true)]
     public class Checklist
     {
         [Key]
@@ -24,7 +26,7 @@ namespace LayoutProcessAdmin.Models.Checking
         [Display(Name = "Name")]
         public string chr_Name { get; set; }
 
-        [StringLength(200)]
+        [StringLength(350)]
         [Display(Name = "Description")]
         public string chr_Description { get; set; }
         

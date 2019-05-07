@@ -22,7 +22,7 @@ namespace LayoutProcessAdmin.Controllers
             
             var eventsTable = new List<EventsTable>();
             
-            var events = await db.Events.Include(x => x.AuditConfig).Where(x => x.User.int_IdUser == user.int_IdUser).ToListAsync();
+            var events = await db.Events.Include(x => x.AuditConfig).Where(x => x.User.int_IdUser == user.int_IdUser).OrderBy(x=>x.dte_ScheduleDate).ToListAsync();
             
             foreach (var e in events)
             {

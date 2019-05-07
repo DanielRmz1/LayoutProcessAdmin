@@ -33,27 +33,38 @@ namespace LayoutProcessAdmin.Controllers
             return View(myChecklists);
         }
 
-        // GET: Checklists/Details/5
-        public ActionResult Details(int? id)
+        // GET: Checklists/Attend/5
+        public ActionResult Attend(int? id)
         {
             User user = (User)Session["User"];
-
+            
             if (user == null)
                 return RedirectToAction("Login", "Users");
 
             if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
                 return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
-
+            
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Checklist checklist = db.Checklists.Find(id);
-            if (checklist == null)
-            {
-                return HttpNotFound();
-            }
-            return View(checklist);
+
+            var evento = db.Events.Include(x=>x.AuditConfig).FirstOrDefault(x=>x.int_IdEvent == id);
+
+            //var auditConfig = db.AuditConfigs.Include(x=>x.Checklist).FirstOrDefault(x => x.int_IdAuditConfig == evento.AuditConfig.int_IdAuditConfig);
+
+            //var checklist = db.Checklists.Include(x => x.Questions).FirstOrDefault(x => x.int_IdList == auditConfig.Checklist.int_IdList);
+
+            //var answers = db.Answers.Where(x => x.int_Question.int_Checklist.int_IdList == checklist.int_IdList).ToList();
+
+            return View(evento);
+        }
+
+        public JsonResult GetChecklist(int? id)
+        {
+            var config = db.AuditConfigs.Include(x => x.Checklist).Where(x => x.int_IdAuditConfig == id).First();
+
+            config.Checklist.AuditConfigs = null;
+
+            return Json(new { success = true, data = config.Checklist}, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Checklists/Create
