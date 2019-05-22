@@ -20,7 +20,6 @@ bld/
 
 .vs/
 packages/
-*.csproj
 *.tmp
 
 LayoutProcessAdmin/Migrations/*
