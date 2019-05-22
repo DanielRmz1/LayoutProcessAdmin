@@ -28,7 +28,7 @@ namespace LayoutProcessAdmin.Controllers
             if (!user.UserRoles[0].int_LpaRole.bit_ManageChecklist)
                 return RedirectToAction("NoPermission", "Home", new { module = "Checklists Managment" });
 
-            var myChecklists = db.Checklists.Where(x => x.int_Owner.int_IdUser == user.int_IdUser).ToList();
+            var myChecklists = db.Checklists.Include(x=>x.Questions).Where(x => x.int_Owner.int_IdUser == user.int_IdUser).ToList();
 
             return View(myChecklists);
         }

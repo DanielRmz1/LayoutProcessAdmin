@@ -148,18 +148,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Security.cs" />
-    <Compile Include="Migrations\201904111641523_IndexesChanged.cs" />
-    <Compile Include="Migrations\201904111641523_IndexesChanged.Designer.cs">
-      <DependentUpon>201904111641523_IndexesChanged.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904111825180_EventChecklistIDRemoved.cs" />
-    <Compile Include="Migrations\201904111825180_EventChecklistIDRemoved.Designer.cs">
-      <DependentUpon>201904111825180_EventChecklistIDRemoved.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905061925017_ModeloCambioDesdeOtroProyect.cs" />
-    <Compile Include="Migrations\201905061925017_ModeloCambioDesdeOtroProyect.Designer.cs">
-      <DependentUpon>201905061925017_ModeloCambioDesdeOtroProyect.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\Login.cs" />
     <Compile Include="Models\Account\Role.cs" />
@@ -2821,17 +2809,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904111641523_IndexesChanged.resx">
-      <DependentUpon>201904111641523_IndexesChanged.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904111825180_EventChecklistIDRemoved.resx">
-      <DependentUpon>201904111825180_EventChecklistIDRemoved.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905061925017_ModeloCambioDesdeOtroProyect.resx">
-      <DependentUpon>201905061925017_ModeloCambioDesdeOtroProyect.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
