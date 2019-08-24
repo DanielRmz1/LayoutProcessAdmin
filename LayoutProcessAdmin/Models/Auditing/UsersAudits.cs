@@ -2,15 +2,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LayoutProcessAdmin.Models.Checking
+namespace LayoutProcessAdmin.Models.Auditing
 {
     //Modelo que ayudará a relacionar un checklist con los usuarios que pueden atenderlo
-    [Table("Tbl_UsersChecklist")]
-    public class UsersChecklist
+    [Table("Tbl_UsersAudits")]
+    public class UsersAudits
     {
         [Key]
-        public int int_IdUsersChecklist { get; set; }
-        public Checklist Checklist { get; set; }
-        public User Users { get; set; }
+        public int int_IdUsersAudit { get; set; }
+
+        public AuditConfig AuditConfig { get; set; }
+        public User User { get; set; }
     }
 }

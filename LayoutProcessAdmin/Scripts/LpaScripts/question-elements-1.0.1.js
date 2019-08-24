@@ -333,11 +333,8 @@ $('#selectType').change(function () {
 		case "yn":
 			$('#btnAddAnswer').hide();
             $('#btnRemoveAnswer').hide();
-
-            if (isEditing)
-                $('#answersTextBoxes').append(Answer.addYesNoEdit("Yes", "No"));
-            else
-                $('#answersTextBoxes').append(Answer.addYesNo());
+            
+            $('#answersTextBoxes').append(Answer.addYesNo());
 
 			$('#chSingleAnswer').prop("checked", true);
 			$('#chSingleAnswer').attr('disabled', 'disabled');

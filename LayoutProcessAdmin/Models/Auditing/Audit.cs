@@ -13,6 +13,7 @@ namespace LayoutProcessAdmin.Models.Auditing
         [StringLength(50)]
         [Required]
         [Display(Name = "Name")]
+        [Index(IsUnique = true)]
         public string chr_Name { get; set; }
 
         [StringLength(200)]
@@ -27,6 +28,9 @@ namespace LayoutProcessAdmin.Models.Auditing
         /// </summary>
         [Display(Name = "Type")]
         public int int_Type { get; set; }
+
+        [Display(Name = "Active")]
+        public bool bit_Activo { get; set; }
 
         public List<AuditConfig> AuditConfigs { get; set; }
     }

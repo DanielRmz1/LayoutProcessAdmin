@@ -1,0 +1,118 @@
+﻿@model LayoutProcessAdmin.Models.Calendar.Event
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section css{
+    <style type="text/css">
+        .custom-textarea {
+            width: 100%;
+            height: 15vh;
+            resize: none;
+        }
+    </style>
+
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="breadcrumb-holder">
+            <h1 class="main-title float-left">Answering a Checklist</h1>
+            <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item">Checklist</li>
+                <li class="breadcrumb-item active">Answer</li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-10 col-xl-10 offset-lg-1 offset-xl-1 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="row text-success">
+                        <h4><i class="fa fa-tasks"></i> </h4>&nbsp;<h4 id="title"></h4>
+                    </div>
+                </div>
+                <p id="description" class="text-justify"></p>
+            </div>
+            <div class="card-body">
+                <div class="col-12" id="questions">
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row float-right">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-success text-light">Finish <i class="fa fa-check"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+
+    <script src="~/Scripts/LpaScripts/generate-checklistForm-1.0.0.js"></script>
+
+    <script>
+        var eventId = @Model.int_IdEvent;
+        var auditConfig = @Model.AuditConfig.int_IdAuditConfig;
+        var checklistId;
+
+        $(document).ready(function () {
+            GetChecklist(auditConfig);
+        });
+
+        function GetChecklistQuestions(id)
+        {
+            $.ajax({
+                url: '@Url.Action("GetQuestions", "Questions")',
+                type: 'GET',
+                data: { id: id },
+                success: function (result) {
+                    console.log(result);
+                    result.data.forEach(function (e) {
+                        $('#questions').append(lpaForm.Question(e.chr_Description, e.chr_Type, e.Answers, e.bit_SingleAnswer, e.chr_Formula));
+
+                        var hr = document.createElement('hr');
+                        $('#questions').append(hr);
+                    });
+                },
+                error: function (data) {
+                    alert(data);
+                }
+            });
+        }
+
+        function GetChecklist(id)
+        {
+            $.ajax({
+                url: '@Url.Action("GetChecklist", "Checklists")',
+                type: 'GET',
+                data: { id: id },
+                success: function (data) {
+
+                    if (data.success) {
+                        var result = data.data;
+                        $('#title').html(result.chr_Clave);
+                        $('#description').html(result.chr_Description);
+
+                        checklistId = result.int_IdList;
+
+                        GetChecklistQuestions(checklistId);
+                    }
+
+                },
+                error: function (data) {
+                    alert(data);
+                }
+            });
+        }
+
+    </script>
+
+}

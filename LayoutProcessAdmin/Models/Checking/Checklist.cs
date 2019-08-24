@@ -1,12 +1,14 @@
 ﻿using LayoutProcessAdmin.Models.Account;
-using LayoutProcessAdmin.Models.Areas;
+using LayoutProcessAdmin.Models.Auditing;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
     [Table("Tbl_Checklist")]
+    [DataContract(IsReference = true)]
     public class Checklist
     {
         [Key]
@@ -24,46 +26,14 @@ namespace LayoutProcessAdmin.Models.Checking
         [Display(Name = "Name")]
         public string chr_Name { get; set; }
 
-        [StringLength(200)]
+        [StringLength(350)]
         [Display(Name = "Description")]
         public string chr_Description { get; set; }
         
-        /// <summary>
-        ///  d for Day
-        ///  m for Month
-        ///  w for Week
-        ///  q for quincena
-        /// </summary>
-        [Display(Name = "Period")]
-        [Column("int_idPeriod")]
-        public Period int_Period { get; set; }
-
-        [NotMapped]
-        public string SelectedPeriod { get; set; }
-
-        [NotMapped]
-        public string[] Days { get; set; }
-
-        [Display(Name = "Active")]
-        public bool bit_Activo { get; set; }
-        
         public User int_Owner { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Area")]
-        public int int_Area { get; set; }
-
-        public Area Area { get; set; }
-
-        [NotMapped]
-        [Display(Name = "Who can answer this?")]
-        public int[] SelectedUsers { get; set; }
-
-        [NotMapped]
-        public int id_Period { get; set; }
-
         public List<Question> Questions { get; set; }
-        
-        public List<UsersChecklist> UsersChecklists { get; set; }
+
+        public List<AuditConfig> AuditConfigs { get; set; }
     }
 }

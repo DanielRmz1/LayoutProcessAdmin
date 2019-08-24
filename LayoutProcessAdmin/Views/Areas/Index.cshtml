@@ -5,42 +5,134 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.chr_Clave)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.chr_Clave)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.int_IdArea }) |
-            @Html.ActionLink("Details", "Details", new { id=item.int_IdArea }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.int_IdArea })
-        </td>
-    </tr>
+@section css{
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
-</table>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="breadcrumb-holder">
+            <h1 class="main-title float-left">Areas</h1>
+            <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item">Areas</li>
+                <li class="breadcrumb-item active">Index</li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        @Html.ActionLink("Create Area", "Create", null, new { role = "button", @class = "btn btn-success" })
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped" id="UsersTable">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.chr_Clave)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.int_IdGroup)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.int_IdArea)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.chr_Clave)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.int_IdGroup)
+                        </td>
+                        <td>
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-4">
+                                    <a href="@Url.Action("Edit", "Areas", new { id = item.int_IdArea })" role="button" class="btn btn-warning btn-sm"><i class="fa fa-pen"></i></a>
+                                </div>
+                                <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-4">
+                                    <a href="@Url.Action("Details", "Areas", new { id = item.int_IdArea})" role="button" class="btn btn-primary btn-sm"><i class="fa fa-info-circle"></i></a>
+                                </div>
+                                <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-4">
+                                    <a href="#" role="button" class="btn btn-danger btn-sm" onclick="ShowDeleteModal('@item.int_IdArea', '@item.Name', '@item.Description')"><i class="fa fa-minus-circle"></i></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-question-circle"></i> Are you sure you want to delete this?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Nombre:<span id="lblUsername"></span></h5>
+                <h5>Description: </h5><span id="lblEmail"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+
+                @using (Html.BeginForm("Delete", "Areas", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.TextBox("id", "id", new { Hidden = "hidden" })
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <script>
+
+        function ShowDeleteModal(id, userName, email) {
+            $('#deleteModal .modal-body #lblUsername').html(" " + userName);
+            $('#deleteModal .modal-body #lblEmail').html(" " + email);
+            $('#deleteModal .modal-footer #id').val(id);
+            $('#deleteModal').modal('show');
+        }
+
+        $(document).ready(function () {
+            $('#UsersTable').DataTable({
+                "scrollY": "400px"
+            });
+
+        });
+
+    </script>
+}

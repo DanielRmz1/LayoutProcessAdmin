@@ -20,16 +20,17 @@ namespace LayoutProcessAdmin.Controllers
         [HttpGet]
         public JsonResult Get(int id)
         {
-            return Json(db.Questions.Where(x => x.int_Checklist.int_IdList == id).ToList(), JsonRequestBehavior.AllowGet);
+            var questions = db.Questions.Where(x => x.int_Checklist.int_IdList == id).ToList();
+            return Json(questions, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        public JsonResult GetQuestion(int id)
+        public async Task<JsonResult> GetQuestion(int id)
         {
             try
             {
                 var question = db.Questions.Find(id);
-                var answers = db.Answers.Where(x => x.int_Question.int_IdQuestion == question.int_IdQuestion).Select(i => new { i.chr_Description, i.chr_Variable, i.int_IdAnswer, i.dbl_LowerLimit, i.dbl_UpperLimit }).ToList();
+                var answers = await db.Answers.Where(x => x.int_Question.int_IdQuestion == question.int_IdQuestion).Select(i => new { i.chr_Description, i.chr_Variable, i.int_IdAnswer, i.dbl_LowerLimit, i.dbl_UpperLimit }).ToListAsync();
                 return Json(new { Success = true, Quest = question, Answs = answers }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -37,6 +38,18 @@ namespace LayoutProcessAdmin.Controllers
                 return Json(new { Success = false, Message = e.ToString() }, JsonRequestBehavior.AllowGet);
             }
             
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetQuestions(int id)
+        {
+            var questions = await db.Questions.Include(x => x.Answers).Where(x => x.int_Checklist.int_IdList == id).ToListAsync();
+
+            foreach (var question in questions)
+                foreach (var answer in question.Answers)
+                    answer.int_Question = null;
+
+            return Json(new { success = true, data = questions }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Questions/Details/5

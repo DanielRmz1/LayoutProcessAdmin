@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
     [Table("Tbl_Questions")]
+    [DataContract(IsReference = true)]
     public class Question       
     {
         [Key]
@@ -17,9 +19,11 @@ namespace LayoutProcessAdmin.Models.Checking
 
         /// <summary>
         /// El tipo de la pregunta podra ser:
-        /// M -> Multiple -> Respuesta A) B) C) D) (El plan es que sean n respuestas)
-        /// A -> Abierta ->  Respuesta: ____________________________________
-        /// B -> Si / No ->  Respuesta: Yes) No) o Si) No)
+        /// mu -> Multiple -> Respuesta A) B) C) D) (El plan es que sean n respuestas)
+        /// op -> Abierta ->  Respuesta: ____________________________________
+        /// yn -> Si / No ->  Respuesta: Yes) No) o Si) No)
+        /// ca -> Calculada
+        /// in -> Numerico
         /// </summary>
         [Required]
         [StringLength(2)]

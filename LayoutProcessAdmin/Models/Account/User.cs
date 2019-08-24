@@ -1,4 +1,6 @@
 ﻿
+using LayoutProcessAdmin.Models.Auditing;
+using LayoutProcessAdmin.Models.Calendar;
 using LayoutProcessAdmin.Models.Checking;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -56,8 +58,6 @@ namespace LayoutProcessAdmin.Models.Account
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "Only numbers are allowed.")]
         public string chr_Phone { get; set; }
         
-        public List<Checklist> Checklists { get; set; }
-
         [NotMapped]
         [Required]
         [Display(Name = "Select a Role")]
@@ -68,6 +68,8 @@ namespace LayoutProcessAdmin.Models.Account
 
         public IEnumerable<SelectListItem> Roles { get; set; }
 
-        public List<UsersChecklist> UsersChecklists { get; set; }
+        public List<UsersAudits> UsersAudits { get; set; }
+        
+        public List<Event> Events { get; set; }
     }
 }

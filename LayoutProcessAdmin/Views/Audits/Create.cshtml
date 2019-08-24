@@ -5,48 +5,478 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+@section css{
+    <link href="~/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .custom-textarea {
+            width: 100%;
+            height: 15vh;
+            resize: none;
+        }
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Audit</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.chr_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.chr_Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.chr_Name, "", new { @class = "text-danger" })
-            </div>
+        .answers-control {
+            display: none;
+        }
+    </style>
+
+}
+
+@{
+    var users = (List<SelectListItem>)ViewBag.Users;
+
+    var periods = new List<SelectListItem>()
+    {
+        new SelectListItem()
+        {
+            Text = "Once",
+            Value = "o"
+        },
+        new SelectListItem()
+        {
+            Text = "Daily",
+            Value = "d"
+        },
+        new SelectListItem()
+        {
+            Text = "Weekly",
+            Value = "w"
+        },
+        new SelectListItem()
+        {
+            Text = "Monthly",
+            Value = "m"
+        },
+        new SelectListItem()
+        {
+            Text = "15 Days",
+            Value = "q"
+        }
+    };
+
+    var weekDays = new List<SelectListItem>()
+    {
+        new SelectListItem()
+        {
+            Text = "Sunday",
+            Value = "su"
+        },
+        new SelectListItem()
+        {
+            Text = "Monday",
+            Value = "mo"
+        },
+        new SelectListItem()
+        {
+            Text = "Tuesday",
+            Value = "tu"
+        },
+        new SelectListItem()
+        {
+            Text = "Wednesday",
+            Value = "we"
+        },
+        new SelectListItem()
+        {
+            Text = "Thursday",
+            Value = "th"
+        },
+        new SelectListItem()
+        {
+            Text = "Friday",
+            Value = "fr"
+        },
+        new SelectListItem()
+        {
+            Text = "Saturday",
+            Value = "sa"
+        }
+    };
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="breadcrumb-holder">
+            <h1 class="main-title float-left">Creating an Audit</h1>
+            <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item">Audits</li>
+                <li class="breadcrumb-item active">Create</li>
+            </ol>
+            <div class="clearfix"></div>
         </div>
+    </div>
+</div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.chr_Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.chr_Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.chr_Description, "", new { @class = "text-danger" })
+<div class="row">
+    <div class="col-lg-12 col-xl-8 col-12 offset-xl-2 offset-lg-0 offset-md-0">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-success"><i class="fa fa-file-invoice" style="font-size:20px;"></i> New Audit</h3>
             </div>
-        </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "Audits", FormMethod.Post, new { id = "auditForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.int_Type, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.int_Type, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.int_Type, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.chr_Name, htmlAttributes: new { @class = "control-label col-8" })
+                                <div class="col-12">
+                                    @Html.EditorFor(model => model.chr_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Audit Name" } })
+                                    @Html.ValidationMessageFor(model => model.chr_Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.int_Type, htmlAttributes: new { @class = "control-label col-8" })
+                                <div class="col-12">
+                                    @Html.DropDownListFor(model => model.int_Type, (List<SelectListItem>)ViewBag.AuditTypes, "Select a Option", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.int_Type, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.chr_Description, htmlAttributes: new { @class = "control-label col-8" })
+                                <div class="col-12">
+                                    @Html.TextAreaFor(model => model.chr_Description, htmlAttributes: new { @class = "form-control custom-textarea", placeholder = "An optional description about the checklist", id = "txtDescription" })
+                                    @Html.ValidationMessageFor(model => model.chr_Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="form-group float-right" style="background-color: white;">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.CheckBoxFor(model => model.bit_Activo, new { @class = "custom-control-input", type = "checkbox" })
+                                    @Html.LabelFor(model => model.bit_Activo, htmlAttributes: new { @class = "custom-control-label" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <ul id="errorSummary" class="text-danger"></ul>
+                        <div style="margin-left: auto; margin-right: 20px;">
+                            <button class="btn btn-success" type="submit" id="btnNext">Next <i class="fa fa-level-down-alt"></i> </button>
+                        </div>
+                    </div>
+
+                }
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-sm-4 col-xl-4 col-lg-4 col-8">
+                        <h4 class="text-primary"><i class="fa fa-layer-group"></i> Layers</h4>
+                    </div>
+                    <div style="margin-left: auto;margin-right: 20px;" class="layers-container">
+                        <button id="btnAddLay" type="button" class="btn btn-primary text-white" data-toggle="modal" data-target="#addLay">Add New Lay <i class="fa fa-plus"></i></button>
+                    </div>
+                </div><br />
+
+                <div class="row layers-container">
+                    <div class="col-12">
+                        <table class="table table-hover table-responsive-sm" id="layersTable">
+                            <thead>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.AuditConfigs[0].int_Level)</th>
+                                    <th>@Html.DisplayNameFor(model => model.AuditConfigs[0].Checklist)</th>
+                                    <th>@Html.DisplayNameFor(model => model.AuditConfigs[0].Area)</th>
+                                    <th>@Html.DisplayNameFor(model => model.AuditConfigs[0].int_Period.chr_RepeatPeriod)</th>
+                                    <th>Edit / Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="card-footer">
+                <div class="form-group float-right">
+                    <div class="row">
+                        <button type="button" class="btn btn-success" id="saveAudit">Save Audit <i class="fa fa-check-circle" style="font-size: 20px;"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="addLayer" tabindex="-1" role="dialog" aria-labelledby="addLayerLabel" aria-hidden="true">
+    <!-- Modal for form questions  -->
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm("Create", "AuditConfigs", FormMethod.Post, new { id = "layerForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addLayerLabel"><i class="fa fa-plus-circle"></i> Add a new layer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body align-content-center align-content-lg-center">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @Html.Label("Select a Checklist", new { @class = "control-label", @for = "selectChecklist" })
+                            @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.MyChecklists, "Select a Option", new { @class = "form-control select2", id = "selectChecklist", style = "width: 100%;" })
+                        </div>
+                    </div><br />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @Html.Label("Seleccionar Periodo", new { @for = "selectPeriod", @class = "control-label" })
+                            @Html.DropDownList("Select a Option", periods, "Select a Option", new { @class = "form-control select2", id = "selectPeriod", style = "width: 100%;", name = "SelectedPeriod" })
+                        </div>
+                    </div><br />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @Html.Label("Seleccionar Dias", new { @for = "selectDays", @class = "control-label" })
+                            @Html.DropDownList("Select a Option", weekDays, htmlAttributes: new { @class = "form-control select2", id = "selectDays", multiple = "multiple", style = "width: 100%;" })
+                        </div>
+                    </div><br />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @Html.Label("Select Users", new { @class = "control-label", @for = "selectUsers" })
+                            @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.ListUsers,htmlAttributes: new { @class = "form-control select2", multiple = "multiple", id = "selectUsers", style = "width: 100%;" })
+                        </div>
+                    </div><br />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @Html.Label("Select Area", new { @class = "control-label", @for = "selectArea" })
+                            @Html.DropDownList("Select a Option", (List<SelectListItem>)ViewBag.Areas, "Select a Option", new { @class = "form-control select2", id = "selectArea", style = "width: 100%;" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul id="errorLayerSummary" class="text-danger"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/plugins/select2/js/select2.min.js"></script>
+
+    <script>
+        var currentAuditId;
+        var token;
+        var level = 1;
+        $(document).ready(function() {
+
+            $('.layers-container').hide();
+
+            $('#btnAddLay').on('click', function () {
+                document.getElementById('selectChecklist').selectedIndex = 0;
+                $('#selectChecklist').trigger('change');
+
+                document.getElementById('selectPeriod').selectedIndex = 0;
+                $('#selectPeriod').trigger('change');
+
+                document.getElementById('selectArea').selectedIndex = 0;
+                $('#selectArea').trigger('change');
+
+                $('#selectDays').val('').trigger('change');
+                $('#selectUsers').val('').trigger('change');
+
+                $('#addLayer').modal('show');
+            });
+
+            $('.select2').select2();
+
+            $('#auditForm').on('submit',function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '@Url.Action("Create", "Audits")',
+                    type: "POST",
+                    data: $('#auditForm').serialize(),
+                    success: function (data) {
+                        $('#errorSummary').html('');
+
+                        if (data.success) {
+                            currentAuditId = data.data.auditId;
+                            $('.layers-container').show();
+                            $('#btnNext').attr('disabled', 'disabled');
+                            
+                        } else {
+                            data.messagge.forEach(function (e) {
+                                $('#errorSummary').append("<li>" + e + "</li>");
+                            });
+                        }
+                        
+                    },
+                    error: function (jXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                        alert(textStatus);
+                    }
+                });
+            });
+
+            $('#layerForm').on('submit', function (e) {
+                e.preventDefault();
+                var form = $('#layerForm');
+                token = $('input[name="__RequestVerificationToken"]', form).val();
+                $.ajax({
+                    url: '@Url.Action("Create", "AuditConfigs")',
+                    type: "POST",
+                    data: {
+                        __RequestVerificationToken: token,
+                        checklist: $('#selectChecklist').val(),
+                        period: $('#selectPeriod').val(),
+                        days: $('#selectDays').val(),
+                        users: $('#selectUsers').val(),
+                        area: $('#selectArea').val(),
+                        level: level,
+                        audit: currentAuditId
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            level++;
+                            $('#addLayer').modal('hide');
+                            UpdateLayersTable(currentAuditId);
+                        } else {
+                            data.messagge.forEach(function (e) {
+                                $('#errorLayerSummary').append("<li>" + e + "</li>");
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        var Layer = {
+            addRow: function (level, checklist, area, repeatPeriod) {
+                var row = document.createElement('tr');
+
+                var cell1 = document.createElement('td');
+                var span1 = document.createElement('span');
+                span1.textContent = level;
+                cell1.appendChild(span1);
+
+                var cell2 = document.createElement('td');
+                var span2 = document.createElement('span');
+                span2.textContent = checklist;
+                cell2.appendChild(span2);
+
+                var cell3 = document.createElement('td');
+                var span3 = document.createElement('span');
+                span3.textContent = area;
+                cell3.appendChild(span3);
+
+                var cell4 = document.createElement('td');
+                var span4 = document.createElement('span');
+                span4.textContent = repeatPeriod;
+                cell4.appendChild(span4);
+
+                // ----------- Celda de los botones de Editar/Eliminar ---------------
+
+                var cell6 = document.createElement('td');
+
+                var divRow = document.createElement('div');
+                divRow.classList = 'row';
+
+                var editTag = document.createElement('i');
+                editTag.classList = "fa fa-pen";
+
+                var deleteTag = document.createElement('i');
+                deleteTag.classList = "fa fa-minus-circle";
+
+                var editBtn = document.createElement('a');
+                editBtn.href = '#';
+                editBtn.setAttribute("role", "button");
+                editBtn.classList = "btn btn-warning btn-sm";
+                editBtn.appendChild(editTag);
+                editBtn.onclick = function () {
+                    //EditQuestion(id);
+                };
+
+                var deleteBtn = document.createElement('a');
+                deleteBtn.href = '#';
+                deleteBtn.setAttribute("role", "button");
+                deleteBtn.classList = "btn btn-danger btn-sm";
+                deleteBtn.appendChild(deleteTag);
+                deleteBtn.onclick = function () {
+                    //ShowDeleteQuestionModal(id);
+                };
+
+                var editDiv = document.createElement('div');
+                editDiv.classList = "col-6";
+                editDiv.appendChild(editBtn);
+
+                var delDiv = document.createElement('div');
+                delDiv.classList = "col-6";
+                delDiv.appendChild(deleteBtn);
+
+                divRow.appendChild(editBtn);
+                divRow.appendChild(delDiv);
+
+                cell6.appendChild(divRow);
+
+                // ---------- Celda de los botones de Editar/Eliminar ---------------
+
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+                row.appendChild(cell3);
+                row.appendChild(cell4);
+                row.appendChild(cell6);
+
+                return row;
+            }
+        }
+
+        function UpdateLayersTable(id) {
+            $.ajax({
+                url: '@Url.Action("Get", "AuditConfigs")',
+                type: "GET",
+                data: { id: id },
+                success: function (data) {
+                    $('#layersTable tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
+                        $('#layersTable tbody').append(Layer.addRow(data[i].Level, data[i].Checklist, data[i].Area, data[i].Period));
+                    }
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    alert(textStatus);
+                }
+            });
+        }
+
+        $(window).bind('beforeunload', function () {
+            if (currentAuditId != 0 && currentAuditId != null)
+                return 'Are you sure you want to leave?';
+        });
+
+        window.onunload = function () {
+            var form = $('#auditForm');
+            token = $('input[name="__RequestVerificationToken"]', form).val();
+            $.ajax({
+                url: '@Url.Action("Delete", "Audits")',
+                type: "POST",
+                data: { __RequestVerificationToken: token, id: currentAuditId }
+            });
+        } 
+
+        $('#saveAudit').on('click', function () {
+            currentAuditId = 0;
+            window.location = "@Url.Action("index", "Audits")";
+        });
+
+        $(window).resize(function () {
+            $('.select2').select2();
+        });
+    </script>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

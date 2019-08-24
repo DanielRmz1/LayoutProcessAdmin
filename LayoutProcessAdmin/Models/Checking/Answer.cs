@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace LayoutProcessAdmin.Models.Checking
 {
     [Table("Tbl_Answers")]
+    [DataContract(IsReference = false)]
     public class Answer
     {
         [Key]
